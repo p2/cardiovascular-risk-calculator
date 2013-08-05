@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Risk Calculator</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" href="static/style.css" />
+</head>
+<body>
+	<div id="container">
+		<h1>Cardiovascular Risk/Benefit Calculator</h1>
+		<p>
+			Please provide feedback and suggestions to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>.<br />
+			For more information see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>.
+		</p>
+		
+		<!-- Input -->
+		<div id="input">
+			<div>
+				<h3>Risk Time Period</h3>
+				<div class="slider_parent">
+					<input type="range" min="1" max="10" value="10" onchange="adjust('time', this)" />
+					<b id="time">10</b>&nbsp;years
+				</div>
+			</div>
+			
+			<div>
+				<h3>Age</h3>
+				<div class="slider_parent">
+					<input type="range" min="40" max="80" value="50" onchange="adjust('age', this)" />
+					<b id="age">50</b>&nbsp;years
+				</div>
+			</div>
+			
+			<div>
+				<strong>Gender</strong>
+				<span class="toggle">
+					<span id="male" onclick="gender(this), CALC()">Male</span>
+					<span id="female" onclick="gender(this), CALC()" class="active">Female</span>
+				</span>
+			</div>
+
+			<div>
+				<strong>Smoker</strong>
+				<span class="toggle">
+					<span id="smoker_yes" onclick="smoker(this), CALC()">Yes</span>
+					<span id="smoker_no" onclick="smoker(this), CALC()" class="active">No</span>
+				</span>
+			</div>
+			
+			<div>
+				<strong>Diabetes</strong>
+				<span class="toggle">
+					<span id="diabetes_yes" onclick="diabetes(this), CALC()">Yes</span>
+					<span id="diabetes_no" onclick="diabetes(this), CALC()" class="active">No</span>
+				</span>
+			</div>
+				
+			<div>
+				<h3>Systolic Blood Pressure</h3>
+				<div class="slider_parent">
+					<input type="range" min="120" max="190" value="120" onchange="adjust('sbp', this)" />
+					<b id="sbp">120</b>&nbsp;mmHg
+				</div>
+				<p class="item_info">120 mmHg is used for baseline risk</p>
+			</div>
+			
+			<div>
+				<h3>Total Cholesterol</h3>
+				<div class="slider_parent">
+					<input type="range" min="3" max="8" value="3" step="0.1" onchange="adjust('chol', this)" />
+					<b id="chol">3</b>&nbsp;mmol/L
+				</div>
+				<p class="item_info">3 mmol/L is used for baseline risk</p>
+			</div>
+			
+			<div>
+				<h3>HDL Cholesterol</h3>
+				<div class="slider_parent">
+					<input type="range" min="0.5" max="1.3" value="1.3" step="0.1" onchange="adjust('hdl', this)" />
+					<b id="hdl">1.3</b>&nbsp;mmol/L
+				</div>
+				<p class="item_info">
+					1.3 mmol/L is used for baseline risk.<br />
+					Conversion: <b>mg/dL ÷ 40 = mmol/L</b>
+				</p>
+			</div>
+			
+			<div>
+				<h3>Relative Benefit:&nbsp;&nbsp;<span id="benefit">0</span>%</h3>
+				<!--div class="slider_parent">
+					<input type="range" min="0" max="50" value="0" onchange="adjust('benefit', this)" />
+					<b id="benefit">0</b>&nbsp;%
+				</div-->
+				
+				<!-- The benefit table. It goes here so Canadians can edit it. -->
+				<script>
+				var _benefit = {
+					'cvd': {
+						'activity': 20,
+						'bp': {'default': 30, 'diabetes': 50},
+						'statins': 25,
+						'fibrates': 0,
+						'metformin': 35,
+						'glucose-lowering': 15,
+						'glitazones': 0,
+						'glp': 0,
+						'asa': 0
+					},
+					'chd': {
+						'activity': 20,
+						'bp': 20,
+						'statins': 30,
+						'fibrates': 20,
+						'metformin': 0,
+						'glucose-lowering': 0,
+						'glitazones': 0,
+						'glp': 0,
+						'asa': 0
+					},
+					'mi': {
+						'activity': 20,
+						'bp': 20,
+						'statins': 30,
+						'fibrates': 20,
+						'metformin': 0,
+						'glucose-lowering': 0,
+						'glitazones': 0,
+						'glp': 0,
+						'asa': 0
+					},
+					'stroke': {
+						'activity': 25,
+						'bp': 40,
+						'statins': 20,
+						'fibrates': 0,
+						'metformin': 0,
+						'glucose-lowering': 0,
+						'glitazones': 0,
+						'glp': 0,
+						'asa': 20
+					}
+				};
+				</script>
+				<ul id="benefit_estimates">
+					<li onclick="toggleBenefit(this)" data-benefit="activity">Activity</li>
+					<li onclick="toggleBenefit(this)" data-benefit="bp">Blood pressure</li>
+					<li onclick="toggleBenefit(this)" data-benefit="statins">Statins</li>
+					<li onclick="toggleBenefit(this)" data-benefit="fibrates">Fibrates, ezetimibe</li>
+					<li onclick="toggleBenefit(this)" data-benefit="metformin">Metformin</li>
+					<li onclick="toggleBenefit(this)" data-benefit="glucose-lowering">Glucose lowering</li>
+					<li onclick="toggleBenefit(this)" data-benefit="glitazones">Glitazones</li>
+					<li onclick="toggleBenefit(this)" data-benefit="glp">GLP, DPP-4</li>
+					<li onclick="toggleBenefit(this)" data-benefit="asa">ASA</li>
+				</ul>
+				<a class="item_info" href="FAQ.html#calculator" target="_blank">CVD Reduction Estimates</a>
+			</div>
+			
+			<div>
+				<h3>Over-estimate of Risk</h3>
+				<div class="slider_parent">
+					<input type="range" min="50" max="100" value="100" onchange="adjust('overestimate', this)" />
+					<b id="overestimate">100</b>&nbsp;%
+				</div>
+			</div>
+		</div>
+		
+		
+		<!-- Outcome -->
+		<div id="outcome">
+			<ul id="formula_selector" class="tab">
+				<li onclick="setFormula(this)" data-calc="cvd">CVD events</li><!--
+				--><li onclick="setFormula(this)" data-calc="chd">CHD events</li><!--
+				--><li onclick="setFormula(this)" data-calc="mi">Heart Attacks</li><!--
+				--><li onclick="setFormula(this)" data-calc="stroke">Strokes</li>
+			</ul>
+			
+			<div id="faces"></div>
+			<div id="disease"></div>
+			
+			<div id="scores">
+				<table>
+					<colgroup>
+						<col width="32" />
+						<col width="92" />
+						<col />
+					</colgroup>
+					<tr>
+						<td><img src="imgs/good.png" alt="" /></td>
+						<th id="score_good"></th>
+						<td>No events</td>
+					</tr>
+					<tr>
+						<td><img src="imgs/bad.png" alt="" /></td>
+						<th id="score_bad"></th>
+						<td>Baseline events using baseline factors</td>
+					</tr>
+					<tr>
+						<td><img src="imgs/badA.png" alt="" /></td>
+						<th id="score_bad_add"></th>
+						<td>Additional events – “caused” by risk factors over baseline</td>
+					</tr>
+					<tr>
+						<td><img src="imgs/badP.png" alt="" /></td>
+						<th id="score_benefits"></th>
+						<td>Benefits – will not have an event because of “treatment”</td>
+					</tr>
+				</table>
+				<p class="item_info">
+					As with all risk calculators, calculated risk numbers are +/- 5% at best.
+					<a class="infoT various" href="FAQ.html#percentage" target="_blank">More information</a>.
+				<p>
+			</div>
+		</div>
+		
+		
+		<!-- Footer -->
+		<div id="footer">
+			James McCormack, 2013
+		</div>
+	</div>
+
+	<!-- JS -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/calculator.js"></script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+
+@import 'bourbon';
+
+$col-main:			#036;
+$col-light-text:	#444;
+
+html, body {
+	margin: 0;
+	font: 300 11pt/16pt "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+	text-align: center;
+}
+h1, h2, h3, h4, strong {
+	font-weight: 500; line-height: 1.2;
+}
+strong {
+	font-size: 1.17em;
+}
+a:link {
+	color: lighten($col-main, 20%);
+}
+a:visited {
+	color: lighten($col-main, 40%);
+}
+
+table {
+	border-radius: 2pt;
+}
+thead th {
+	font-size: 1.1em;
+}
+tbody {
+	th {
+		text-align: left;
+	}
+	td {
+		padding: 0.15em 0.3em;
+		
+		&.big {
+			font-size: 1.2em; font-weight: bold; text-align: center;
+		}
+	}
+	
+	tr:nth-child(odd) th, tr:nth-child(odd) td {
+		background-color: lighten($col-main, 75%);
+	}
+}
+
+#container {
+	position: relative;
+	max-width: 720px;
+	margin: 0 auto; padding: 2em;
+}
+
+#input {
+	@media screen and (min-width: 800px) {
+		float: left;
+	}
+	
+	min-width: 250px; max-width: 280px;
+	margin: 0 auto;
+	
+	& > div {
+		min-height: 2.5em;
+		margin-top: 1em;
+		
+		h3 {
+			margin: 0 0 0.75em;
+		}
+		
+		.slider_parent {
+			padding-left: 1.5em;
+			font-size: 1.1em;
+			
+			input {
+				margin-right: 0.5em;
+			}
+		}
+	}
+}
+
+#outcome {
+	@media screen and (min-width: 800px) {
+		width: 320px;
+		margin-left: 400px;
+	}
+}
+
+#formula_selector {
+	width: 320px;
+	margin: 2em auto 1em;
+	
+	@media screen and (min-width: 800px) {
+		margin-top: 1em; padding-top: 0.5em;
+	}
+}
+
+#faces {
+	width: 320px; height: 320px;
+	margin: 0 auto;
+	
+	img {
+		width: 32px; height: 32px;
+		float: left;
+	}
+}
+
+#scores {
+	table {
+		width: 100%;
+		margin: 2em 0 1em;
+		border-collapse: collapse;
+		
+		th, td {
+			vertical-align: middle;
+		}
+		th {
+			padding-right: 0.5em;
+			font-size: 1.5em; text-align: right;
+		}
+		td {
+			padding: 0.25em 0;
+			
+			img {
+				vertical-align: -30%;
+			}
+		}
+	}
+}
+
+#benefit_estimates {
+	margin: 0 0 0.5em; padding: 0;
+	cursor: pointer; @include user-select(none);
+	
+	li {
+		display: inline-block;
+		margin: 0 0.5em 0.75em 0; padding: 0.1em 0.4em;
+		color: darken($col-main, 20%);
+		border: 1px solid $col-main; border-radius: 2pt;
+		
+		&.active {
+			background-color: $col-main;
+			color: white; font-weight: 500;
+		}
+	}
+}
+
+#footer {
+	clear: both;
+	padding: 2em;
+	text-align: center; color: $col-light-text;
+}
+
+
+// Elements
+.toggle {
+	float: right;
+	border: 1px solid $col-main; border-radius: 2pt;
+	cursor: pointer; @include user-select(none);
+	
+	span {
+		display: inline-block;
+		padding: 0.1em 0.5em;
+		color: darken($col-main, 20%);
+		
+		&:first-child {
+			padding-left: 0.6em;
+		}
+		&:last-child {
+			padding-right: 0.6em;
+		}
+		
+		&.active {
+			background-color: $col-main;
+			color: white; font-weight: 500;
+		}
+	}
+}
+
+.tab {
+	list-style-type: none;
+	padding: 0;
+	font-size: 1.2em;
+	cursor: pointer; @include user-select(none);
+	
+	li {
+		display: inline-block;
+		width: 42%;
+		margin: 0; padding: 0.5em 4%;
+		color: darken($col-main, 20%); text-align: center;
+		border-radius: 2pt;
+		
+		&:hover {
+			background-color: rgb(220,220,220);
+		}
+		
+		&.active {
+			background-color: $col-main;
+			color: white; font-weight: 500;
+		}
+	}
+}
+
+.item_info {
+	margin: 0.5em 0 0;
+	font-size: 0.8em; color: $col-light-text;
+}
