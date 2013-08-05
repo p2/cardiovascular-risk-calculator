@@ -48,6 +48,8 @@ tbody tr:nth-child(odd) th, tbody tr:nth-child(odd) td { background-color: #e5f2
 
 #footer { clear: both; padding: 2em; text-align: center; color: #444444; }
 
+.chol_mgdl { display: none; }
+
 .toggle { float: right; border: 1px solid #003366; border-radius: 2pt; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 .toggle span { display: inline-block; padding: 0.1em 0.5em; color: black; }
 .toggle span:first-child { padding-left: 0.6em; }

@@ -33,10 +33,20 @@ function diabetes(item) {
 	return $('#diabetes_yes').hasClass('active') ? 1 : 0;
 }
 
-function adjust(elem_id, sender) {
+function adjust(elem_id, sender, no_calc) {
 	var value = $(sender).val();
+	
+	// convert cholesterol values
+	if (!_useMMOL && ('chol' == elem_id || 'hdl' == elem_id)) {
+		value = Math.round(value * 38.666666);
+	}
+	
+	// apply and calculate
 	$('#' + elem_id).text(value ? Math.round(value * 10) / 10 : 0);
-	CALC();
+	
+	if (!no_calc) {
+		CALC();
+	}
 }
 
 function toggleBenefit(elem) {
@@ -152,8 +162,8 @@ function calculate(formula_id) {
 	var AGE = $('#age').text() *1;
 	var BLOODP = $('#sbp').text() *1;
 	var SMOKE = smoker();
-	var TCHOL = $('#chol').text() *1;
-	var HDLCHOL = $('#hdl').text() *1;
+	var TCHOL = $('#totalchol').val() *1;
+	var HDLCHOL = $('#hdlchol').val() *1;
 	var DIABETES = diabetes();
 	var IVH = 0;
 	
@@ -237,6 +247,30 @@ function newFace(type) {
 	img.src = "imgs/" + type + ".png";
 	
 	return img;
+}
+
+
+/**
+ *  Changes the interface between using mmol/L and mg/dL.
+ */
+var _useMMOL = true;
+function toggleCholesterolUnit() {
+	_useMMOL = !_useMMOL;
+	
+	if (_useMMOL) {
+		$('#input').find('.chol_toggle').text('mmol/L');
+		$('#input').find('.chol_mmol').show();
+		$('#input').find('.chol_mgdl').hide();
+	}
+	else {
+		$('#input').find('.chol_toggle').text('mg/dL');
+		$('#input').find('.chol_mmol').hide();
+		$('#input').find('.chol_mgdl').show();
+	}
+	
+	// update slider values
+	adjust('chol', $('#totalchol'), true);
+	adjust('hdl', $('#hdlchol'), true);
 }
 
 
