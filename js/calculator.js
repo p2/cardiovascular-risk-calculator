@@ -50,7 +50,7 @@ function adjust(elem_id, sender, no_calc) {
 }
 
 function toggleBenefit(elem) {
-	$(elem).toggleClass('active');
+	$(elem).toggleClass('active').siblings().removeClass('active');		// for now limited to ONE choice
 	CALC();
 }
 
