@@ -62,3 +62,4 @@ tbody tr:nth-child(odd) th, tbody tr:nth-child(odd) td { background-color: #e5f2
 .tab li.active { background-color: #003366; color: white; font-weight: 500; }
 
 .item_info { margin: 0.5em 0 0; font-size: 0.8em; color: #444444; }
+h3 + .item_info { margin: 0 0 0.5em; }

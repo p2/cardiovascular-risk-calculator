@@ -210,4 +210,8 @@ tbody {
 .item_info {
 	margin: 0.5em 0 0;
 	font-size: 0.8em; color: $col-light-text;
+	
+	h3 + & {
+		margin: 0 0 0.5em;
+	}
 }

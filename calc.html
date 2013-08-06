@@ -86,6 +86,7 @@
 			
 			<div>
 				<h3>Relative Benefit:&nbsp;&nbsp;<span id="benefit">0</span>%</h3>
+				<p class="item_info">Benefit often has NOTHING to do with the effect on the surrogate marker</p>
 				<!--div class="slider_parent">
 					<input type="range" min="0" max="50" value="0" onchange="adjust('benefit', this)" />
 					<b id="benefit">0</b>&nbsp;%
@@ -96,62 +97,82 @@
 				var _benefit = {
 					'cvd': {
 						'activity': 20,
+						'meddiet': 20,
 						'bp': {'default': 30, 'diabetes': 50},
 						'statins': 25,
 						'fibrates': 0,
-						'metformin': 35,
-						'glucose-lowering': 15,
+						'ezetimibe': 0,
+						'niacin': 0,
+						'metformin': {'default': 0, 'diabetes': 35},
+						'glucose-lowering': {'default': 0, 'diabetes': 15},
 						'glitazones': 0,
 						'glp': 0,
+						'dpp-4': 0,
 						'asa': 0
 					},
 					'chd': {
 						'activity': 20,
+						'meddiet': 15,
 						'bp': 20,
 						'statins': 30,
 						'fibrates': 20,
+						'ezetimibe': 0,
+						'niacin': 0,
 						'metformin': 0,
 						'glucose-lowering': 0,
 						'glitazones': 0,
 						'glp': 0,
+						'dpp-4': 0,
 						'asa': 0
 					},
 					'mi': {
 						'activity': 20,
+						'meddiet': 15,
 						'bp': 20,
 						'statins': 30,
 						'fibrates': 20,
+						'ezetimibe': 0,
+						'niacin': 0,
 						'metformin': 0,
 						'glucose-lowering': 0,
 						'glitazones': 0,
 						'glp': 0,
+						'dpp-4': 0,
 						'asa': 0
 					},
 					'stroke': {
 						'activity': 25,
+						'meddiet': 30,
 						'bp': 40,
 						'statins': 20,
 						'fibrates': 0,
+						'ezetimibe': 0,
+						'niacin': 0,
 						'metformin': 0,
 						'glucose-lowering': 0,
 						'glitazones': 0,
 						'glp': 0,
+						'dpp-4': 0,
 						'asa': 20
 					}
 				};
 				</script>
 				<ul id="benefit_estimates">
-					<li onclick="toggleBenefit(this)" data-benefit="activity">Activity</li>
-					<li onclick="toggleBenefit(this)" data-benefit="bp">Blood pressure</li>
+					<li onclick="toggleBenefit(this)" data-benefit="activity">Physical Activity</li>
+					<li onclick="toggleBenefit(this)" data-benefit="meddiet">Mediterranean Diet</li>
+					<li onclick="toggleBenefit(this)" data-benefit="bp">BP meds (not atenolol/doxa)</li>
 					<li onclick="toggleBenefit(this)" data-benefit="statins">Statins</li>
-					<li onclick="toggleBenefit(this)" data-benefit="fibrates">Fibrates, ezetimibe</li>
+					<li onclick="toggleBenefit(this)" data-benefit="fibrates">Fibrates</li>
+					<li onclick="toggleBenefit(this)" data-benefit="niacin">Niacin</li>
+					<li onclick="toggleBenefit(this)" data-benefit="ezetimibe">Ezetimibe</li>
+					<li onclick="toggleBenefit(this)" data-benefit="glucose-lowering">Glucose (met/ins/sulf)</li>
 					<li onclick="toggleBenefit(this)" data-benefit="metformin">Metformin</li>
-					<li onclick="toggleBenefit(this)" data-benefit="glucose-lowering">Glucose lowering</li>
 					<li onclick="toggleBenefit(this)" data-benefit="glitazones">Glitazones</li>
-					<li onclick="toggleBenefit(this)" data-benefit="glp">GLP, DPP-4</li>
+					<li onclick="toggleBenefit(this)" data-benefit="glp">GLPs</li>
+					<li onclick="toggleBenefit(this)" data-benefit="dpp-4">DPP-4s</li>
 					<li onclick="toggleBenefit(this)" data-benefit="asa">ASA</li>
 				</ul>
-				<a class="item_info" href="FAQ.html#calculator" target="_blank">CVD Reduction Estimates</a>
+				<a class="item_info" href="FAQ.html#calculator" target="_blank">Benefit Estimate Details</a>
 			</div>
 			
 			<div>
@@ -220,6 +241,7 @@
 
 	<!-- JS -->
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="static/html5slider.min.js"></script>
 	<script src="static/calculator.min.js"></script>
 </body>
 </html>
