@@ -4,6 +4,9 @@
 $col-main:			#036;
 $col-light-text:	#444;
 
+$w-min:				320px;
+$w-tablet:			768px;
+
 html, body {
 	margin: 0;
 	font: 300 11pt/16pt "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -51,16 +54,41 @@ tbody {
 #container {
 	position: relative;
 	max-width: 720px;
-	margin: 0 auto; padding: 2em;
+	margin: 0 auto;
+	word-wrap: break-word;
+	
+	&.pad {
+		@media screen and (max-width: $w-tablet - 1px) {
+			margin-left: 20px; margin-right: 20px;
+		}
+	}
+	
+	@media screen and (min-width: $w-tablet) {
+		padding: 2em;
+	}
+}
+
+#header {
+	@media screen and (max-width: $w-tablet - 1px) {
+		max-width: 320px;
+		margin-left: auto; margin-right: auto;
+	}
+	@media screen and (max-width: $w-min) {
+		margin-left: 20px; margin-right: 20px;
+	}
 }
 
 #input {
-	@media screen and (min-width: 800px) {
-		float: left;
-	}
-	
-	min-width: 250px; max-width: 280px;
+	max-width: 320px;
 	margin: 0 auto;
+	
+	@media screen and (max-width: $w-min) {
+		margin-left: 20px; margin-right: 20px;
+	}
+	@media screen and (min-width: $w-tablet) {
+		float: left;
+		min-width: 250px; max-width: 280px;
+	}
 	
 	& > div {
 		min-height: 2.5em;
@@ -75,6 +103,7 @@ tbody {
 			font-size: 1.1em;
 			
 			input {
+				width: 60%;
 				margin-right: 0.5em;
 			}
 		}
@@ -82,17 +111,21 @@ tbody {
 }
 
 #outcome {
-	@media screen and (min-width: 800px) {
+	@media screen and (min-width: $w-tablet) {
 		width: 320px;
 		margin-left: 400px;
 	}
 }
 
 #formula_selector {
-	width: 320px;
+	max-width: 320px;
 	margin: 2em auto 1em;
 	
-	@media screen and (min-width: 800px) {
+	@media screen and (max-width: $w-min) {
+		margin-left: 20px; margin-right: 20px;
+	}
+	
+	@media screen and (min-width: $w-tablet) {
 		margin-top: 1em; padding-top: 0.5em;
 	}
 }
@@ -108,9 +141,16 @@ tbody {
 }
 
 #scores {
+	max-width: 320px;
+	margin: 2em auto 1em;
+	
+	@media screen and (max-width: $w-min) {
+		margin-left: 20px; margin-right: 20px;
+	}
+	
 	table {
 		width: 100%;
-		margin: 2em 0 1em;
+		margin-bottom: 1em;
 		border-collapse: collapse;
 		
 		th, td {

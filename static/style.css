@@ -19,24 +19,33 @@ tbody td { padding: 0.15em 0.3em; }
 tbody td.big { font-size: 1.2em; font-weight: bold; text-align: center; }
 tbody tr:nth-child(odd) th, tbody tr:nth-child(odd) td { background-color: #e5f2ff; }
 
-#container { position: relative; max-width: 720px; margin: 0 auto; padding: 2em; }
+#container { position: relative; max-width: 720px; margin: 0 auto; word-wrap: break-word; }
+@media screen and (max-width: 767px) { #container.pad { margin-left: 20px; margin-right: 20px; } }
+@media screen and (min-width: 768px) { #container { padding: 2em; } }
 
-#input { min-width: 250px; max-width: 280px; margin: 0 auto; }
-@media screen and (min-width: 800px) { #input { float: left; } }
+@media screen and (max-width: 767px) { #header { max-width: 320px; margin-left: auto; margin-right: auto; } }
+@media screen and (max-width: 320px) { #header { margin-left: 20px; margin-right: 20px; } }
+
+#input { max-width: 320px; margin: 0 auto; }
+@media screen and (max-width: 320px) { #input { margin-left: 20px; margin-right: 20px; } }
+@media screen and (min-width: 768px) { #input { float: left; min-width: 250px; max-width: 280px; } }
 #input > div { min-height: 2.5em; margin-top: 1em; }
 #input > div h3 { margin: 0 0 0.75em; }
 #input > div .slider_parent { padding-left: 1.5em; font-size: 1.1em; }
-#input > div .slider_parent input { margin-right: 0.5em; }
+#input > div .slider_parent input { width: 60%; margin-right: 0.5em; }
 
-@media screen and (min-width: 800px) { #outcome { width: 320px; margin-left: 400px; } }
+@media screen and (min-width: 768px) { #outcome { width: 320px; margin-left: 400px; } }
 
-#formula_selector { width: 320px; margin: 2em auto 1em; }
-@media screen and (min-width: 800px) { #formula_selector { margin-top: 1em; padding-top: 0.5em; } }
+#formula_selector { max-width: 320px; margin: 2em auto 1em; }
+@media screen and (max-width: 320px) { #formula_selector { margin-left: 20px; margin-right: 20px; } }
+@media screen and (min-width: 768px) { #formula_selector { margin-top: 1em; padding-top: 0.5em; } }
 
 #faces { width: 320px; height: 320px; margin: 0 auto; }
 #faces img { width: 32px; height: 32px; float: left; }
 
-#scores table { width: 100%; margin: 2em 0 1em; border-collapse: collapse; }
+#scores { max-width: 320px; margin: 2em auto 1em; }
+@media screen and (max-width: 320px) { #scores { margin-left: 20px; margin-right: 20px; } }
+#scores table { width: 100%; margin-bottom: 1em; border-collapse: collapse; }
 #scores table th, #scores table td { vertical-align: middle; }
 #scores table th { padding-right: 0.5em; font-size: 1.5em; text-align: right; }
 #scores table td { padding: 0.25em 0; }

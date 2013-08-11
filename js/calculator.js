@@ -17,6 +17,14 @@ function gender(item) {
 	return $('#male').hasClass('active') ? 1 : 0;
 }
 
+function male() {
+	return 1 == gender();
+}
+
+function female() {
+	return 0 == gender();
+}
+
 function smoker(item) {
 	if (item) {
 		$(item).addClass('active').siblings().removeClass('active');
