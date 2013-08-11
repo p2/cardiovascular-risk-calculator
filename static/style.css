@@ -49,7 +49,7 @@ tbody tr:nth-child(odd) th, tbody tr:nth-child(odd) td { background-color: #e5f2
 #scores table th, #scores table td { vertical-align: middle; }
 #scores table th { padding-right: 0.5em; font-size: 1.5em; text-align: right; }
 #scores table td { padding: 0.25em 0; }
-#scores table td img { vertical-align: -30%; }
+#scores table td img { width: 32px; height: 32px; vertical-align: -30%; }
 
 #benefit_estimates { margin: 0 0 0.5em; padding: 0; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 #benefit_estimates li { display: inline-block; margin: 0 0.5em 0.75em 0; padding: 0.1em 0.4em; color: black; border: 1px solid #003366; border-radius: 2pt; }

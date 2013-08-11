@@ -145,7 +145,7 @@ function setFormulaById(formula_id) {
 	$('#formula_selector').find('li').removeClass('active').filter(function(index) {
 		return $(this).data('calc') == _formula_id;
 	}).addClass('active');
-	showImages(formula_id);
+	// showImages(formula_id);
 	calculate(formula_id);
 }
 
@@ -251,8 +251,13 @@ function calculate(formula_id) {
  *  Returns a smilie face image.
  */
 function newFace(type) {
+	var retina = false;
+	if ('devicePixelRatio' in window) {
+		retina = (window.devicePixelRatio > 1);
+	}
+	
 	var img = new Image();
-	img.src = "imgs/" + type + ".png";
+	img.src = "imgs/" + type + (retina ? '@2x' : '') + ".png";
 	
 	return img;
 }
@@ -286,7 +291,6 @@ function toggleCholesterolUnit() {
  *  Shows the images for risk types.
  */
 function showImages(tab) {
-	return;
 	var content = "";
 	
  	if ('cvd' == tab) {
