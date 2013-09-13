@@ -58,7 +58,19 @@ function adjust(elem_id, sender, no_calc) {
 }
 
 function toggleBenefit(elem) {
-	$(elem).toggleClass('active').siblings().removeClass('active');		// for now limited to ONE choice
+	var obj = $(elem);
+	obj.toggleClass('active').siblings().removeClass('active');		// for now limited to ONE choice
+	
+	// show/hide information text
+	var text = obj.hasClass('active') ? obj.data('information') : '';
+	$('#benefit_information').html(text);
+	if (text && text.length > 0) {
+		$('#benefit_information_header').show();
+	}
+	else {
+		$('#benefit_information_header').hide();
+	}
+	
 	CALC();
 }
 
@@ -222,6 +234,7 @@ function calculate(formula_id) {
 	$("#score_bad").text(badFormulaBaseline.toFixed(1) + "%");
 	$("#score_bad_add").text(additional.toFixed(1) + "%");
 	$("#score_benefits").text(my_benefit.toFixed(1) + "%");
+	$("#score_nnt").text(my_benefit > 0 ? Math.round(100 / my_benefit) : "∞");
 	
 	// TODO: the rounding here is wrong, it needs to be combined and then a dominant face gets to use up the space
 	var numSadFaces = Math.round(badFormulaBaseline);

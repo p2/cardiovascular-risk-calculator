@@ -161,8 +161,8 @@
 				};
 				</script>
 				<ul id="benefit_estimates">
-					<li onclick="toggleBenefit(this)" data-benefit="activity">Physical Activity</li>
-					<li onclick="toggleBenefit(this)" data-benefit="meddiet">Mediterranean Diet</li>
+					<li onclick="toggleBenefit(this)" data-benefit="activity" data-information="Some text about physical activity. Some text about physical activity.&lt;br&gt;Some text about physical activity. Some text about physical activity. Some text about physical activity. Some text about physical activity. Some text about physical activity.">Physical Activity</li>
+					<li onclick="toggleBenefit(this)" data-benefit="meddiet" data-information="Mediterranean diet is fishy">Mediterranean Diet</li>
 					<li onclick="toggleBenefit(this)" data-benefit="bp">BP meds (not atenolol/doxa)</li>
 					<li onclick="toggleBenefit(this)" data-benefit="statins">Statins</li>
 					<li onclick="toggleBenefit(this)" data-benefit="fibrates">Fibrates</li>
@@ -228,11 +228,19 @@
 						<th id="score_benefits"></th>
 						<td>Benefits – will not have an event because of “treatment”</td>
 					</tr>
+					<tr>
+						<td style="font-size:1.4em; font-family:'Arial Narrow',Arial,sans-serif;">NNT</td>
+						<th><span id="score_nnt"></span><span style="color:transparent;">%</span></th>
+						<td>Number needed to treat</td>
+					</tr>
 				</table>
 				<p class="item_info">
 					As with all risk calculators, calculated risk numbers are +/- 5% at best.
 					<a class="infoT various" href="FAQ.html#percentage" target="_blank">More information</a>.
 				<p>
+				
+				<h2 id="benefit_information_header">Harms</h2>
+				<p id="benefit_information"></p>
 			</div>
 		</div>
 		

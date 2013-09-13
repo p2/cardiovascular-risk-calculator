@@ -4,6 +4,8 @@ h1 { text-align: center; }
 
 h1, h2, h3, h4, strong { font-weight: 500; line-height: 1.2; }
 
+h2 { margin-bottom: 0.4em; }
+
 strong { font-size: 1.17em; }
 
 a:link { color: #0066cc; }
@@ -54,6 +56,10 @@ tbody tr:nth-child(odd) th, tbody tr:nth-child(odd) td { background-color: #e5f2
 #benefit_estimates { margin: 0 0 0.5em; padding: 0; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
 #benefit_estimates li { display: inline-block; margin: 0 0.5em 0.75em 0; padding: 0.1em 0.4em; color: black; border: 1px solid #003366; border-radius: 2pt; }
 #benefit_estimates li.active { background-color: #003366; color: white; font-weight: 500; }
+
+#benefit_information_header { display: none; }
+
+#benefit_information { margin-top: 0.5em; }
 
 #footer { clear: both; padding: 2em; text-align: center; color: #444444; }
 

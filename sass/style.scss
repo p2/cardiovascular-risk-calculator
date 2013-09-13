@@ -18,6 +18,9 @@ h1 {
 h1, h2, h3, h4, strong {
 	font-weight: 500; line-height: 1.2;
 }
+h2 {
+	margin-bottom: 0.4em;
+}
 strong {
 	font-size: 1.17em;
 }
@@ -186,6 +189,14 @@ tbody {
 			color: white; font-weight: 500;
 		}
 	}
+}
+
+#benefit_information_header {
+	display: none;
+}
+
+#benefit_information {
+	margin-top: 0.5em;
 }
 
 #footer {
