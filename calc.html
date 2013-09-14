@@ -12,7 +12,8 @@
 			<h1>Cardiovascular Risk/Benefit Calculator</h1>
 			<p>
 				Please provide feedback and suggestions to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>.<br />
-				For more information see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>.
+				For more information see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>.<br />
+				For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>
 			</p>
 		</div>
 		
@@ -97,6 +98,7 @@
 				
 				<!-- The benefit table. It goes here so Canadians can edit it. -->
 				<script>
+				var _bp_threshold = 150;			// BP meds benefits are NOT being applied if BP is LOWER THAN this number
 				var _benefit = {
 					'cvd': {
 						'activity': 25,
@@ -111,6 +113,7 @@
 						'glitazones': {'default': 0, 'diabetes': 0},
 						'glp': {'default': 0, 'diabetes': 0},
 						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
 						'asa': {'male': 15, 'female': 10}
 					},
 					'chd': {
@@ -126,6 +129,7 @@
 						'glitazones': {'default': 0, 'diabetes': 0},
 						'glp': {'default': 0, 'diabetes': 0},
 						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
 						'asa': {'male': 30, 'female': 0}
 					},
 					'mi': {
@@ -141,6 +145,7 @@
 						'glitazones': {'default': 0, 'diabetes': 0},
 						'glp': {'default': 0, 'diabetes': 0},
 						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
 						'asa': {'male': 30, 'female': 0}
 					},
 					'stroke': {
@@ -156,14 +161,81 @@
 						'glitazones': {'default': 0, 'diabetes': 0},
 						'glp': {'default': 0, 'diabetes': 0},
 						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
 						'asa': {'male': 0, 'female': 15}
 					}
 				};
+				var _benefit_risks = {
+					'activity': "Overuse injuries<br><h3>Additional Benefits</h3><ul><li>Less depression</li><li>Improves sleep quality</li><li>Improves OA pain and function</li></ul>",
+					'meddiet': "No real harms if you like Mediterranean food. I think it is delicious and it includes wine so...",
+					'bp': "Types of side effects vary between drugs.<br>Stop drug due to intolerability NNH 10.<br>Drug Cost",
+					'statins': [
+						"Muscle aches and stiffness NNH 10-20",
+						"Increased liver functon tests NNH 50",
+						"Severe muscle/kidney damage NNH 10,000",
+						"Nausea, constipation, diarrhea",
+						"Drug Cost"
+					],
+					'fibrates': [
+						"Nausea, abdominal pain, flatulence",
+						"Increased risk of muscle damage when combined with statins",
+						"Drug Cost"
+					],
+					'niacin': [
+						"Flushing/itching NNH 20",
+						"Increased glucose NNH 100",
+						"Drug Cost"
+					],
+					'ezetimibe': [
+						"Headache, diarrhea",
+						"Muscle aches",
+						"Increased liver function tests"
+					],
+					'glucose-lowering': [
+						"Insulin",
+						"Severe low blood sugar (yearly) NNH 85",
+						"Weight gain - average 2 kg",
+						"Drug Cost",
+						"Sulfonylureas",
+						"Severe low blood sugar (yearly) NNH 175",
+						"Weight gain - average 2 kg",
+						"Rash, diarrhea",
+						"Drug Cost"
+					],
+					'metformin': [
+						"Indigestion, nausea, diarrhea",
+						"Lactic acidosis - inconclusive evidence",
+						"Drug Cost"
+					],
+					'glitazones': [
+						"Fluid retention/heart failure NNH 25",
+						"Fractures (three years) NNH 85",
+						"Weight gain - average 2kg",
+						"Drug Cost"
+					],
+					'glp': [
+						"Nausea, vomiting, diarrhea NNH 10-20",
+						"Weight loss - average 2 kg",
+						"Drug Cost"
+					],
+					'dpp-4': [
+						"Hives, rash",
+						"Drug Cost"
+					],
+					'meglit': [
+						"Hypoglycemia",
+						"Drug Cost"
+					],
+					'asa': [
+						"Major bleed (yearly) NNH 200",
+						"Drug Cost"
+					]
+				};
 				</script>
 				<ul id="benefit_estimates">
-					<li onclick="toggleBenefit(this)" data-benefit="activity" data-information="Some text about physical activity. Some text about physical activity.&lt;br&gt;Some text about physical activity. Some text about physical activity. Some text about physical activity. Some text about physical activity. Some text about physical activity.">Physical Activity</li>
-					<li onclick="toggleBenefit(this)" data-benefit="meddiet" data-information="Mediterranean diet is fishy">Mediterranean Diet</li>
-					<li onclick="toggleBenefit(this)" data-benefit="bp">BP meds (not atenolol/doxa)</li>
+					<li onclick="toggleBenefit(this)" data-benefit="activity">Physical Activity</li>
+					<li onclick="toggleBenefit(this)" data-benefit="meddiet">Mediterranean Diet vs Low fat</li>
+					<li onclick="toggleBenefit(this)" data-benefit="bp">BP meds (not atenolol/doxazosin)</li>
 					<li onclick="toggleBenefit(this)" data-benefit="statins">Statins</li>
 					<li onclick="toggleBenefit(this)" data-benefit="fibrates">Fibrates</li>
 					<li onclick="toggleBenefit(this)" data-benefit="niacin">Niacin</li>
@@ -173,6 +245,7 @@
 					<li onclick="toggleBenefit(this)" data-benefit="glitazones">Glitazones</li>
 					<li onclick="toggleBenefit(this)" data-benefit="glp">GLPs</li>
 					<li onclick="toggleBenefit(this)" data-benefit="dpp-4">DPP-4s</li>
+					<li onclick="toggleBenefit(this)" data-benefit="meglit">Meglitinides</li>
 					<li onclick="toggleBenefit(this)" data-benefit="asa">ASA</li>
 				</ul>
 				<a class="item_info" href="FAQ.html#calculator" target="_blank">Benefit Estimate Details</a>
@@ -239,7 +312,7 @@
 					<a class="infoT various" href="FAQ.html#percentage" target="_blank">More information</a>.
 				<p>
 				
-				<h2 id="benefit_information_header">Harms</h2>
+				<h2 id="benefit_information_header">Harm of Intervention</h2>
 				<p id="benefit_information"></p>
 			</div>
 		</div>

@@ -21,6 +21,8 @@ tbody td { padding: 0.15em 0.3em; }
 tbody td.big { font-size: 1.2em; font-weight: bold; text-align: center; }
 tbody tr:nth-child(odd) th, tbody tr:nth-child(odd) td { background-color: #e5f2ff; }
 
+ul { padding-left: 1.5em; list-style-type: circle; }
+
 #container { position: relative; max-width: 720px; margin: 0 auto; word-wrap: break-word; }
 @media screen and (max-width: 767px) { #container.pad { margin-left: 20px; margin-right: 20px; } }
 @media screen and (min-width: 768px) { #container { padding: 2em; } }

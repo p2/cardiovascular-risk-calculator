@@ -61,8 +61,25 @@ function toggleBenefit(elem) {
 	var obj = $(elem);
 	obj.toggleClass('active').siblings().removeClass('active');		// for now limited to ONE choice
 	
+	// find correct text or list items
+	var text = '';
+	if (obj.hasClass('active')) {
+		var bene = obj.data('benefit');
+		if (bene in _benefit_risks) {
+			var res = _benefit_risks[bene];
+			if ('string' == typeof(res)) {
+				text = res;
+			}
+			else {
+				text = "<ul><li>" + res.join("</li><li>") + "</li></ul>";
+			}
+		}
+		else {
+			alert("There is no harm information for the intervention \"" + bene + "\"");
+		}
+	}
+	
 	// show/hide information text
-	var text = obj.hasClass('active') ? obj.data('information') : '';
 	$('#benefit_information').html(text);
 	if (text && text.length > 0) {
 		$('#benefit_information_header').show();
@@ -95,6 +112,11 @@ function benefit(formula_id) {
 	var max = 0;
 	for (var bf in _benefit[formula_id]) {
 		if (!active.contains(bf)) {
+			continue;
+		}
+		
+		// for the BP meds ("bp"), it ONLY applies if BP is "_bp_threshold" and higher
+		if ('bp' == bf && $('#sbp').text() *1 < _bp_threshold) {
 			continue;
 		}
 		
