@@ -8,7 +8,7 @@ please see the [FAQ][] for details.
 License
 -------
 
-Copyright 2013 James McCormark & Pascal Pfiffner
+Copyright 2013 James McCormack & Pascal Pfiffner
 
 Licensed under the **Apache License, Version 2.0** (the "License");
 you may not use this file except in compliance with the License.
