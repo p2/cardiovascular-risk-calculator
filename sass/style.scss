@@ -66,7 +66,7 @@ ul {
 
 #container {
 	position: relative;
-	max-width: 720px;
+	max-width: 710px;
 	margin: 0 auto;
 	word-wrap: break-word;
 	
@@ -95,7 +95,7 @@ ul {
 }
 
 #input {
-	max-width: $w-column;
+	min-width: 250px; max-width: $w-column;
 	margin: 0 auto;
 	
 	@media screen and (max-width: $w-min) {
@@ -103,7 +103,7 @@ ul {
 	}
 	@media screen and (min-width: $w-tablet) {
 		float: left;
-		min-width: 250px; max-width: $w-input;
+		max-width: $w-input;
 	}
 	
 	& > div {
@@ -127,9 +127,13 @@ ul {
 }
 
 #outcome {
+	width: $w-output;
+	
+	@media screen and (max-width: $w-tablet - 1px) {
+		margin-left: auto; margin-right: auto;
+	}
 	@media screen and (min-width: $w-tablet) {
-		width: $w-output;
-		margin-left: 400px;
+		margin-left: 390px;
 	}
 	@media screen and (min-width: $w-tablet) and (max-height: $h-small) {
 		position: fixed;
@@ -141,7 +145,7 @@ ul {
 
 #formula_selector {
 	max-width: $w-output;
-	margin: 2em auto 1em;
+	margin: 2em 0 1em;
 	
 	@media screen and (max-width: $w-min) {
 		margin-left: 20px; margin-right: 20px;
@@ -154,7 +158,6 @@ ul {
 
 #faces {
 	width: $w-output; height: 320px;
-	margin: 0 auto;
 	
 	img {
 		width: 32px; height: 32px;
@@ -164,7 +167,7 @@ ul {
 
 #scores {
 	max-width: $w-output;
-	margin: 2em auto 1em;
+	margin: 2em 0 1em;
 	
 	@media screen and (max-width: $w-min) {
 		margin-left: 20px; margin-right: 20px;
