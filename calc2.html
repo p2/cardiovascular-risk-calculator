@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<!--
+	Licensed to the Apache Software Foundation (ASF) under one
+	or more contributor license agreements.  See the NOTICE file
+	distributed with this work for additional information
+	regarding copyright ownership.  The ASF licenses this file
+	to you under the Apache License, Version 2.0 (the
+	"License"); you may not use this file except in compliance
+	with the License.  You may obtain a copy of the License at
+
+	    http://www.apache.org/licenses/LICENSE-2.0
+
+	Unless required by applicable law or agreed to in writing,
+	software distributed under the License is distributed on an
+	"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+	KIND, either express or implied.  See the License for the
+	specific language governing permissions and limitations
+	under the License.
+-->
+<html>
+<head>
+	<title>Risk Calculator</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0" />
+	<link rel="stylesheet" href="static/style.css" />
+</head>
+<body>
+	<div id="container">
+		<div id="header">
+			<h1>Cardiovascular Risk/Benefit Calculator</h1>
+			<p>
+				Please provide feedback and suggestions to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>. For more information see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>. For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
+			</p>
+		</div>
+		
+		<!-- Input -->
+		<div id="input">
+			<div>
+				<h3>Risk Time Period</h3>
+				<div class="slider_parent">
+					<input id="rangeTime" type="range" min="1" max="10" value="10" onchange="adjust('time', this)" />
+					<b id="time">10</b>&nbsp;years
+				</div>
+			</div>
+			
+			<div>
+				<h3>Age</h3>
+				<div class="slider_parent">
+					<input type="range" min="40" max="80" value="50" onchange="adjust('age', this)" />
+					<b id="age">50</b>&nbsp;years
+				</div>
+			</div>
+			
+			<div>
+				<strong>Gender</strong>
+				<span class="toggle">
+					<span id="male" onclick="gender(this), CALC()">Male</span><!--
+				 --><span id="female" onclick="gender(this), CALC()" class="active">Female</span>
+				</span>
+			</div>
+			
+			<div id="divRace">
+				<strong>Race</strong>
+				<span class="toggle">
+					<span id="black" onclick="race(this), CALC()">Black</span><!--
+				 --><span id="nonblack" onclick="race(this), CALC()" class="active">Non-Black</span>
+				</span>
+			</div>
+
+			<div>
+				<strong>Smoker</strong>
+				<span class="toggle">
+					<span id="smoker_yes" onclick="smoker(this), CALC()">Yes</span><!--
+				 --><span id="smoker_no" onclick="smoker(this), CALC()" class="active">No</span>
+				</span>
+			</div>
+				<p class="item_info">CVD risk is reversed after 5-10 years of no smoking </p>
+			
+			<div>
+				<strong>Diabetes</strong>
+				<span class="toggle">
+					<span id="diabetes_yes" onclick="diabetes(this), CALC()">Yes</span><!--
+				 --><span id="diabetes_no" onclick="diabetes(this), CALC()" class="active">No</span>
+				</span>
+			</div>
+				
+			<div>
+				<h3>Systolic Blood Pressure</h3>
+				<div class="slider_parent">
+					<input type="range" min="110" max="190" value="120" onchange="adjust('sbp', this)" />
+					<b id="sbp">120</b>&nbsp;mmHg
+				</div>
+				<p class="item_info">120 mmHg is used for baseline risk</p>
+			</div>
+			
+			<div id="divBPTreatment">
+				<strong>Blood Pressure Treatment</strong>
+				<span class="toggle">
+					<span id="bptreatment_yes" onclick="bptreatment(this), CALC()">Yes</span><!--
+				 --><span id="bptreatment_no" onclick="bptreatment(this), CALC()" class="active">No</span>
+				</span>
+				<p class="item_info">(Only select 'yes' if systolic is greater than 120 mmHg)</p>
+			</div>
+			
+			<div>
+				<h3>Total Cholesterol</h3>
+				<div class="slider_parent">
+					<input id="totalchol" type="range" min="3" max="8" value="3" step="0.1" onchange="adjust('chol', this)" />
+					<b id="chol">3</b>&nbsp;<a class="chol_toggle" href="javascript:void(0);" onclick="toggleCholesterolUnit()">mmol/L</a>
+				</div>
+				<p class="item_info chol_mmol">3 mmol/L is used for baseline risk.<br /><a href="javascript:void(0);" onclick="toggleCholesterolUnit()">Click to change to mg/dL.</a></p>
+				<p class="item_info chol_mgdl">116 mg/dL is used for baseline risk.<br /><a href="javascript:void(0);" onclick="toggleCholesterolUnit()">Click to change to mmol/L.</a></p>
+			</div>
+			
+			<div>
+				<h3>HDL Cholesterol</h3>
+				<div class="slider_parent">
+					<input id="hdlchol" type="range" min="0.5" max="1.6" value="1.3" step="0.1" onchange="adjust('hdl', this)" />
+					<b id="hdl">1.3</b>&nbsp;<a class="chol_toggle" href="javascript:void(0);" onclick="toggleCholesterolUnit()">mmol/L</a>
+				</div>
+				<p class="item_info chol_mmol">1.3 mmol/L is used for baseline risk.</p>
+				<p class="item_info chol_mgdl">50 mg/dL is used for baseline risk.</p>
+			</div>
+				<h3>Family History of Early CHD</h3>			
+				<p class="item_info">CHD in men &lt; 55 years, women &lt; 65 years. Increase risk by 1.5x. If no family history then decrease estimates.</p>				
+			<div>
+				<h3>Relative Benefit:&nbsp;&nbsp;<span id="benefit">0</span>%</h3>
+				<p class="item_info">Benefit often has NOTHING to do with the effect on the surrogate marker. At present, you can only select one intervention at a time.</p>
+				<!--div class="slider_parent">
+					<input type="range" min="0" max="50" value="0" onchange="adjust('benefit', this)" />
+					<b id="benefit">0</b>&nbsp;%
+				</div-->
+				
+				<!-- The benefit table. It goes here so Canadians can edit it. -->
+				<script>
+				var _bp_threshold = 140;			// BP meds benefits are NOT being applied if BP is LOWER THAN this number
+				var _benefit = {
+						'cvd': {
+						'activity': 25,
+						'meddiet': 20,
+						'bp': {'default': 30, 'diabetes': 50},
+						'statins': 25,
+						'fibrates': 0,
+						'ezetimibe': 0,
+						'niacin': 0,
+						'metformin': {'default': 0, 'diabetes': 35},
+						'sulfonylureas': {'default': 0, 'diabetes': 0},
+						'insulins': {'default': 0, 'diabetes': 0},
+						'glitazones': {'default': 0, 'diabetes': 0},
+						'glp': {'default': 0, 'diabetes': 0},
+						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
+						'asa': {'male': 15, 'female': 10}
+					},
+					'ascvd': {	/* JAMES-TODO -- Do you want to change any of these benefits?  These are copied from 'cvd' */
+						'activity': 25,
+						'meddiet': 20,
+						'bp': {'default': 30, 'diabetes': 50},
+						'statins': 25,
+						'fibrates': 0,
+						'ezetimibe': 0,
+						'niacin': 0,
+						'metformin': {'default': 0, 'diabetes': 35},
+						'sulfonylureas': {'default': 0, 'diabetes': 0},
+						'insulins': {'default': 0, 'diabetes': 0},
+						'glitazones': {'default': 0, 'diabetes': 0},
+						'glp': {'default': 0, 'diabetes': 0},
+						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
+						'asa': {'male': 15, 'female': 10}
+					},
+					'chd': {
+						'activity': 25,
+						'meddiet': 15,
+						'bp': {'default': 20, 'diabetes': 20},
+						'statins': 30,
+						'fibrates': 20,
+						'ezetimibe': 0,
+						'niacin': 0,
+						'metformin': {'default': 0, 'diabetes': 35},
+						'sulfonylureas': {'default': 0, 'diabetes': 0},
+						'insulins': {'default': 0, 'diabetes': 0},
+						'glitazones': {'default': 0, 'diabetes': 0},
+						'glp': {'default': 0, 'diabetes': 0},
+						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
+						'asa': {'male': 30, 'female': 0}
+					},
+					'mi': {
+						'activity': 20,
+						'meddiet': 15,
+						'bp': {'default': 20, 'diabetes': 20},
+						'statins': 30,
+						'fibrates': 20,
+						'ezetimibe': 0,
+						'niacin': 0,
+						'metformin': {'default': 0, 'diabetes': 35},
+						'sulfonylureas': {'default': 0, 'diabetes': 0},
+						'insulins': {'default': 0, 'diabetes': 0},
+						'glitazones': {'default': 0, 'diabetes': 0},
+						'glp': {'default': 0, 'diabetes': 0},
+						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
+						'asa': {'male': 30, 'female': 0}
+					},
+					'stroke': {
+						'activity': 25,
+						'meddiet': 30,
+						'bp': {'default': 40, 'diabetes': 40},
+						'statins': 20,
+						'fibrates': 0,
+						'ezetimibe': 0,
+						'niacin': 0,
+						'metformin': {'default': 0, 'diabetes': 35},
+						'sulfonylureas': {'default': 0, 'diabetes': 0},
+						'insulins': {'default': 0, 'diabetes': 0},
+						'glitazones': {'default': 0, 'diabetes': 0},
+						'glp': {'default': 0, 'diabetes': 0},
+						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
+						'asa': {'male': 0, 'female': 15}
+					}
+				};
+				var _benefit_risks = {
+					'activity': "<strong>Physical activity</strong><br>Overuse injuries<br><h3>Additional Benefits</h3><ul><li>Less depression</li><li>Improves sleep quality</li><li>Improves OA pain and function</li></ul>",
+					'meddiet': "<strong>Mediterranean diet</strong><br>No real harms if you like Mediterranean food. I think it is delicious and it includes wine so...",					'bp': "Types of side effects vary between drugs.<br>Stop drug due to intolerability NNH 10.<br>Incovenience of surrogate remeasurements.<br>Drug Cost",
+					'bp': [
+						"<strong>Blood pressure medications</strong>",
+						"Types of side effects vary between drugs",
+						"Having to stop drug due to intolerability NNH 10",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],						
+					'statins': [
+						"<strong>Statins</strong>",
+						"Muscle aches and stiffness NNH 10-20",
+						"Increased liver function tests NNH 50",
+						"Severe muscle/kidney damage NNH 10,000",
+						"Nausea, constipation, diarrhea",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'fibrates': [
+						"<strong>Fibrates</strong>",
+						"Nausea, abdominal pain, flatulence",
+						"Increased risk of muscle damage when combined with statins",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'niacin': [
+						"<strong>Niacin</strong>",
+						"Flushing/itching NNH 20",
+						"Increased glucose NNH 100",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'ezetimibe': [
+						"<strong>Ezetimibe</strong>",
+						"Headache, diarrhea",
+						"Muscle aches",
+						"Increased liver function tests",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'sulfonylureas': [
+						"<strong>Sulfonylureas</strong>",
+						"Severe low blood sugar (yearly) NNH 175",
+						"Weight gain - average 2 kg",
+						"Rash, diarrhea",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'insulins': [
+						"<strong>Insulin</strong>",
+						"Severe low blood sugar (yearly) NNH 85",
+						"Weight gain - average 2 kg",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost",
+					],
+					'metformin': [
+						"<strong>Metformin</strong>",
+						"Indigestion, nausea, diarrhea",
+						"Lactic acidosis - inconclusive evidence",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'glitazones': [
+						"<strong>Glitazones</strong>",
+						"Fluid retention/heart failure NNH 25",
+						"Fractures (three years) NNH 85",
+						"Weight gain - average 2kg",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'glp': [
+						"<strong>GLPs</strong>",
+						"Nausea, vomiting, diarrhea NNH 10-20",
+						"Weight loss - average 2 kg",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'dpp-4': [
+						"<strong>DPP-4s</strong>",
+						"Hives, rash",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'meglit': [
+						"<strong>Meglitinides</strong>",
+						"Hypoglycemia",
+						"Incovenience of surrogate remeasurements",
+						"Drug Cost"
+					],
+					'asa': [
+						"<strong>ASA</strong>",
+						"Major bleed (yearly) NNH 200",
+						"Drug Cost"
+					]
+				};
+				</script>
+				<ul id="benefit_estimates">
+					<li onclick="toggleBenefit(this)" data-benefit="activity">Physical Activity</li>
+					<li onclick="toggleBenefit(this)" data-benefit="meddiet">Mediterranean Diet vs Low fat</li>
+					<li onclick="toggleBenefit(this)" data-benefit="bp">BP meds (not atenolol/doxazosin)</li>
+					<li onclick="toggleBenefit(this)" data-benefit="statins">Statins</li>
+					<li onclick="toggleBenefit(this)" data-benefit="fibrates">Fibrates</li>
+					<li onclick="toggleBenefit(this)" data-benefit="niacin">Niacin</li>
+					<li onclick="toggleBenefit(this)" data-benefit="ezetimibe">Ezetimibe</li>
+					<li onclick="toggleBenefit(this)" data-benefit="metformin">Metformin</li>
+					<li onclick="toggleBenefit(this)" data-benefit="sulfonylureas">Sulfonylureas</li>
+					<li onclick="toggleBenefit(this)" data-benefit="insulins">Insulins</li>
+					<li onclick="toggleBenefit(this)" data-benefit="glitazones">Glitazones</li>
+					<li onclick="toggleBenefit(this)" data-benefit="glp">GLPs</li>
+					<li onclick="toggleBenefit(this)" data-benefit="dpp-4">DPP-4s</li>
+					<li onclick="toggleBenefit(this)" data-benefit="meglit">Meglitinides</li>
+					<li onclick="toggleBenefit(this)" data-benefit="asa">ASA</li>
+				</ul>
+				<a class="item_info" href="FAQ.html#calculator" target="_blank">Benefit Estimate Details</a>
+			</div>
+			
+			<div>
+				<h3>Reduce Overall Risk</h3>
+				<div class="slider_parent">
+					<input type="range" min="50" max="100" value="100" onchange="adjust('overestimate', this)" />
+					<b id="overestimate">100</b>&nbsp;%
+				</div>
+				<p class="item_info">Reduce risk if patient is at lower risk than the Framingham cohort. See the <a href="FAQ.html#calculator" target="_blank">FAQ</a> for guidance.</p>
+			</div>
+		</div>
+		
+		
+		<!-- Outcome -->
+		<div id="outcome">
+			<ul id="formula_selector" class="tab">
+				<li onclick="setFormula(this)" data-calc="cvd">
+					CVD
+					<div class="formula_descript">CHD + HF + strokes + intermit. claudication</div>
+				</li><!--
+				--><li onclick="setFormula(this)" data-calc="chd">
+					CHD
+					<div class="formula_descript">fatal/nonfatal heart attacks + angina/coronary insufficiency</div>
+				</li><!--
+				--><li onclick="setFormula(this)" data-calc="mi">
+					Heart Attacks
+					<div class="formula_descript">fatal/nonfatal heart attacks</div>
+				</li><!--
+				--><li onclick="setFormula(this)" data-calc="stroke">
+					Strokes
+					<div class="formula_descript">stroke + TIA</div>
+				</li><!--
+				--><li onclick="setFormula(this)" data-calc="ascvd" style="width: 84%;">
+					<strong style="font-size: 0.8em;">ACC/AHA</strong><br />
+					ASCVD
+					<div class="formula_descript">CHF death + nonfatal heart attacks + fatal/nonfatal strokes</div>
+				</li>
+			</ul>
+			
+			<div id="faces"></div>
+			<div id="disease"></div>
+			
+			<div id="scores">
+				<table>
+					<colgroup>
+						<col width="32" />
+						<col width="92" />
+						<col />
+					</colgroup>
+					<tr>
+						<td><img src="imgs/good@2x.png" alt="" /></td>
+						<th id="score_good"></th>
+						<td>No events</td>
+					</tr>
+					<tr>
+						<td><img src="imgs/bad@2x.png" alt="" /></td>
+						<th id="score_bad"></th>
+						<td>Baseline events using baseline factors</td>
+					</tr>
+					<tr>
+						<td><img src="imgs/badA@2x.png" alt="" /></td>
+						<th id="score_bad_add"></th>
+						<td>Additional events – “caused” by risk factors over baseline</td>
+					</tr>
+					<tr>
+						<td><img src="imgs/badP@2x.png" alt="" /></td>
+						<th id="score_benefits"></th>
+						<td>Benefits – will not have an event because of “treatment”</td>
+					</tr>
+					<tr>
+						<td style="font-size:1.4em; font-family:'Arial Narrow',Arial,sans-serif;">NNT</td>
+						<th><span id="score_nnt"></span><span style="color:transparent;">%</span></th>
+						<td>Number needed to treat</td>
+					</tr>
+				</table>
+				<p class="item_info">
+					As with all risk calculators, calculated risk numbers are +/- 5% at best.
+					<a class="infoT various" href="FAQ.html#percentage" target="_blank">More information</a>.
+				<p>
+				
+				<h2 id="benefit_information_header">Harm of Intervention</h2>
+				<p id="benefit_information"></p>
+			</div>
+		</div>
+		
+		
+		<!-- Footer -->
+		<div id="footer">
+			James McCormack/Pascal Pfiffner, 2013
+		</div>
+	</div>
+
+	<!-- JS -->
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="static/html5slider.min.js"></script>
+	<script src="static/calculator.min.js"></script>
+	
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-42961029-1', 'bestsciencemedicine.com');
+	ga('send', 'pageview');
+	</script>
+</body>
+</html>

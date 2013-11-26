@@ -34,12 +34,26 @@ function gender(item) {
 	return $('#male').hasClass('active') ? 1 : 0;
 }
 
+function race(item) {
+	if (item) {
+		$(item).addClass('active').siblings().removeClass('active');
+	}
+	return $('#black').hasClass('active') ? 1 : 0;
+}
+
 function male() {
 	return 1 == gender();
 }
 
 function female() {
 	return 0 == gender();
+}
+
+function black() {
+	return 1 == race();
+}
+function nonblack() {
+	return 0 == race();
 }
 
 function smoker(item) {
@@ -56,6 +70,14 @@ function diabetes(item) {
 	}
 	
 	return $('#diabetes_yes').hasClass('active') ? 1 : 0;
+}
+
+function bptreatment(item) {
+	if (item) {
+		$(item).addClass('active').siblings().removeClass('active');
+	}
+	
+	return $('#bptreatment_yes').hasClass('active') ? 1 : 0;
 }
 
 function adjust(elem_id, sender, no_calc) {
@@ -208,6 +230,78 @@ function CALC() {
 	calculate(_formula_id);
 }
 
+/**
+ *  ASCVD coefficients by age/race
+ */
+ function BlackFemale() {
+    this.Age = 17.1141;
+    this.AgeSquared = 0;
+    this.TC = 0.9396;
+    this.AgexTC = 0;
+    this.HDL = -18.9196;
+    this.AgexHDL = 4.4748;
+    this.TreatedBP = 29.2907;
+    this.AgexTreatedBP = -6.4321;
+    this.UntreatedBP = 27.8197;
+    this.AgexUntreatedBP = -6.0873;
+    this.Smoker = 0.6908;
+    this.AgexSmoker = 0;
+    this.Diabetes = 0.8738;
+    this.BaselineSurvival = 0.95334;
+    this.OverallMean = 86.6081;
+}
+function BlackMale() {
+    this.Age = 2.469;
+    this.AgeSquared = 0;
+    this.TC = 0.302;
+    this.AgexTC = 0;
+    this.HDL = -0.307;
+    this.AgexHDL = 0;
+    this.TreatedBP = 1.916;
+    this.AgexTreatedBP = 0;
+    this.UntreatedBP = 1.809;
+    this.AgexUntreatedBP = 0;
+    this.Smoker = 0.549;
+    this.AgexSmoker = 0;
+    this.Diabetes = 0.645;
+    this.BaselineSurvival = 0.89536;
+    this.OverallMean = 19.5425;
+}
+function WhiteFemale() {
+    this.Age = -29.799;
+    this.AgeSquared = 4.884;
+    this.TC = 13.54;
+    this.AgexTC = -3.114;
+    this.HDL = -13.578;
+    this.AgexHDL = 3.149;
+    this.TreatedBP = 2.019;
+    this.AgexTreatedBP = 0;
+    this.UntreatedBP = 1.957;
+    this.AgexUntreatedBP = 0;
+    this.Smoker = 7.574;
+    this.AgexSmoker = -1.665;
+    this.Diabetes = 0.661;
+    this.BaselineSurvival = 0.96652;
+    this.OverallMean = -29.1817;
+}
+function WhiteMale() {
+    this.Age = 12.344;
+    this.AgeSquared = 0;
+    this.TC = 11.853;
+    this.AgexTC = -2.664;
+    this.HDL = -7.99;
+    this.AgexHDL = 1.769;
+    this.TreatedBP = 1.797;
+    this.AgexTreatedBP = 0;
+    this.UntreatedBP = 1.764;
+    this.AgexUntreatedBP = 0;
+    this.Smoker = 7.837;
+    this.AgexSmoker = -1.795;
+    this.Diabetes = 0.658;
+    this.BaselineSurvival = 0.91436;
+    this.OverallMean = 61.1816;
+}
+
 
 /**
  *  Our main calculation formula.
@@ -262,6 +356,38 @@ function calculate(formula_id) {
 		badFormulaBaseline = OVERESTIMATE*(1-Math.exp(-Math.exp((Math.log(TIME)-(26.5116+(0.2019*(1-IS_MALE))+(-2.3741*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-2.4643*Math.log(BLOODP_A))+(-0.3914*SMOKE_A)+(-0.0229*Math.log(TCHOL_A/HDLCHOL_A))+(-0.3087*DIABETES_A)+(-0.2627*DIABETES_A*(1-IS_MALE))+(-0.2355*IVH_A)+(0*IVH_A*IS_MALE)))/(Math.exp(-0.4312)*Math.exp(0*(26.5116+(0.2019*(1-IS_MALE))+(-2.3741*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-2.4643*Math.log(BLOODP_A))+(-0.3914*SMOKE_A)+(-0.0229*Math.log(TCHOL_A/HDLCHOL_A))+(-0.3087*DIABETES_A)+(-0.2627*DIABETES_A*(1-IS_MALE))+(-0.2355*IVH_A)+(0*IVH_A*IS_MALE)))))));
 	}
 	
+	// ASCVD
+	else if ('ascvd' == formula_id) {
+		var IS_BLACK = black();
+		var BPTREATMENT = bptreatment();
+	
+		// Select the appropriate sex/race
+		var coeff;
+		if ((IS_MALE) && (!IS_BLACK)) { coeff = new WhiteMale(); }
+		if ((!IS_MALE) && (!IS_BLACK)) { coeff = new WhiteFemale(); }
+		if ((IS_MALE) && (IS_BLACK)) { coeff = new BlackMale(); }
+		if ((!IS_MALE) && (IS_BLACK)) { coeff = new BlackFemale(); }
+		
+		badFormula = OVERESTIMATE*ASCVD10YrRisk(coeff, AGE, Math.round(TCHOL/0.0259), Math.round(HDLCHOL/0.0259), BLOODP, BPTREATMENT, DIABETES, SMOKE);
+		badFormulaBaseline = OVERESTIMATE*ASCVD10YrRisk(coeff, AGE, Math.round(TCHOL_A/0.0259), Math.round(HDLCHOL_A/0.0259), BLOODP_A, 0, 0, 0);
+		
+	}
+	
+	// Do some special hide/show magic for the ASCVD calculator ...
+	if ('ascvd' == formula_id) {
+		$('#divRace').show();
+		$('#divBPTreatment').show();
+		$('#rangeTime').prop('disabled',true);
+		$('#rangeTime').val(10);
+		$('#rangeTime').hide();
+		adjust('time', $('#rangeTime'),true);
+	} else {
+		$('#divRace').hide();
+		$('#divBPTreatment').hide();
+		$('#rangeTime').show();
+		$('#rangeTime').prop('disabled',false);
+	}
+	
 	// calculate
 	var over_baseline = badFormula - badFormulaBaseline;
 	var my_benefit = badFormula * BENE / 100;
@@ -298,6 +424,30 @@ function calculate(formula_id) {
 	}
 }
 
+function ASCVD10YrRisk(coeff, age, TC, HDL, SBP, BPTreatment, DM, Smoker) {
+	var sum = 0;
+	sum += Math.log(age) * coeff.Age;
+	sum += Math.pow(Math.log(age), 2) * coeff.AgeSquared;
+	sum += Math.log(TC) * coeff.TC;
+	sum += Math.log(age) * Math.log(TC) * coeff.AgexTC;
+	sum += Math.log(HDL) * coeff.HDL;
+	sum += Math.log(age) * Math.log(HDL) * coeff.AgexHDL;
+
+	if (BPTreatment === 1) {
+		sum += Math.log(SBP) * coeff.TreatedBP;
+		sum += Math.log(age) * Math.log(SBP) * coeff.AgexTreatedBP;
+	} else {
+		//No BP treatment
+		sum += Math.log(SBP) * coeff.UntreatedBP;
+		sum += Math.log(age) * Math.log(SBP) * coeff.AgexUntreatedBP;
+	}
+
+	sum += Smoker * coeff.Smoker;
+	sum += Smoker * Math.log(age) * coeff.AgexSmoker;
+	sum += DM * coeff.Diabetes;
+
+	return 1 - Math.pow(coeff.BaselineSurvival, Math.pow(Math.E, sum - coeff.OverallMean));
+}
 
 /**
  *  Returns a smilie face image.
