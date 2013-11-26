@@ -4,13 +4,18 @@
 $col-main:			#036;
 $col-light-text:	#444;
 
-$w-min:				320px;
-$w-tablet:			768px;
-$h-small:			1200px;
+$ref-w-phone:		320px;
+$ref-w-tablet:		768px;
+$ref-w-full:		1024px;
+$h-small:			1200px;			// needs refactoring, if needed at all
 
 $w-column:			320px;
 $w-input:			280px;
+$pr-input:			60px;
 $w-output:			320px;
+$w-desired:			710px;
+$w-max:				980px;
+
 html, body {
 	margin: 0;
 	font: 300 11pt/16pt "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -63,52 +68,99 @@ ul {
 	list-style-type: circle;
 }
 
+hr {
+	height: 1px;
+	margin: 1em 0 2em;
+	border: none; border-top: 1px solid #999;
+}
+
 #container {
 	position: relative;
-	max-width: 710px;
+	max-width: $w-desired;
 	margin: 0 auto;
 	word-wrap: break-word;
 	
-	&.pad {
-		@media screen and (max-width: $w-tablet - 1px) {
-			margin-left: 20px; margin-right: 20px;
-		}
-	}
-	
-	@media screen and (min-width: $w-tablet) {
+	@media screen and (min-width: $ref-w-tablet) {
 		padding: 2em;
+	}
+	@media screen and (min-width: $ref-w-full) {
+		max-width: $w-input + $pr-input + $w-input + $pr-input + $w-output;
+		padding: 2em 0;
 	}
 }
 
 #header {
-	@media screen and (max-width: $w-tablet - 1px) {
-		max-width: $w-column;
-		margin-left: auto; margin-right: auto;
-	}
-	@media screen and (max-width: $w-min) {
+	max-width: $w-column;
+	margin: 0 auto;
+	
+	@media screen and (max-width: $ref-w-phone) {
 		margin-left: 20px; margin-right: 20px;
 	}
-	@media screen and (min-width: $w-tablet) and (max-height: $h-small) {
-		max-width: $w-column;
+	@media screen and (min-width: $ref-w-tablet) {
+		max-width: $w-desired;
+	}
+	// @media screen and (min-width: $ref-w-tablet) and (max-width: $ref-w-full - 1px) and (max-height: $h-small) {
+	// 	max-width: $w-column;
+	// 	margin: 0;
+	// }
+}
+
+#formula_selector {
+	max-width: $w-column;
+	margin: 2em auto 1em;
+	
+	@media screen and (max-width: $ref-w-phone) {
+		margin-left: 20px; margin-right: 20px;
+	}
+	@media screen and (min-width: $ref-w-tablet) {
+		max-width: $w-desired;
+	}
+	// @media screen and (min-width: $ref-w-tablet) and (max-width: $ref-w-full - 1px) and (max-height: $h-small) {
+	// 	max-width: $w-column; margin: 0;
+	// }
+	@media screen and (min-width: $ref-w-full) {
+		max-width: $w-input + $pr-input + $w-input + $pr-input + $w-output;
+	}
+	
+	li {
+		position: relative;
+		font-size: 1.5em; vertical-align: top;
+		
+		span {
+			display: none;
+			position: absolute; bottom: 5px; left: 0;
+			font-size: 0.5em; line-height: 1;
+		}
+		
+		// &:hover span {
+		// 	display: block;
+		// }
 	}
 }
 
-#input {
+#input, #input-2 {
 	min-width: 250px; max-width: $w-column;
-	
 	margin: 0 auto;
 	
-	@media screen and (max-width: $w-min) {
+	@media screen and (max-width: $ref-w-phone) {
 		margin-left: 20px; margin-right: 20px;
 	}
-	@media screen and (min-width: $w-tablet) {
-		float: left;
+	@media screen and (min-width: $ref-w-tablet) {
+		float: left; clear: left;
 		max-width: $w-input;
+	}
+	@media screen and (min-width: $ref-w-full) {
+		clear: none;
+		padding-right: $pr-input;
 	}
 	
 	& > div {
 		min-height: 2.5em;
-		margin-top: 1em;
+		margin-bottom: 1em;
+		
+		&:first-child {
+			// margin-top: 0;
+		}
 		
 		h3 {
 			margin: 0 0 0.75em;
@@ -129,41 +181,28 @@ ul {
 #outcome {
 	width: $w-output;
 	
-	@media screen and (max-width: $w-tablet - 1px) {
+	@media screen and (max-width: $ref-w-tablet - 1px) {
 		margin-left: auto; margin-right: auto;
 	}
-	@media screen and (min-width: $w-tablet) {
+	@media screen and (min-width: $ref-w-tablet) {
 		margin-left: 390px;
 	}
-	@media screen and (min-width: $w-tablet) and (max-height: $h-small) {
-		position: fixed;
-		top: 0; bottom: 0;
-		width: 340px; padding-bottom: 1.5em;
-		overflow-x: hidden; overflow-y: auto;
+	// @media screen and (min-width: $ref-w-tablet) and (max-width: $ref-w-full - 1px) and (max-height: $h-small) {
+	// 	position: fixed;
+	// 	top: 0; bottom: 0;
+	// 	width: 340px; padding-top: 140px; padding-bottom: 1.5em;
+	// 	overflow-x: hidden; overflow-y: auto;
+	// }
+	@media screen and (min-width: $ref-w-full) {
+		margin-left: $w-input + $pr-input + $w-input + $pr-input;
 	}
 }
-
-#formula_selector {
-	max-width: $w-output;
-	margin: 2em 0 1em;
-	
-	@media screen and (max-width: $w-min) {
-		margin-left: 20px; margin-right: 20px;
-	}
-	
-	@media screen and (min-width: $w-tablet) {
-		margin-top: 1em; padding-top: 0.5em;
-	}
-}
-#formula_selector li { font-size: 1.5em; vertical-align: top; }
-#formula_selector li .formula_descript { font-size: 0.5em; line-height: 1; padding-top: 0.5em; }
 
 #faces {
-	width: $w-output; height: 320px;
+	width: $w-output; height: 320px; line-height: 100%;
 	
 	img {
 		width: 32px; height: 32px;
-		float: left;
 	}
 }
 
@@ -171,7 +210,7 @@ ul {
 	max-width: $w-output;
 	margin: 2em 0 1em;
 	
-	@media screen and (max-width: $w-min) {
+	@media screen and (max-width: $ref-w-phone) {
 		margin-left: 20px; margin-right: 20px;
 	}
 	
@@ -225,12 +264,15 @@ ul {
 
 #footer {
 	clear: both;
-	padding: 2em 0;
+	max-width: $w-desired;
+	margin: 0 auto; padding: 2em 0;
 	text-align: center; color: $col-light-text;
 	
-	@media screen and (min-width: $w-tablet) and (max-height: $h-small) {
-		max-width: $w-column; text-align: left;
-	}
+	// @media screen and (min-width: $ref-w-tablet) and (max-width: $ref-w-full - 1px) and (max-height: $h-small) {
+	// 	max-width: $w-column;
+	// 	margin: 0;
+	// 	text-align: left;
+	// }
 }
 
 
@@ -271,8 +313,8 @@ ul {
 	
 	li {
 		display: inline-block;
-		width: 42%;
-		margin: 0; padding: 0.5em 4%;
+		width: 16%;
+		margin: 0; padding: 0.5em 2%;
 		color: darken($col-main, 20%); text-align: center;
 		border-radius: 2pt;
 		
@@ -283,6 +325,10 @@ ul {
 		&.active {
 			background-color: $col-main;
 			color: white; font-weight: 500;
+		}
+		
+		@media screen and (max-width: $ref-w-tablet) {
+			width: 46%;
 		}
 	}
 }
