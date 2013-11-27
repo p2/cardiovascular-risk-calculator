@@ -72,8 +72,12 @@ function diabetes(item) {
 	return $('#diabetes_yes').hasClass('active') ? 1 : 0;
 }
 
+function systole() {
+	return $('#sbp').text() *1;
+}
+
 function bptreatment(item) {
-	if (item) {
+	if (item && !$(item).parent().hasClass('disabled')) {
 		$(item).addClass('active').siblings().removeClass('active');
 	}
 	
@@ -86,6 +90,19 @@ function adjust(elem_id, sender, no_calc) {
 	// convert cholesterol values
 	if (!_useMMOL && ('chol' == elem_id || 'hdl' == elem_id)) {
 		value = Math.round(value * 38.666666);
+	}
+	
+	// systole was adjusted, show/hide some hints
+	else if ('sbp' == elem_id) {
+		if (value > 120) {
+			$('#bptreatment_toggle').removeClass('disabled');
+			$('#bptreatment_hint').hide();
+		}
+		else if (!$('#bptreatment_toggle').hasClass('disabled')) {
+			bptreatment($('#bptreatment_no'));
+			$('#bptreatment_toggle').addClass('disabled');
+			$('#bptreatment_hint').show();
+		}
 	}
 	
 	// apply and calculate
@@ -155,7 +172,7 @@ function benefit(formula_id) {
 		}
 		
 		// for the BP meds ("bp"), it ONLY applies if BP is "_bp_threshold" and higher
-		if ('bp' == bf && $('#sbp').text() *1 < _bp_threshold) {
+		if ('bp' == bf && systole() < _bp_threshold) {
 			continue;
 		}
 		
@@ -313,7 +330,7 @@ function calculate(formula_id) {
 	var TIME = $('#time').text() *1;
 	var IS_MALE = gender();
 	var AGE = $('#age').text() *1;
-	var BLOODP = $('#sbp').text() *1;
+	var BLOODP = systole();
 	var SMOKE = smoker();
 	var TCHOL = $('#totalchol').val() *1;
 	var HDLCHOL = $('#hdlchol').val() *1;

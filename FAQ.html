@@ -10,7 +10,7 @@
 	<div id="container" class="pad">
 		<h1>Frequently Asked Questions</h1>
 		<h2>What does this calculator do?</h2>
-		<p>This cardiovascular risk calculator provides you with an interactive and individualized tool which provides an absolute estimate (%) of a person's chance of having a cardiovascular event (CVD or CHD, or heart attacks or strokes) over a specific period of time and an idea of the potential benefit of treatment. It is only valid for people who have never had a cardiovascular event.</p>
+		<p>This cardiovascular risk calculator provides you with an interactive and individualized tool which provides an absolute estimate (%) of a person's chance of having a cardiovascular event (CVD or CHD, or heart attacks or strokes or ASCVD - atherosclerotic CVD) over a specific period of time and an idea of the potential benefit of treatment. It is only valid for people who have never had a cardiovascular event.</p>
 		<p>This calculator was designed to dynamically show how the value of specific risk factors impact cardiovascular risk. Results are shown using a representation of 100 "happy faces" to help illustrate risk as this format seems to be one of the better ways to visually present risks. Absolute numbers are also provided and rounded off to one decimal point even though <b>any cardiovascular estimates likely are +/- 5-10% at best.</b></p>
 		
 		<h2>How do I use the Cardiovascular Risk/Benefit Calculator?</h2>
@@ -27,11 +27,15 @@
 		<p>These are factors that can potentially be modified with lifestyle changes or medications.</p>
 		
 		<h4>ENTER</h4>
+		<h4>Framingham</h4>
 		<p>a) smoking status - yes or no</p>
 		<p>b) diabetes - yes or no</p>
 		<p>c) systolic blood pressure in mmHg - the calculator uses 120mm/Hg to calculate baseline risk</p>
 		<p>d) total cholesterol in mmol/L - the calculator uses 3 mmol/L to calculate baseline risk</p>
-		<p>d) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>
+		<p>e) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>
+		<h4>ACC/AHA ASCVD - additional inputs</h4>
+		<p>a) race - black or non-black</p>
+		<p>b) blood pressure treatment - yes - if systolic is >120 mmHg or no</p>
 		
 		<h3>3) Estimate benefit</h3>
 		<p>Estimate of benefit - enter any relative benefit and this will be applied to the absolute risk to calculate the % of people who could benefit from a therapy. Examples of relative benefits taken from a synopsis of the best available evidence - typically either RCTs or meta-analyses - are provided.</p>
@@ -40,8 +44,12 @@
 		<p>The calculator can be tweaked to take into account concerns that in some populations the Framingham database appears to over-estimate risk. Some studies have suggested Framingham data overestimates CHD risk - a German cohort (50% overestimate) Eur Heart J 2003;24:937-45, British cohort (57% overestimate) BMJ 2003;327:1267, Italian cohort Int J Epi 2005;34:413-21, UK cohort Atherosclerosis 2005;181:93-100, Chinese cohort (2-3 times overestimate). Although, some studies from North America show Framingham provides a reasonable estimate. Adjust the overall risk up or down as desired. These are non-Framingham sanctioned changes.</p>
 		
 		<h3>CHOOSE OUTCOMES</h3>
-		<p>Clicking on the CVD, CHD, heart attack, or stroke tabs will change the risk estimate to reflect these specific outcomes. The pictures below the happy faces show the specific outcomes included in the definitions of CVD and CHD.</p>
-		
+		<p>Clicking on the CVD, CHD, heart attack, stroke or ASCVD tabs will change the risk estimate to reflect these specific outcomes.</p>
+		<p>CVD = CHD + HF + strokes + intermittent claudication.</p>
+		<p>CHD = fatal/non-fatal heart attacks + angina/coronary insufficiency.</p>
+		<p>heart attack = fatal/non-fatal heart attacks.</p>
+		<p>stroke = stroke +TIA.</p>
+		<p>ASCVD = CHD death + nonfatal heart attacks + fatal/nonfatal strokes.</p>
 		<h3><a name="percentage"></a>ABSOLUTE NUMBERS - calculated risk and benefits</h3>
 		<p>a)&nbsp;<strong>NO EVENTS</strong> is the % of people who would NOT have an event over the selected time period</p>
 		<div>
@@ -51,7 +59,7 @@
 		</div>
 	
 		<h2>Where do the numbers in the calculator come from?</h2>
-		<p>This calculator uses data taken from <a href="http://cvrisk.mvm.ed.ac.uk/calculator/excelcalc.htm">http://cvrisk.mvm.ed.ac.uk/calculator/excelcalc.htm</a> which is based on the Framingham database.</p>
+		<p>This calculator for CVD, CHD, heart attacks and strokes uses data taken from <a href="http://cvrisk.mvm.ed.ac.uk/calculator/excelcalc.htm">http://cvrisk.mvm.ed.ac.uk/calculator/excelcalc.htm</a> which is based on the Framingham database. The ASCVD portion is taken from the calculator used in the 2013 ACC/AHA Guideline on the Assessment of Cardiovascular Risk. The ASCVD part was kindly added by Sean Kane Pharm.D. He has other great calculators at <a href="http:clincalc.com">clincalc.com</a></p>
 		
 		<a name="benefit"></a>
 		<h2>Where do the estimates of benefit come from?</h2>
@@ -258,6 +266,8 @@
 		<h3>Stroke</h3>
 		<p>A sudden or rapid onset of a focal neurologic deficit persisting for greater than 24 hours AND Transient ischemic event (TIA) = a focal neurologic deficit of sudden or rapid onset that fully resolves in less than 24 hours.
 		</p>
+		<h3>ASCVD</h3>
+		<p>Atherosclerotic cardiovascular disease = CHD death +nonfatal heart attacks + fatal/nonfatal strokes.</p>
 
 	</div>
 	

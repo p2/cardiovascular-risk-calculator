@@ -29,7 +29,7 @@
 		<div id="header">
 			<h1>Cardiovascular Risk/Benefit Calculator</h1>
 			<p>
-				Please provide feedback and suggestions to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>. For more information see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>. For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
+				Please provide feedback and suggestions to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>. For more detailed information and acronym definitions etc see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>. For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
 			</p>
 		</div>
 		
@@ -53,7 +53,7 @@
 				</li><!--
 				--><li onclick="setFormula(this)" data-calc="ascvd">
 					ASCVD
-					<span>ACC/AHA: CHF death + nonfatal heart attacks + fatal/nonfatal strokes</span>
+					<span>ACC/AHA: CHD death + nonfatal heart attacks + fatal/nonfatal strokes</span>
 				</li>
 			</ul>
 			
@@ -122,12 +122,12 @@
 			</div>
 			
 			<div id="divBPTreatment">
-				<strong>Blood Pressure Treatment</strong>
-				<span class="toggle">
+				<strong>On treatment for BP</strong>
+				<span id="bptreatment_toggle" class="toggle disabled">
 					<span id="bptreatment_yes" onclick="bptreatment(this), CALC()">Yes</span><!--
 				 --><span id="bptreatment_no" onclick="bptreatment(this), CALC()" class="active">No</span>
 				</span>
-				<p class="item_info">(Only select 'yes' if systolic is greater than 120 mmHg)</p>
+				<p id="bptreatment_hint" class="item_info">Only applies if SBP is greater than 120 mmHg</p>
 			</div>
 			
 			<div>

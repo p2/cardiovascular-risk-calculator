@@ -82,9 +82,10 @@ hr { height: 1px; margin: 1em 0 2em; border: none; border-top: 1px solid #999; }
 .toggle span:first-child { padding-left: 0.6em; }
 .toggle span:last-child { padding-right: 0.6em; }
 .toggle span.active { background-color: #003366; color: white; font-weight: 500; }
+.toggle.disabled { opacity: 0.5; }
 
 .tab { list-style-type: none; padding: 0; font-size: 1.2em; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-.tab li { display: inline-block; width: 16%; margin: 0; padding: 0.5em 2%; color: black; text-align: center; border-radius: 2pt; }
+.tab li { display: inline-block; width: 18%; margin: 0; padding: 0.5em 1%; color: black; text-align: center; border-radius: 2pt; }
 .tab li:hover { background-color: gainsboro; }
 .tab li.active { background-color: #003366; color: white; font-weight: 500; }
 @media screen and (max-width: 768px) { .tab li { width: 46%; } }
