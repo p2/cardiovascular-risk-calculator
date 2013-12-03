@@ -21,6 +21,9 @@
 
 
 $(document).ready(function() {
+	if (CONVERT_SLIDERS) {		// this flag is specifically set by IE 9 and lower because we have a plugin for FireFox and don't care about old WebKit
+		convertSliders();
+	}
 	setFormulaById('cvd');
 });
 
@@ -64,6 +67,24 @@ function smoker(item) {
 	return $('#smoker_yes').hasClass('active') ? 1 : 0;
 }
 
+function totalchol() {
+	if (_useMMOL) {
+		return $('#totalchol_mmol').val() *1;
+	}
+	
+	// 1 mmol/L == 38.666666 mg/dL
+	return $('#totalchol_mgdl').val() / 38.666666;
+}
+
+function hdlchol() {
+	if (_useMMOL) {
+		return $('#hdlchol_mmol').val() *1;
+	}
+	
+	// 1 mmol/L == 38.666666 mg/dL
+	return $('#hdlchol_mgdl').val() / 38.666666;
+}
+
 function diabetes(item) {
 	if (item) {
 		$(item).addClass('active').siblings().removeClass('active');
@@ -85,15 +106,13 @@ function bptreatment(item) {
 }
 
 function adjust(elem_id, sender, no_calc) {
-	var value = $(sender).val();
-	
-	// convert cholesterol values
-	if (!_useMMOL && ('chol' == elem_id || 'hdl' == elem_id)) {
-		value = Math.round(value * 38.666666);
-	}
+	adjustValue(elem_id, $(sender).val(), no_calc);
+}	
+
+function adjustValue(elem_id, value, no_calc) {
 	
 	// systole was adjusted, show/hide some hints
-	else if ('sbp' == elem_id) {
+	if ('sbp' == elem_id) {
 		if (value > 120) {
 			$('#bptreatment_toggle').removeClass('disabled');
 			$('#bptreatment_hint').hide();
@@ -112,6 +131,7 @@ function adjust(elem_id, sender, no_calc) {
 		CALC();
 	}
 }
+
 
 function toggleBenefit(elem) {
 	var obj = $(elem);
@@ -332,8 +352,8 @@ function calculate(formula_id) {
 	var AGE = $('#age').text() *1;
 	var BLOODP = systole();
 	var SMOKE = smoker();
-	var TCHOL = $('#totalchol').val() *1;
-	var HDLCHOL = $('#hdlchol').val() *1;
+	var TCHOL = totalchol();
+	var HDLCHOL = hdlchol();
 	var DIABETES = diabetes();
 	var IVH = 0;
 	
@@ -489,20 +509,31 @@ var _useMMOL = true;
 function toggleCholesterolUnit() {
 	_useMMOL = !_useMMOL;
 	
+	var factor = 38.666666;
 	if (_useMMOL) {
-		$('#input').find('.chol_toggle').text('mmol/L');
 		$('#input').find('.chol_mmol').show();
 		$('#input').find('.chol_mgdl').hide();
+		
+		var total = Math.round($('#totalchol_mgdl').val() / factor * 10) / 10;		// increments by 0.1
+		$('#totalchol_mmol').val(total);
+		adjustValue('chol_mmol', total, true);
+		
+		var hdl = Math.round($('#hdlchol_mgdl').val() / factor * 10) / 10;
+		$('#hdlchol_mmol').val(hdl);
+		adjustValue('hdl_mmol', hdl, true);
 	}
 	else {
-		$('#input').find('.chol_toggle').text('mg/dL');
 		$('#input').find('.chol_mmol').hide();
 		$('#input').find('.chol_mgdl').show();
+		
+		var total = Math.round($('#totalchol_mmol').val() * factor / 2) * 2;		// increments by 2
+		$('#totalchol_mgdl').val(total);
+		adjustValue('chol_mgdl', total, true);
+		
+		var hdl = Math.round($('#hdlchol_mmol').val() * factor / 2) * 2;
+		$('#hdlchol_mgdl').val(hdl);
+		adjustValue('hdl_mgdl', hdl, true);
 	}
-	
-	// update slider values
-	adjust('chol', $('#totalchol'), true);
-	adjust('hdl', $('#hdlchol'), true);
 }
 
 
@@ -526,6 +557,38 @@ function showImages(tab) {
  	}
  	
 	$("#disease").html(content);
+}
+
+
+
+
+/**
+ *  Convert sliders on IE9 and lower.
+ *  We don't target FireFox because we use html5slider.js and we don't care about old WebKit browsers.
+ */
+function convertSliders() {			
+	$('input[type=range]').each(function(idx, obj) {
+		$(obj)
+		.keyup(function(e) {
+			var slider = $(e.target);
+			var min = 1*slider.attr('min2');
+			var max = 1*slider.attr('max');
+			var val = slider.val();
+			
+			// check bounds
+			if (undefined !== min && val < min) {
+				slider.val(min);
+			}
+			if (undefined !== max && val > max) {
+				slider.val(max);
+			}
+			
+			// calculate score
+			CALC();
+		})
+		.css('width', '30%')
+		.next('b').hide();
+	});
 }
 
 
