@@ -54,8 +54,8 @@ hr { height: 1px; margin: 1em 0 2em; border: none; border-top: 1px solid #999; }
 @media screen and (min-width: 768px) { #outcome { margin-left: 390px; } }
 @media screen and (min-width: 1024px) { #outcome { margin-left: 680px; } }
 
-#faces { width: 320px; height: 320px; line-height: 100%; }
-#faces img { width: 32px; height: 32px; }
+#faces { width: 320px; height: 320px; }
+#faces img { width: 32px; height: 32px; vertical-align: top; }
 
 #scores { max-width: 320px; margin: 2em 0 1em; }
 @media screen and (max-width: 320px) { #scores { margin-left: 20px; margin-right: 20px; } }
