@@ -160,8 +160,9 @@ function toggleBenefit(elem) {
 			if ('string' == typeof(res)) {
 				text = res;
 			}
-			else {
-				text = "<ul><li>" + res.join("</li><li>") + "</li></ul>";
+			else if (res && res.length > 1) {
+				text = "<strong>" + res[0] + "</strong>";
+				text += "<ul><li>" + res.slice(1).join("</li><li>") + "</li></ul>";
 			}
 		}
 		else {
