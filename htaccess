@@ -1,0 +1,6 @@
+# serve .manifest files as cache manifest (needed for IE 11 and older WebKit browsers)
+AddType text/cache-manifest .manifest
+
+# activate these to force a no-cache reload
+#ExpiresActive On
+#ExpiresDefault "access"

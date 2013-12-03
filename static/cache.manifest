@@ -1,0 +1,16 @@
+CACHE MANIFEST
+
+#parent: 8209d62
+style.css
+calculator.min.js
+html5slider.min.js
+http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
+
+../imgs/good.png
+../imgs/good@2x.png
+../imgs/badP.png
+../imgs/badP@2x.png
+../imgs/badA.png
+../imgs/badA@2x.png
+../imgs/bad.png
+../imgs/bad@2x.png

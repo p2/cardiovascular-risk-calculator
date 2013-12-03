@@ -273,6 +273,16 @@ hr {
 	// 	margin: 0;
 	// 	text-align: left;
 	// }
+	
+	.separator {
+		padding: 0 1em;
+		color: #999;
+		
+		@media screen and (max-width: $ref-w-tablet) {
+			display: block;
+			color: transparent;
+		}
+	}
 }
 
 

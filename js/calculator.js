@@ -25,6 +25,20 @@ $(document).ready(function() {
 		convertSliders();
 	}
 	setFormulaById('cvd');
+	
+	// setup offline mode
+	if ('applicationCache' in window) {
+		window.applicationCache.addEventListener('checking', offlineStatusChanged, false);
+		window.applicationCache.addEventListener('noupdate', offlineStatusChanged, false);
+		window.applicationCache.addEventListener('downloading', offlineStatusChanged, false);
+		window.applicationCache.addEventListener('cached', offlineStatusChanged, false);
+		window.applicationCache.addEventListener('updateready', offlineStatusChanged, false);
+		window.applicationCache.addEventListener('obsolete', offlineStatusChanged, false);
+		window.applicationCache.addEventListener('error', offlineStatusChanged, false);
+	}
+	
+	// detect if we're running standalone
+	// if (window.navigator.standalone)
 });
 
 
@@ -589,6 +603,19 @@ function convertSliders() {
 		.css('width', '30%')
 		.next('b').hide();
 	});
+}
+
+
+function offlineHint() {
+	alert("This calculator can be used while offline.\n\nOn portable devices you may create a home screen icon for quick access, the calculator will act as if it was an App.");
+}
+
+function offlineStatusChanged(event) {
+	var text = "Available offline";
+	if ('checking' == event.type || 'downloading' == event.type) {
+		text = "Cache " + event.type + "...";
+	}
+	$('#cache_status').removeClass('error').text(text);
 }
 
 

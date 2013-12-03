@@ -74,6 +74,8 @@ hr { height: 1px; margin: 1em 0 2em; border: none; border-top: 1px solid #999; }
 #benefit_information { margin-top: 0.5em; }
 
 #footer { clear: both; max-width: 710px; margin: 0 auto; padding: 2em 0; text-align: center; color: #444444; }
+#footer .separator { padding: 0 1em; color: #999; }
+@media screen and (max-width: 768px) { #footer .separator { display: block; color: transparent; } }
 
 .chol_mgdl { display: none; }
 
