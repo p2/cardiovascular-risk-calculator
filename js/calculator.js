@@ -616,7 +616,12 @@ function offlineStatusChanged(event) {
 	if ('checking' == event.type || 'downloading' == event.type) {
 		text = "Cache " + event.type + "...";
 	}
-	$('#cache_status').removeClass('error').text(text);
+	else if ('updateready' == event.type) {
+		window.applicationCache.swapCache();
+		window.location.reload();
+	}
+	
+	$('#cache_status').text(text);
 }
 
 
