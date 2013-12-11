@@ -149,6 +149,9 @@ function adjustValue(elem_id, value, no_calc) {
 
 function toggleBenefit(elem) {
 	var obj = $(elem);
+	if (!obj) {
+		return;
+	}
 	obj.toggleClass('active').siblings().removeClass('active');		// for now limited to ONE choice
 	
 	// find correct text or list items
@@ -160,9 +163,8 @@ function toggleBenefit(elem) {
 			if ('string' == typeof(res)) {
 				text = res;
 			}
-			else if (res && res.length > 1) {
-				text = "<strong>" + res[0] + "</strong>";
-				text += "<ul><li>" + res.slice(1).join("</li><li>") + "</li></ul>";
+			else if (res && res.length > 0) {
+				text = "<ul><li>" + res.join("</li><li>") + "</li></ul>";
 			}
 		}
 		else {
@@ -171,12 +173,17 @@ function toggleBenefit(elem) {
 	}
 	
 	// show/hide information text
-	$('#benefit_information').html(text);
+	$('#benefit_information').remove();
 	if (text && text.length > 0) {
-		$('#benefit_information_header').show();
-	}
-	else {
-		$('#benefit_information_header').hide();
+		var html = "<h3>Harm of Intervention</h3><p>" + text + '</p>';
+		var li = $('<li/>', {'id': 'benefit_information'}).html(html);
+		
+		// we only want to append to the item BEFORE a line break, not always after the clicked item because that might put some innocent items on the next line
+		var offset = obj.offset().top;
+		while (obj.next() && offset >= obj.next().offset().top) {
+			obj = obj.next();
+		}
+		obj.after(li);
 	}
 	
 	CALC();

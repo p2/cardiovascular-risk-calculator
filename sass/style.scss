@@ -238,11 +238,11 @@ hr {
 	}
 }
 
-#benefit_estimates {
+ul#benefit_estimates {
 	margin: 0 0 0.5em; padding: 0;
 	cursor: pointer; @include user-select(none);
 	
-	li {
+	& > li {
 		display: inline-block;
 		margin: 0 0.5em 0.75em 0; padding: 0.1em 0.4em;
 		color: darken($col-main, 20%);
@@ -252,16 +252,14 @@ hr {
 			background-color: $col-main;
 			color: white; font-weight: 500;
 		}
+		
+		&#benefit_information {
+			margin-top: 0.5em;
+			border: none;
+		}
 	}
 }
 
-#benefit_information_header {
-	display: none;
-}
-
-#benefit_information {
-	margin-top: 0.5em;
-}
 
 #footer {
 	clear: both;
