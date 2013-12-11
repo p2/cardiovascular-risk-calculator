@@ -449,9 +449,9 @@ function calculate(formula_id) {
 	
 	// calculate
 	var over_baseline = badFormula - badFormulaBaseline;
-	var my_benefit = badFormula * BENE / 100;
+	var my_benefit = Math.max(0, Math.min(over_baseline, badFormula * BENE / 100));
 	var additional = Math.max(0, over_baseline - my_benefit);
-	var good = 100 - (badFormulaBaseline + my_benefit + additional).toFixed(1);
+	var good = 100 - (badFormulaBaseline + my_benefit + additional);
 	
 	// risk percentages
 	$("#score_good").text(good.toFixed(1) + "%");
