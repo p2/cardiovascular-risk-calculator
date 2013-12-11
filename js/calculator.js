@@ -180,7 +180,7 @@ function toggleBenefit(elem) {
 		
 		// we only want to append to the item BEFORE a line break, not always after the clicked item because that might put some innocent items on the next line
 		var offset = obj.offset().top;
-		while (obj.next() && offset >= obj.next().offset().top) {
+		while (obj.next() && obj.next().offset() && offset >= obj.next().offset().top) {
 			obj = obj.next();
 		}
 		obj.after(li);
