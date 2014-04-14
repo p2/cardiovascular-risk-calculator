@@ -187,6 +187,7 @@
 						'cvd': {
 						'activity': 25,
 						'meddiet': 30,
+						'vitaomeg': 0,
 						'bp': {'default': 30, 'diabetes': 50},
 						'statins': 25,
 						'fibrates': 0,
@@ -204,6 +205,7 @@
 					'ascvd': {	/* JAMES-TODO -- Do you want to change any of these benefits?  These are copied from 'cvd' */
 						'activity': 25,
 						'meddiet': 30,
+						'vitaomeg': 0,
 						'bp': {'default': 30, 'diabetes': 50},
 						'statins': 25,
 						'fibrates': 0,
@@ -221,6 +223,7 @@
 					'chd': {
 						'activity': 25,
 						'meddiet': 20,
+						'vitaomeg': 0,						
 						'bp': {'default': 20, 'diabetes': 20},
 						'statins': 30,
 						'fibrates': 20,
@@ -238,6 +241,7 @@
 					'mi': {
 						'activity': 20,
 						'meddiet': 20,
+						'vitaomeg': 0,
 						'bp': {'default': 20, 'diabetes': 20},
 						'statins': 30,
 						'fibrates': 20,
@@ -255,6 +259,7 @@
 					'stroke': {
 						'activity': 25,
 						'meddiet': 40,
+						'vitaomeg': 0,
 						'bp': {'default': 40, 'diabetes': 40},
 						'statins': 20,
 						'fibrates': 0,
@@ -273,6 +278,10 @@
 				var _benefit_risks = {
 					'activity': "Overuse injuries<br><h3>Additional Benefits</h3><ul><li>Less depression</li><li>Improves sleep quality</li><li>Improves OA pain and function</li></ul>",
 					'meddiet': "No real harms if you like Mediterranean food. I think it is delicious and it includes wine so...",
+					'vitaomeg': [
+						"Vitamin A and E have evidence for increased mortality",
+						"Drug Cost"
+					],												
 					'bp': [
 						"Types of side effects vary between drugs",
 						"Having to stop drug due to intolerability NNH 10",
@@ -357,6 +366,7 @@
 				<ul id="benefit_estimates">
 					<li onclick="toggleBenefit(this)" data-benefit="activity">Physical Activity</li>
 					<li onclick="toggleBenefit(this)" data-benefit="meddiet">Mediterranean Diet vs Low fat</li>
+					<li onclick="toggleBenefit(this)" data-benefit="vitaomeg">Vitamin/Omega-3 supplements</li>
 					<li onclick="toggleBenefit(this)" data-benefit="bp">BP meds (not atenolol/doxazosin)</li>
 					<li onclick="toggleBenefit(this)" data-benefit="statins">Statins</li>
 					<li onclick="toggleBenefit(this)" data-benefit="fibrates">Fibrates</li>
