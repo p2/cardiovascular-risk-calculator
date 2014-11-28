@@ -67,6 +67,10 @@
 				--><li onclick="setFormula(this)" data-calc="ascvd">
 					ASCVD
 					<span>ACC/AHA: CHD death + nonfatal heart attacks + fatal/nonfatal strokes</span>
+				</li><!--
+				--><li onclick="setFormula(this)" data-calc="qrisk">
+					QRisk
+					<span>cardiovascular disease (stroke/TIA, MI, angina)</span>
 				</li>
 			</ul>
 			
@@ -91,6 +95,7 @@
 					<b id="age">50</b>&nbsp;years
 				</div>
 			</div>
+			<div class="errorAlert" id="qrisk_alert_age"></div>
 			
 			<div>
 				<strong>Gender</strong>
@@ -107,8 +112,23 @@
 				 --><span id="nonblack" onclick="race(this), CALC()" class="active">Non-Black</span>
 				</span>
 			</div>
+			
+			<div id="divEthnicity">
+				<strong>Ethnicity</strong>
+				<select id="ethnicity" onchange="CALC()" class="toggle">
+					<option value="1" selected>White or not stated</option>
+					<option value="2" >Indian</option>
+					<option value="3" >Pakistani</option>
+					<option value="4" >Bangladeshi</option>
+					<option value="5" >Other Asian</option>
+					<option value="6" >Black Caribbean</option>
+					<option value="7" >Black African</option>
+					<option value="8" >Chinese</option>
+					<option value="9" >Other ethnic group</option>
+				</select>
+			</div>
 
-			<div>
+			<div id="smoker_dicotomous">
 				<strong>Smoker</strong>
 				<span class="toggle">
 					<span id="smoker_yes" onclick="smoker(this), CALC()">Yes</span><!--
@@ -117,12 +137,32 @@
 				<p class="item_info">CVD risk is reversed after 5-10 years of no smoking </p>
 			</div>
 			
-			<div>
+			<div id="smoker_detailed">
+				<strong>Smoker</strong>
+				<select id="smoke_cat" onchange="CALC()" class="toggle">
+					<option value="0" selected>Non-smoker</option>
+					<option value="1" >Ex-smoker</option>
+					<option value="2" >Less than 10 cig/day</option>
+					<option value="3" >10 to 19 cig/day</option>
+					<option value="4" >20 or more cig/day</option>
+				</select>
+			</div>
+			
+			<div id="dm_dichotomous">
 				<strong>Diabetes</strong>
 				<span class="toggle">
 					<span id="diabetes_yes" onclick="diabetes(this), CALC()">Yes</span><!--
 				 --><span id="diabetes_no" onclick="diabetes(this), CALC()" class="active">No</span>
 				</span>
+			</div>
+			
+			<div id="dm_detailed">
+				<strong>Diabetes</strong>				
+				<select id="dm_cat" onchange="CALC()" class="toggle">
+					<option value="0" selected>No</option>
+					<option value="1" >Type 1</option>
+					<option value="2" >Type 2</option>
+				</select>
 			</div>
 				
 			<div>
@@ -133,6 +173,7 @@
 				</div>
 				<p class="item_info">120 mmHg is used for baseline risk</p>
 			</div>
+			<div class="errorAlert" id="qrisk_alert_sbp"></div>
 			
 			<div id="divBPTreatment">
 				<strong>On treatment for BP</strong>
@@ -170,6 +211,69 @@
 				<p class="item_info chol_mmol">1.3 mmol/L is used for baseline risk.</p>
 				<p class="item_info chol_mgdl">50 mg/dL is used for baseline risk.</p>
 			</div>
+			<div class="errorAlert" id="qrisk_alert_chol"></div>
+			
+			<div class="qrisk_questions">
+				<h3>Family History of CVD</h3>
+				<span class="toggle">
+					<span id="famhistory_yes" onclick="famhistory(this), CALC()">Yes</span><!--
+				 --><span id="famhistory_no" onclick="famhistory(this), CALC()" class="active">No</span>
+				</span>
+				<p class="item_info">Angina or heart attack in a 1<sup>st</sup> degree relative < 60 yrs</p>
+			</div>
+			
+			<div class="qrisk_questions">
+				<h3>Chronic Kidney Disease</h3>
+				<span class="toggle">
+					<span id="ckd_yes" onclick="ckd(this), CALC()">Yes</span><!--
+				 --><span id="ckd_no" onclick="ckd(this), CALC()" class="active">No</span>
+				</span>
+			</div>
+		
+			<div class="qrisk_questions">
+				<h3>Atrial Fibrillation</h3>
+				<span class="toggle">
+					<span id="afib_yes" onclick="afib(this), CALC()">Yes</span><!--
+				 --><span id="afib_no" onclick="afib(this), CALC()" class="active">No</span>
+				</span>
+			</div>
+		
+			<div class="qrisk_questions">
+				<h3>Rheumatoid Arthritis</h3>
+				<span class="toggle">
+					<span id="ra_yes" onclick="ra(this), CALC()">Yes</span><!--
+				 --><span id="ra_no" onclick="ra(this), CALC()" class="active">No</span>
+				</span>
+			</div>
+			
+			<div class="qrisk_questions">
+				<h3>Height</h3>
+				<div class="slider_parent" id="divHeightCm">
+					<input id="height_cm" type="range" min="120" max="226" value="152" step="2" oninput="adjust('height_cm_label', this)" onchange="adjust('height_cm_label', this)" />
+					<b id="height_cm_label">152</b>&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">cm</a>
+				</div>
+				<div class="slider_parent" id="divHeightIn">
+					<input id="height_in" type="range" min="47" max="89" value="60" step="1" oninput="adjust('height_in_label', this)" onchange="adjust('height_in_label', this)" />
+					<b id="height_in_label">60</b>&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">in</a>
+				</div>
+			</div>
+			
+			<div class="qrisk_questions">
+				<h3>Weight</h3>
+				<div class="slider_parent" id="divWeightKg">
+					<input id="weight_kg" type="range" min="30" max="250" value="80" step="0.5" oninput="adjust('weight_kg_label', this)" onchange="adjust('weight_kg_label', this)" />
+					<b id="weight_kg_label">80</b>&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">kg</a>
+				</div>
+				<div class="slider_parent" id="divWeightLbs">
+					<input id="weight_lbs" type="range" min="66" max="551" value="176" step="1" oninput="adjust('weight_lbs_label', this)" onchange="adjust('weight_lbs_label', this)" />
+					<b id="weight_lbs_label">176</b>&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">lbs</a>
+				</div>
+				<div class="errorAlert" id="qrisk_alert_BMI"></div>
+			</div>
+				
+				
+			
+			
 		</div>
 		
 		<div id="input-2">
@@ -204,6 +308,24 @@
 						'asa': {'male': 15, 'female': 10}
 					},
 					'ascvd': {	/* JAMES-TODO -- Do you want to change any of these benefits?  These are copied from 'cvd' */
+						'activity': 25,
+						'meddiet': 30,
+						'vitaomeg': 0,
+						'bp': {'default': 30, 'diabetes': 50},
+						'statins': 25,
+						'fibrates': 0,
+						'ezetimibe': 0,
+						'niacin': 0,
+						'metformin': {'default': 0, 'diabetes': 35},
+						'sulfonylureas': {'default': 0, 'diabetes': 0},
+						'insulins': {'default': 0, 'diabetes': 0},
+						'glitazones': {'default': 0, 'diabetes': 0},
+						'glp': {'default': 0, 'diabetes': 0},
+						'dpp-4': {'default': 0, 'diabetes': 0},
+						'meglit': {'default': 0, 'diabetes': 0},
+						'asa': {'male': 15, 'female': 10}
+					},
+					'qrisk': {	/* JAMES-TODO -- Do you want to change any of these benefits?  These are copied from 'cvd' */
 						'activity': 25,
 						'meddiet': 30,
 						'vitaomeg': 0,
@@ -443,6 +565,9 @@
 					As with all risk calculators, calculated risk numbers are +/- 5% at best.
 					<a class="infoT various" href="FAQ.html#percentage" target="_blank">More information</a>.
 				<p>
+				<p class="item_info" id="qrisk_disclaimer">
+					See the <a href="FAQ.html#QRisk">QRisk disclaimer</a> for more information.
+				</p>
 			</div>
 		</div>
 		
@@ -459,6 +584,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="static/html5slider.min.js"></script>
 	<script src="static/calculator.min.js"></script>
+	<script src="js/calculator.js"></script>
 	<script>
 		var CONVERT_SLIDERS = false;
 	</script>
@@ -467,7 +593,7 @@
 		CONVERT_SLIDERS = true;
 	</script>
 	<![endif]-->
-	
+
 	<script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -477,5 +603,6 @@
 	ga('create', 'UA-42961029-1', 'bestsciencemedicine.com');
 	ga('send', 'pageview');
 	</script>
+	
 </body>
 </html>

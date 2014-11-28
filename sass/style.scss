@@ -286,8 +286,13 @@ ul#benefit_estimates {
 
 
 // Elements
-.chol_mgdl {
+.chol_mgdl, #divHeightIn, #divWeightLbs {
 	display: none;
+}
+.qrisk_questions { clear: both; margin-bottom: 2em; }
+
+select.toggle, input[type="text"].toggle {
+	padding: 3px;
 }
 
 .toggle {
@@ -313,6 +318,8 @@ ul#benefit_estimates {
 		}
 	}
 	
+	
+	
 	&.disabled {
 		opacity: 0.5;
 	}
@@ -326,7 +333,7 @@ ul#benefit_estimates {
 	
 	li {
 		display: inline-block;
-		width: 18%;
+		width: 31%;
 		margin: 0; padding: 0.5em 1%;
 		color: darken($col-main, 20%); text-align: center;
 		border-radius: 2pt;
@@ -353,4 +360,26 @@ ul#benefit_estimates {
 	h3 + & {
 		margin: 0 0 0.5em;
 	}
+}
+
+
+.errorAlert {
+	display: none;
+	background: #E59494;
+	border: 1px solid #AD0000;
+	text-align: center;
+	font-weight: bold;
+	padding: 0.5em;
+	margin: 1em 0;
+}
+.errorAlert sup, .errorAlert sub {
+   vertical-align: baseline;
+   position: relative;
+   top: -0.4em;
+}
+.errorAlert sub { top: 0.4em; }
+.opacity10 {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
+  filter: alpha(opacity=10);
+  opacity: 0.1;
 }
