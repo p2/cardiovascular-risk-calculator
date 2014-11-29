@@ -97,8 +97,9 @@ input[type="number"] {
 .tab li { display: inline-block; width: 31%; margin: 0; padding: 0.5em 1%; color: black; text-align: center; border-radius: 2pt; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;  }
 .tab li:hover { background-color: gainsboro; }
 .tab li.active { background-color: #003366; color: white; font-weight: 500; }
-@media screen and (max-width: 768px) { .tab li { width: 46%; } }
+@media screen and (max-width: 1024px) { .tab li { width: 46%; } }
 
+@media screen and (max-width: 1024px) { #liFramingham { width: 100%;} }
 #liFramingham { cursor: inherit; }
 #liFramingham:hover { background-color: inherit; }
 #ulFraminghamSubtypes {

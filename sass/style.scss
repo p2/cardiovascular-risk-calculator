@@ -353,12 +353,13 @@ input[type="number"] {
 			color: white; font-weight: 500;
 		}
 		
-		@media screen and (max-width: $ref-w-tablet) {
+		@media screen and (max-width: $ref-w-full) {
 			width: 46%;
 		}
 	}
 }
 
+@media screen and (max-width: $ref-w-full) { #liFramingham { width: 100%;} }
 #liFramingham { cursor: inherit; }
 #liFramingham:hover { background-color: inherit; }
 #ulFraminghamSubtypes {
