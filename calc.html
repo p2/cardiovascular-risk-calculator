@@ -48,29 +48,35 @@
 		
 		<div id="formula_selector">
 			<ul class="tab">
-				<li onclick="setFormula(this)" data-calc="cvd">
-					CVD
-					<span>CHD + HF + strokes + intermit. claudication</span>
-				</li><!--
-				--><li onclick="setFormula(this)" data-calc="chd">
-					CHD
-					<span>fatal/nonfatal heart attacks + angina/coronary insufficiency</span>
-				</li><!--
-				--><li onclick="setFormula(this)" data-calc="mi">
-					Heart Attacks
-					<span>fatal/nonfatal heart attacks</span>
-				</li><!--
-				--><li onclick="setFormula(this)" data-calc="stroke">
-					Strokes
-					<span>stroke + TIA</span>
-				</li><!--
-				--><li onclick="setFormula(this)" data-calc="ascvd">
+				<li onclick="setFormula(this)" data-calc="ascvd">
 					ASCVD
-					<span>ACC/AHA: CHD death + nonfatal heart attacks + fatal/nonfatal strokes</span>
-				</li><!--
-				--><li onclick="setFormula(this)" data-calc="qrisk">
-					QRisk
-					<span>cardiovascular disease (stroke/TIA, MI, angina)</span>
+					<span>CHD death + nonfatal heart attacks + fatal/nonfatal strokes</span>
+				</li>
+				<li onclick="setFormula(this)" data-calc="qrisk">
+					QRISK
+					<span>Heart attacks + strokes<br/>&nbsp;</span>
+				</li>
+				<li id="liFramingham">
+					Framingham
+					<div id="FraminghamInstructions" onclick="$(this).fadeOut();">(select outcome below)</div>
+					<ul id="ulFraminghamSubtypes">
+						<li onclick="setFormula(this)" data-calc="cvd" title="CHD + HF + strokes + intermit. claudication">
+							CVD
+							<span>CHD + HF + strokes + intermit. claudication</span>
+						</li>
+						<li onclick="setFormula(this)" data-calc="chd" title="fatal/nonfatal heart attacks + angina/coronary insufficiency">
+							CHD
+							<span>fatal/nonfatal heart attacks + angina/coronary insufficiency</span>
+						</li>
+						<li onclick="setFormula(this)" data-calc="mi" style="line-height: 0.9em;" title="fatal/nonfatal heart attacks">
+							Heart Attacks
+							<span>fatal/nonfatal heart attacks</span>
+						</li>
+						<li onclick="setFormula(this)" data-calc="stroke" title="stroke + TIA">
+							Strokes
+							<span>stroke + TIA</span>
+						</li>
+					</ul>
 				</li>
 			</ul>
 			
@@ -91,11 +97,11 @@
 			<div>
 				<h3>Age</h3>
 				<div class="slider_parent">
-					<input type="range" min="40" max="80" value="50" oninput="adjust('age', this)" onchange="adjust('age', this)" />
-					<b id="age">50</b>&nbsp;years
+					<input id="slider_age" type="range" min="40" max="80" value="50" oninput="adjustSlider('age','slider_age', _alerts['age'], this)" onchange="adjustSlider('age','slider_age', _alerts['age'], this)" />
+					<input id="age" type="number" min="40" max="80" maxlength="2" pattern="\d{2}" size="2" step="1" value="50"  oninput="adjustSlider('age','slider_age', _alerts['age'], this)" onchange="adjustSlider('age','slider_age', _alerts['age'], this)" />&nbsp;years
 				</div>
 			</div>
-			<div class="errorAlert" id="qrisk_alert_age"></div>
+			<div class="errorAlert" id="alert_age"></div>
 			
 			<div>
 				<strong>Gender</strong>
@@ -168,12 +174,12 @@
 			<div>
 				<h3>Systolic Blood Pressure</h3>
 				<div class="slider_parent">
-					<input type="range" min="110" max="190" value="120" oninput="adjust('sbp', this)" onchange="adjust('sbp', this)" />
-					<b id="sbp">120</b>&nbsp;mmHg
+					<input id="slider_sbp" type="range" min="110" max="190" value="120" oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />
+					<input id="sbp" type="number" min="110" max="190" maxlength="3" pattern="\d{3}" size="3" step="1" value="120"  oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />&nbsp;mmHg
 				</div>
 				<p class="item_info">120 mmHg is used for baseline risk</p>
 			</div>
-			<div class="errorAlert" id="qrisk_alert_sbp"></div>
+			<div class="errorAlert" id="alert_sbp"></div>
 			
 			<div id="divBPTreatment">
 				<strong>On treatment for BP</strong>
@@ -211,10 +217,10 @@
 				<p class="item_info chol_mmol">1.3 mmol/L is used for baseline risk.</p>
 				<p class="item_info chol_mgdl">50 mg/dL is used for baseline risk.</p>
 			</div>
-			<div class="errorAlert" id="qrisk_alert_chol"></div>
+			<div class="errorAlert" id="alert_chol"></div>
 			
 			<div class="qrisk_questions">
-				<h3>Family History of CVD</h3>
+				<strong>Family History of CVD</strong>
 				<span class="toggle">
 					<span id="famhistory_yes" onclick="famhistory(this), CALC()">Yes</span><!--
 				 --><span id="famhistory_no" onclick="famhistory(this), CALC()" class="active">No</span>
@@ -223,7 +229,7 @@
 			</div>
 			
 			<div class="qrisk_questions">
-				<h3>Chronic Kidney Disease</h3>
+				<strong>Chronic Kidney Disease</strong>
 				<span class="toggle">
 					<span id="ckd_yes" onclick="ckd(this), CALC()">Yes</span><!--
 				 --><span id="ckd_no" onclick="ckd(this), CALC()" class="active">No</span>
@@ -231,7 +237,7 @@
 			</div>
 		
 			<div class="qrisk_questions">
-				<h3>Atrial Fibrillation</h3>
+				<strong>Atrial Fibrillation</strong>
 				<span class="toggle">
 					<span id="afib_yes" onclick="afib(this), CALC()">Yes</span><!--
 				 --><span id="afib_no" onclick="afib(this), CALC()" class="active">No</span>
@@ -239,7 +245,7 @@
 			</div>
 		
 			<div class="qrisk_questions">
-				<h3>Rheumatoid Arthritis</h3>
+				<strong>Rheumatoid Arthritis</strong>
 				<span class="toggle">
 					<span id="ra_yes" onclick="ra(this), CALC()">Yes</span><!--
 				 --><span id="ra_no" onclick="ra(this), CALC()" class="active">No</span>
@@ -268,7 +274,9 @@
 					<input id="weight_lbs" type="range" min="66" max="551" value="176" step="1" oninput="adjust('weight_lbs_label', this)" onchange="adjust('weight_lbs_label', this)" />
 					<b id="weight_lbs_label">176</b>&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">lbs</a>
 				</div>
-				<div class="errorAlert" id="qrisk_alert_BMI"></div>
+				<div class="errorAlert" id="alert_BMI"></div>
+				
+				<p class="item_info">BMI of 30 kg/m<sup>2</sup> for baseline risk</p>
 			</div>
 				
 				
@@ -287,6 +295,19 @@
 				
 				<!-- The benefit table. It goes here so Canadians can edit it. -->
 				<script>
+				var _alerts = {
+					'age': {
+						'alert_id': 'alert_age',
+						'label': 'Age',
+						'suffix': 'years'
+					},
+					'sbp': {
+						'alert_id': 'alert_sbp',
+						'label': 'Systolic BP',
+						'suffix': 'mmHg'
+					}
+				}
+				
 				var _bp_threshold = 140;			// BP meds benefits are NOT being applied if BP is LOWER THAN this number
 				var _benefit = {
 						'cvd': {
@@ -307,7 +328,7 @@
 						'meglit': {'default': 0, 'diabetes': 0},
 						'asa': {'male': 15, 'female': 10}
 					},
-					'ascvd': {	/* JAMES-TODO -- Do you want to change any of these benefits?  These are copied from 'cvd' */
+					'ascvd': {
 						'activity': 25,
 						'meddiet': 30,
 						'vitaomeg': 0,
@@ -325,7 +346,7 @@
 						'meglit': {'default': 0, 'diabetes': 0},
 						'asa': {'male': 15, 'female': 10}
 					},
-					'qrisk': {	/* JAMES-TODO -- Do you want to change any of these benefits?  These are copied from 'cvd' */
+					'qrisk': {
 						'activity': 25,
 						'meddiet': 30,
 						'vitaomeg': 0,
@@ -507,7 +528,7 @@
 				<a class="item_info" href="FAQ.html#calculator" target="_blank">Benefit Estimate Details</a>
 			</div>
 			
-			<div>
+			<div id="divFamilyHistoryOfEarlyCHD">
 				<h3>Family History of Early CHD</h3>			
 				<p class="item_info">If CHD in men &lt; 55 years, women &lt; 65 years - increase risk by 50%. If no family history - decrease estimates by 33%.</p>
 			</div>
@@ -541,9 +562,14 @@
 						<td>No events</td>
 					</tr>
 					<tr>
+						<td><img src="imgs/badS2@2x.png" alt="" onclick="$(this).attr('src')=='imgs/badS@2x.png' ? $(this).attr('src','imgs/badS2@2x.png') : $(this).attr('src', 'imgs/badS@2x.png');" /></td>
+						<th id="score_bad_sum"></th>
+						<td>Total events (baseline and risk factors)</td>
+					</tr>
+					<tr>
 						<td><img src="imgs/bad@2x.png" alt="" /></td>
 						<th id="score_bad"></th>
-						<td>Baseline events using baseline factors</td>
+						<td>Baseline events using baseline factors alone</td>
 					</tr>
 					<tr>
 						<td><img src="imgs/badA@2x.png" alt="" /></td>
@@ -566,7 +592,7 @@
 					<a class="infoT various" href="FAQ.html#percentage" target="_blank">More information</a>.
 				<p>
 				<p class="item_info" id="qrisk_disclaimer">
-					See the <a href="FAQ.html#QRisk">QRisk disclaimer</a> for more information.
+					See the <a href="FAQ.html#QRISK">QRISK disclaimer</a> for more information.
 				</p>
 			</div>
 		</div>
@@ -584,7 +610,6 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="static/html5slider.min.js"></script>
 	<script src="static/calculator.min.js"></script>
-	<script src="js/calculator.js"></script>
 	<script>
 		var CONVERT_SLIDERS = false;
 	</script>
@@ -603,6 +628,6 @@
 	ga('create', 'UA-42961029-1', 'bestsciencemedicine.com');
 	ga('send', 'pageview');
 	</script>
-	
+
 </body>
 </html>

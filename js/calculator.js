@@ -162,7 +162,7 @@ function ra(item) {
 }
 
 function systole() {
-	return $('#sbp').text() *1;
+	return $('#sbp').val() *1;
 }
 
 function bptreatment(item) {
@@ -173,9 +173,50 @@ function bptreatment(item) {
 	return $('#bptreatment_yes').hasClass('active') ? 1 : 0;
 }
 
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function adjustSlider(txt_id, slider_id, alert_info, sender, no_calc) {
+	// Who sent you?
+	if ($(sender).attr('id') == txt_id) {
+		// Textbox input is raw -- needs to be validated
+		var txt_val = $('#'+txt_id).val();
+		var min = $('#'+slider_id).attr('min');
+		var max = $('#'+slider_id).attr('max');
+		
+		// Check if a number
+		if (!isNumeric(txt_val)) {
+			$('#outcome').addClass('opacity10');	// This class will be removed in the CALC() function -- do not remove it in the else {} portion because other things may be invalid
+			$('#'+txt_id).addClass('errorTextbox');
+			return false;
+		}
+		
+		// Gently warn the user about min/max errors.  Changing the textbox input with min/max gets overzealous because the min/max check can occur mid-typing (eg, typing the '3' for '30' will trigger a check and change)
+		if (parseFloat(txt_val) < parseFloat(min)) {
+			$('#'+alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
+			$('#'+txt_id).addClass('errorTextbox');
+			return;
+		}
+		if (parseFloat(txt_val) > parseFloat(max)) {
+			$('#'+alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
+			$('#'+txt_id).addClass('errorTextbox');
+			return;
+		}
+		
+		$('#'+slider_id).val(txt_val);
+	} else {
+		// Trust the slider by default if a sender isn't known or doesn't match
+		$('#'+txt_id).val($('#'+slider_id).val());
+	}
+	
+	$('#'+txt_id).removeClass('errorTextbox');
+	adjust(txt_id, sender, no_calc);
+}
+
 function adjust(elem_id, sender, no_calc) {
 	adjustValue(elem_id, $(sender).val(), no_calc);
-}	
+}
 
 function adjustValue(elem_id, value, no_calc) {
 	
@@ -425,7 +466,7 @@ function calculate(formula_id) {
 	$('#benefit').text(BENE);
 	var TIME = $('#time').text() *1;
 	var IS_MALE = gender();
-	var AGE = $('#age').text() *1;
+	var AGE = $('#age').val() *1;
 	var BLOODP = systole();
 	var SMOKE = smoker();
 	var TCHOL = totalchol();
@@ -445,7 +486,7 @@ function calculate(formula_id) {
 	var badFormula = 0;
 	var badFormulaBaseline = 0;
 	
-	// Reset some of the alerts (only present for QRisk, but these need to be removed if they were added for QRisk and the user switches to a different algorithm)
+	// Reset some of the alerts (only present for QRISK, but these need to be removed if they were added for QRISK and the user switches to a different algorithm)
 	$('.errorAlert').hide();
 	$('#outcome').removeClass('opacity10');
 	
@@ -489,11 +530,11 @@ function calculate(formula_id) {
 		badFormulaBaseline = OVERESTIMATE*ASCVD10YrRisk(coeff, AGE, Math.round(TCHOL_A/0.0259), Math.round(HDLCHOL_A/0.0259), BLOODP_A, 0, 0, 0);
 	}
 	
-	// QRisk
+	// QRISK
 	else if ('qrisk' == formula_id) {
-		// Note: I have preserved the variable names from the original C code to make future editing efforts easier.  The QRisk formula is updated yearly
+		// Note: I have preserved the variable names from the original C code to make future editing efforts easier.  The QRISK formula is updated yearly
 		
-		var age = $('#age').text() *1;
+		var age = AGE;
 		var b_AF = afib();
 		var b_ra = ra();
 		var b_renal = ckd();
@@ -511,12 +552,12 @@ function calculate(formula_id) {
 		
 		// Function arguments: (age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)
 		if (IS_MALE) {
-			// QRisk multiplies by 100 within the function (to make a percentage).  We do this with OVERESTIMATE throughout this function.  I decided to divide by 100 (here) for QRisk to maintain the format of the QRisk code
-			badFormula = OVERESTIMATE*QRisk_Male(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)/100;
-			badFormulaBaseline = OVERESTIMATE*QRisk_Male(age, b_AF, b_ra,b_renal,0,0,0,bmi,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
+			// QRISK multiplies by 100 within the function (to make a percentage).  We do this with OVERESTIMATE throughout this function.  I decided to divide by 100 (here) for QRISK to maintain the format of the QRISK code
+			badFormula = OVERESTIMATE*QRISK_Male(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)/100;
+			badFormulaBaseline = OVERESTIMATE*QRISK_Male(age, b_AF, b_ra,b_renal,0,0,0,25.0,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
 		} else {
-			badFormula = OVERESTIMATE*QRisk_Female(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)/100;
-			badFormulaBaseline = OVERESTIMATE*QRisk_Female(age, b_AF, b_ra,b_renal,0,0,0,bmi,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
+			badFormula = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)/100;
+			badFormulaBaseline = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,0,0,0,25.0,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
 		}
 	}
 	
@@ -529,7 +570,7 @@ function calculate(formula_id) {
 		$('#divBPTreatment').hide();
 	}
 	
-	// Do some special hide/show magic for QRisk calculator ...
+	// Do some special hide/show magic for QRISK calculator ...
 	if ('qrisk' == formula_id) {
 		$('#divEthnicity').show();
 		$('#smoker_dicotomous').hide();
@@ -539,6 +580,7 @@ function calculate(formula_id) {
 		$('.qrisk_questions').show();
 		$('#divBPTreatment').show();
 		$('#qrisk_disclaimer').show();	
+		$('#divFamilyHistoryOfEarlyCHD').hide();	//CHD family history is defined and part of the algorithm for QRISK
 	} else {
 		$('#divEthnicity').hide();
 		$('#smoker_dicotomous').show();
@@ -548,6 +590,7 @@ function calculate(formula_id) {
 		$('.qrisk_questions').hide();
 		$('#divBPTreatment').hide();
 		$('#qrisk_disclaimer').hide();
+		$('#divFamilyHistoryOfEarlyCHD').show();
 	}
 	
 	// Should the "Risk Time Period" option be enabled?
@@ -569,6 +612,7 @@ function calculate(formula_id) {
 	
 	// risk percentages
 	$("#score_good").text(good.toFixed(1) + "%");
+	$("#score_bad_sum").text((parseFloat(badFormulaBaseline.toFixed(1))+parseFloat(additional.toFixed(1))).toFixed(1) + "%");		//Because of rounding, using badFormula.toFixed(1) may not add up to the baseline + additional
 	$("#score_bad").text(badFormulaBaseline.toFixed(1) + "%");
 	$("#score_bad_add").text(additional.toFixed(1) + "%");
 	$("#score_benefits").text(my_benefit.toFixed(1) + "%");
@@ -662,23 +706,23 @@ Converted from http://svn.clinrisk.co.uk/opensource/qrisk2/c/Q80_model_4_1.c
  * STATA dta time stamp: 24 Sep 2013 22:39
  * This file was created on: Mon  9 Dec 2013 17:58:53 GMT
 */
-function QRisk_Male(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town) {
+function QRISK_Male(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town) {
 	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
 	var error = 0;
 	if ((age<25) || (age>84)) {
-		$('#qrisk_alert_age').html('Invalid age of ' + age + ' years. The age range for QRisk must be betwen 25 and 84 years old.').show();
+		$('#alert_age').html('Invalid age of ' + age + ' years. The age range for QRISK must be betwen 25 and 84 years old.').show();
 		error=1;
 	}
 	if ((bodymassindex()<20) || (bodymassindex()>40)) {
-		$('#qrisk_alert_BMI').html('Invalid BMI of ' + Math.round(bodymassindex()*10)/10 + ' kg/m<sup>2</sup>. The BMI range for QRisk must be between 20 and 40 kg/m<sup>2</sup>.').show();
+		$('#alert_BMI').html('Invalid BMI of ' + Math.round(bodymassindex()*10)/10 + ' kg/m<sup>2</sup>. The BMI range for QRISK must be between 20 and 40 kg/m<sup>2</sup>.').show();
 		error=1;
 	}
 	if ((systole()<70) || (systole() > 210)) {
-		$('#qrisk_alert_sbp').html('The systolic BP of ' + systole() + ' mmHg. The systolic BP range for QRisk must be between 70 and 210 mmHg.').show();
+		$('#alert_sbp').html('The systolic BP of ' + systole() + ' mmHg. The systolic BP range for QRISK must be between 70 and 210 mmHg.').show();
 		error=1;
 	}
 	if ((totalchol()/hdlchol() < 1) || (totalchol()/hdlchol() > 12)) {
-		$('#qrisk_alert_chol').html('Invalid total:HDL cholesterol ratio of ' + Math.round(totalchol()/hdlchol()*10)/10 + '. The total:HDL cholesterol ratio for QRisk must be between 1 and 12.').show();
+		$('#alert_chol').html('Invalid total:HDL cholesterol ratio of ' + Math.round(totalchol()/hdlchol()*10)/10 + '. The total:HDL cholesterol ratio for QRISK must be between 1 and 12.').show();
 		error=1;
 	}
 	if (error) { // Display all possible error messages before returning zero
@@ -811,23 +855,23 @@ Converted from http://svn.clinrisk.co.uk/opensource/qrisk2/c/Q80_model_4_0.c
  * STATA dta time stamp: 24 Sep 2013 22:39
  * This file was created on: Mon  9 Dec 2013 17:58:53 GMT
 */
-function QRisk_Female(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town) {
+function QRISK_Female(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town) {
 	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
 	var error = 0;
 	if ((age<25) || (age>84)) {
-		$('#qrisk_alert_age').html('Invalid age of ' + age + ' years. The age range for QRisk must be betwen 25 and 84 years old.').show();
+		$('#alert_age').html('Invalid age of ' + age + ' years. The age range for QRISK must be betwen 25 and 84 years old.').show();
 		error=1;
 	}
 	if ((bodymassindex()<20) || (bodymassindex()>40)) {
-		$('#qrisk_alert_BMI').html('Invalid BMI of ' + Math.round(bodymassindex()*10)/10 + ' kg/m<sup>2</sup>. The BMI range for QRisk must be between 20 and 40 kg/m<sup>2</sup>.').show();
+		$('#alert_BMI').html('Invalid BMI of ' + Math.round(bodymassindex()*10)/10 + ' kg/m<sup>2</sup>. The BMI range for QRISK must be between 20 and 40 kg/m<sup>2</sup>.').show();
 		error=1;
 	}
 	if ((systole()<70) || (systole() > 210)) {
-		$('#qrisk_alert_sbp').html('The systolic BP of ' + systole() + ' mmHg. The systolic BP range for QRisk must be between 70 and 210 mmHg.').show();
+		$('#alert_sbp').html('The systolic BP of ' + systole() + ' mmHg. The systolic BP range for QRISK must be between 70 and 210 mmHg.').show();
 		error=1;
 	}
 	if ((totalchol()/hdlchol() < 1) || (totalchol()/hdlchol() > 12)) {
-		$('#qrisk_alert_chol').html('Invalid total:HDL cholesterol ratio of ' + Math.round(totalchol()/hdlchol()*10)/10 + '. The total:HDL cholesterol ratio for QRisk must be between 1 and 12.').show();
+		$('#alert_chol').html('Invalid total:HDL cholesterol ratio of ' + Math.round(totalchol()/hdlchol()*10)/10 + '. The total:HDL cholesterol ratio for QRISK must be between 1 and 12.').show();
 		error=1;
 	}
 	if (error) { // Display all possible error messages before returning zero
