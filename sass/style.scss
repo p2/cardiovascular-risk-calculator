@@ -109,7 +109,7 @@ hr {
 
 #formula_selector {
 	max-width: $w-column;
-	margin: 0;
+	margin: 0 auto;
 	
 	@media screen and (max-width: $ref-w-phone) {
 		margin-left: 20px; margin-right: 20px;

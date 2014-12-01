@@ -34,7 +34,7 @@ hr { height: 1px; margin: 1em 0 2em; border: none; border-top: 1px solid #999; }
 @media screen and (max-width: 320px) { #header { margin-left: 20px; margin-right: 20px; } }
 @media screen and (min-width: 768px) { #header { max-width: 710px; } }
 
-#formula_selector { max-width: 320px; margin: 0; }
+#formula_selector { max-width: 320px; margin: 0 auto; }
 @media screen and (max-width: 320px) { #formula_selector { margin-left: 20px; margin-right: 20px; } }
 @media screen and (min-width: 768px) { #formula_selector { max-width: 710px; } }
 @media screen and (min-width: 1024px) { #formula_selector { max-width: 1000px; } }

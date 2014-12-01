@@ -65,7 +65,7 @@
 							<span>fatal/nonfatal heart attacks + angina/coronary insufficiency</span>
 						</li>
 						<li onclick="setFormula(this)" data-calc="mi" style="line-height: 0.9em;" title="fatal/nonfatal heart attacks">
-							Heart Attacks
+							Heart<br/> Attacks
 							<span>fatal/nonfatal heart attacks</span>
 						</li>
 						<li onclick="setFormula(this)" data-calc="stroke" title="stroke + TIA">
@@ -86,8 +86,8 @@
 				<h3>Risk Time Period</h3>
 				<div class="slider_parent">
 					<div id="divTime">
-						<input id="rangeTime" type="range" min="1" max="10" value="10" step="1" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="    adjustSlider('time', 'rangeTime', _alerts['time'], this)" />
-						<input id="time" type="number" class="two" min="1" max="10" maxlength="2" step="1" value="10" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="    adjustSlider('time', 'rangeTime', _alerts['time'], this)" />&nbsp;years
+						<input id="rangeTime" type="range" min="1" max="10" value="10" step="1" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="adjustSlider('time', 'rangeTime', _alerts['time'], this)" />
+						<input id="time" type="number" class="two" min="1" max="10" maxlength="2" step="1" value="10" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="adjustSlider('time', 'rangeTime', _alerts['time'], this)" />&nbsp;years
 					</div>
 					<b id="time_fixed" style="display: none;">10 years</b>
 				</div>
@@ -257,12 +257,12 @@
 			<div class="qrisk_questions">
 				<h3>Height</h3>
 				<div class="slider_parent" id="divHeightCm">
-					<input id="height_cm" class="slider_40" type="range" min="120" max="198" value="152" step="2" oninput="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="    adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" />
-					<input id="height_cm_label" type="number" class="three" min="120" max="198" maxlength="3" step="2" value="152" oninput="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="    adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">cm</a>
+					<input id="height_cm" class="slider_40" type="range" min="120" max="198" value="152" step="2" oninput="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" />
+					<input id="height_cm_label" type="number" class="three" min="120" max="198" maxlength="3" step="2" value="152" oninput="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">cm</a>
 				</div>
 				<div class="slider_parent" id="divHeightIn">
-					<input id="height_in" type="range" min="47" max="78" value="60" step="1" oninput="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" onchange="    adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" />
-					<input id="height_in_label" type="number" class="two" min="47" max="78" maxlength="2" step="1" value="60" oninput="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" onchange="    adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="    toggleHeightUnit()">in</a>
+					<input id="height_in" type="range" min="47" max="78" value="60" step="1" oninput="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" onchange="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" />
+					<input id="height_in_label" type="number" class="two" min="47" max="78" maxlength="2" step="1" value="60" oninput="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" onchange="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">in</a>
 				</div>
 				<div class="errorAlert" id="alert_height"></div>
 			</div>
@@ -271,12 +271,12 @@
 			<div class="qrisk_questions">
 				<h3>Weight</h3>
 				<div class="slider_parent" id="divWeightKg">
-					<input id="weight_kg" class="slider_40" type="range" min="30" max="250" value="80" step="0.5" oninput="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="    adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />
-					<input id="weight_kg_label" type="number" class="three" min="30" max="250" maxlength="3" step="0.5" value="80" oninput="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="    adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="    toggleWeightUnit()">kg</a>
+					<input id="weight_kg" class="slider_40" type="range" min="30" max="250" value="80" step="0.5" oninput="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />
+					<input id="weight_kg_label" type="number" class="three" min="30" max="250" maxlength="3" step="0.5" value="80" oninput="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">kg</a>
 				</div>
 				<div class="slider_parent" id="divWeightLbs">
-					<input id="weight_lbs" class="slider_40" type="range" min="66" max="551" value="176" step="1" oninput="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="    adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />
-					<input id="weight_lbs_label" type="number" class="three" min="66" max="551" maxlength="3" step="1" value="176" oninput="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="    adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="    toggleWeightUnit()">lbs</a>
+					<input id="weight_lbs" class="slider_40" type="range" min="66" max="551" value="176" step="1" oninput="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />
+					<input id="weight_lbs_label" type="number" class="three" min="66" max="551" maxlength="3" step="1" value="176" oninput="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">lbs</a>
 				</div>
 				<div class="errorAlert" id="alert_weight"></div>
 			</div>
@@ -648,6 +648,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="static/html5slider.min.js"></script>
 	<script src="static/calculator.min.js"></script>
+	
 	<script>
 		var CONVERT_SLIDERS = false;
 	</script>
@@ -655,6 +656,9 @@
 	<script>
 		CONVERT_SLIDERS = true;
 	</script>
+	<style>
+		input[type="range"] { display: none; }	/* Prevent duplicate textboxes from being displayed in browsers that don't support input[type=range] */
+	</style>
 	<![endif]-->
 	<script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

@@ -249,8 +249,8 @@ function adjustValue(elem_id, value, no_calc) {
 		}
 	}
 	
-	// apply and calculate
-	$('#' + elem_id).text(value ? Math.round(value * 10) / 10 : 0);
+	// apply and calculate -- this is no longer needed due to the switch from text-based labels to input-based textboxes
+	//$('#' + elem_id).text(value ? Math.round(value * 10) / 10 : 0);
 	
 	if (!no_calc) {
 		CALC();
