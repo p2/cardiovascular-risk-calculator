@@ -19,6 +19,8 @@
  *  under the License.
  */
 
+/* CONSTANTS */
+var errorDelay = 750;   //in msec
 
 $(document).ready(function() {
 	if (CONVERT_SLIDERS) {		// this flag is specifically set by IE 9 and lower because we have a plugin for FireFox and don't care about old WebKit
@@ -194,14 +196,28 @@ function adjustSlider(txt_id, slider_id, alert_info, sender, no_calc) {
 		
 		// Gently warn the user about min/max errors.  Changing the textbox input with min/max gets overzealous because the min/max check can occur mid-typing (eg, typing the '3' for '30' will trigger a check and change)
 		if (parseFloat(txt_val) < parseFloat(min)) {
-			$('#'+alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
-			$('#'+txt_id).addClass('errorTextbox');
+
+		    setTimeout(function () {
+		        if (parseFloat($('#' + txt_id).val()) < parseFloat(min)) {
+		            $('#' + alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
+		            $('#' + txt_id).addClass('errorTextbox');
+		        }
+		    }, errorDelay);
+
+		    $('#outcome').addClass('opacity10');
 			return;
 		}
 		if (parseFloat(txt_val) > parseFloat(max)) {
-			$('#'+alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
-			$('#'+txt_id).addClass('errorTextbox');
-			return;
+
+		    setTimeout(function () {
+		        if (parseFloat($('#' + txt_id).val()) > parseFloat(max)) {
+		            $('#' + alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
+		            $('#' + txt_id).addClass('errorTextbox');
+		        }
+		    }, errorDelay);
+
+		    $('#outcome').addClass('opacity10');
+		    return;
 		}
 		
 		$('#'+slider_id).val(txt_val);
@@ -269,6 +285,7 @@ function toggleBenefit(elem) {
 	
 	// show/hide information text
 	$('#benefit_information').remove();
+	$('h3.relativeBenefit > span').removeClass('active');
 	if (text && text.length > 0) {
 		var html = "<h3>Harm of Intervention</h3><p>" + text + '</p>';
 		var li = $('<li/>', {'id': 'benefit_information'}).html(html);
@@ -279,6 +296,8 @@ function toggleBenefit(elem) {
 			obj = obj.next();
 		}
 		obj.after(li);
+
+		$('h3.relativeBenefit > span').addClass('active');
 	}
 	
 	CALC();
@@ -461,10 +480,10 @@ function WhiteMale() {
  *  Our main calculation formula.
  */
 function calculate(formula_id) {
-	var OVERESTIMATE = $('#overestimate').text() *1;
+	var OVERESTIMATE = $('#overestimate').val() *1;
 	var BENE = benefit(formula_id);
 	$('#benefit').text(BENE);
-	var TIME = $('#time').text() *1;
+	var TIME = $('#time').val() *1;
 	var IS_MALE = gender();
 	var AGE = $('#age').val() *1;
 	var BLOODP = systole();
@@ -486,9 +505,20 @@ function calculate(formula_id) {
 	var badFormula = 0;
 	var badFormulaBaseline = 0;
 	
-	// Reset some of the alerts (only present for QRISK, but these need to be removed if they were added for QRISK and the user switches to a different algorithm)
+	// Reset some of the alerts
 	$('.errorAlert').hide();
 	$('#outcome').removeClass('opacity10');
+
+    // Run through the visible textbox fields (looking for invalid entries)
+	$('input[type="number"]:visible').each(function () {
+	    var val = parseFloat($(this).val());
+	    var min = parseFloat($(this).attr('min'));
+	    var max = parseFloat($(this).attr('max'));
+
+	    if ((val < min) || (val > max)) {
+	        $(this).change();   //Calling the 'change' event will force a check
+	    }
+	});
 	
 	// CVD
 	if ('cvd' == formula_id) {
@@ -549,6 +579,9 @@ function calculate(formula_id) {
 		var smoke_cat = $('#smoke_cat').val();
 		var surv = 10;	//	"surv must be 10" -- may be a placeholder for the future?
 		var town = 0;	//	"We include the University of Nottingham "Postcode to Townsend" deprivation table, which means a patient's deprivation can be estimated by their postcode."
+
+	    // Fill in the BMI for the user ...
+		$('#bmi').html(bmi.toFixed(1) + " kg/m<sup>2</sup>");
 		
 		// Function arguments: (age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)
 		if (IS_MALE) {
@@ -595,13 +628,18 @@ function calculate(formula_id) {
 	
 	// Should the "Risk Time Period" option be enabled?
 	if (('qrisk' == formula_id) || ('ascvd' == formula_id)) {
-		$('#rangeTime').prop('disabled',true);
-		$('#rangeTime').val(10);
-		$('#rangeTime').hide();
-		adjust('time', $('#rangeTime'),true);
+	    $('#rangeTime').prop('disabled', true);
+	    $('#time').prop('disabled', true);
+	    $('#rangeTime').val(10);
+	    $('#time').val(10);
+	    $('#divTime').hide();
+		$('#time_fixed').show();
+		adjust('time', $('#rangeTime'), true);
 	} else {
-		$('#rangeTime').show();
-		$('#rangeTime').prop('disabled',false);
+	    $('#divTime').show();
+	    $('#time').prop('disabled', false);
+	    $('#rangeTime').prop('disabled', false);
+	    $('#time_fixed').hide();
 	}
 	
 	// calculate
@@ -634,10 +672,10 @@ function calculate(formula_id) {
 		faces.prepend(newFace('badA'));
 	}
 	for (var i = 0; i < numProFaces; i++) {
-		faces.prepend(newFace('badP'));
+		faces.prepend(newFace('green'));
 	}
 	for (var i = 0; i < totalSum; i++) {
-		faces.prepend(newFace('good'));
+		faces.prepend(newFace('blue'));
 	}
 }
 
@@ -710,19 +748,19 @@ function QRISK_Male(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethri
 	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
 	var error = 0;
 	if ((age<25) || (age>84)) {
-		$('#alert_age').html('Invalid age of ' + age + ' years. The age range for QRISK must be betwen 25 and 84 years old.').show();
+		$('#alert_age').html('Age must be between 25 and 84 years for QRISK').show();
 		error=1;
 	}
 	if ((bodymassindex()<20) || (bodymassindex()>40)) {
-		$('#alert_BMI').html('Invalid BMI of ' + Math.round(bodymassindex()*10)/10 + ' kg/m<sup>2</sup>. The BMI range for QRISK must be between 20 and 40 kg/m<sup>2</sup>.').show();
+		$('#alert_BMI').html('BMI must be between 20 and 40 kg/m<sup>2</sup> for QRISK').show();
 		error=1;
 	}
 	if ((systole()<70) || (systole() > 210)) {
-		$('#alert_sbp').html('The systolic BP of ' + systole() + ' mmHg. The systolic BP range for QRISK must be between 70 and 210 mmHg.').show();
+		$('#alert_sbp').html('Systolic BP must be between 70 and 210 mmHg for QRISK').show();
 		error=1;
 	}
 	if ((totalchol()/hdlchol() < 1) || (totalchol()/hdlchol() > 12)) {
-		$('#alert_chol').html('Invalid total:HDL cholesterol ratio of ' + Math.round(totalchol()/hdlchol()*10)/10 + '. The total:HDL cholesterol ratio for QRISK must be between 1 and 12.').show();
+		$('#alert_chol').html('Total:HDL cholesterol ratio must be between 1 and 12 for QRISK (' + Math.round(totalchol()/hdlchol()*10)/10 + ' entered)').show();
 		error=1;
 	}
 	if (error) { // Display all possible error messages before returning zero
@@ -859,19 +897,19 @@ function QRISK_Female(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,eth
 	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
 	var error = 0;
 	if ((age<25) || (age>84)) {
-		$('#alert_age').html('Invalid age of ' + age + ' years. The age range for QRISK must be betwen 25 and 84 years old.').show();
+	    $('#alert_age').html('Age must be between 25 and 84 years for QRISK').show();
 		error=1;
 	}
 	if ((bodymassindex()<20) || (bodymassindex()>40)) {
-		$('#alert_BMI').html('Invalid BMI of ' + Math.round(bodymassindex()*10)/10 + ' kg/m<sup>2</sup>. The BMI range for QRISK must be between 20 and 40 kg/m<sup>2</sup>.').show();
+	    $('#alert_BMI').html('BMI must be between 20 and 40 kg/m<sup>2</sup> for QRISK').show();
 		error=1;
 	}
 	if ((systole()<70) || (systole() > 210)) {
-		$('#alert_sbp').html('The systolic BP of ' + systole() + ' mmHg. The systolic BP range for QRISK must be between 70 and 210 mmHg.').show();
+	    $('#alert_sbp').html('Systolic BP must be between 70 and 210 mmHg for QRISK').show();
 		error=1;
 	}
 	if ((totalchol()/hdlchol() < 1) || (totalchol()/hdlchol() > 12)) {
-		$('#alert_chol').html('Invalid total:HDL cholesterol ratio of ' + Math.round(totalchol()/hdlchol()*10)/10 + '. The total:HDL cholesterol ratio for QRISK must be between 1 and 12.').show();
+	    $('#alert_chol').html('Total:HDL cholesterol ratio must be between 1 and 12 for QRISK (' + Math.round(totalchol() / hdlchol() * 10) / 10 + ' entered)').show();
 		error=1;
 	}
 	if (error) { // Display all possible error messages before returning zero
@@ -1030,11 +1068,13 @@ function toggleCholesterolUnit() {
 		
 		var total = Math.round($('#totalchol_mgdl').val() / factor * 10) / 10;		// increments by 0.1
 		$('#totalchol_mmol').val(total);
-		adjustValue('chol_mmol', total, true);
+		$('#chol_mmol').val(total);
+		adjustSlider('chol_mmol', 'totalchol_mmol', _alerts['tchol'], null, true);
 		
 		var hdl = Math.round($('#hdlchol_mgdl').val() / factor * 10) / 10;
 		$('#hdlchol_mmol').val(hdl);
-		adjustValue('hdl_mmol', hdl, true);
+		$('#hdl_mmol').val(hdl);
+		adjustSlider('hdl_mmol', 'hdlchol_mmol', _alerts['hdl'], null, true);
 	}
 	else {
 		$('#input').find('.chol_mmol').hide();
@@ -1042,11 +1082,13 @@ function toggleCholesterolUnit() {
 		
 		var total = Math.round($('#totalchol_mmol').val() * factor / 2) * 2;		// increments by 2
 		$('#totalchol_mgdl').val(total);
-		adjustValue('chol_mgdl', total, true);
+		$('#chol_mgdl').val(total);
+		adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], null, true);
 		
 		var hdl = Math.round($('#hdlchol_mmol').val() * factor / 2) * 2;
 		$('#hdlchol_mgdl').val(hdl);
-		adjustValue('hdl_mgdl', hdl, true);
+		$('#hdl_mgdl').val(hdl);
+		adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], null, true);
 	}
 }
 
@@ -1060,7 +1102,8 @@ function toggleHeightUnit() {
 		
 		var ht = Math.round($('#height_in').val() * factor * 2) / 2;	//increments by 2 cm
 		$('#height_cm').val(ht);
-		adjustValue('height_cm_label',ht, true);
+		$('#height_cm_label').val(ht);
+		adjustSlider('height_cm_label', 'height_cm', _alerts['height'], null, true);
 	}
 	else {
 		$('#divHeightCm').hide();
@@ -1068,7 +1111,8 @@ function toggleHeightUnit() {
 		
 		var ht = Math.round($('#height_cm').val() / factor * 1) / 1;	//increments by 1 in
 		$('#height_in').val(ht);
-		adjustValue('height_in_label',ht, true);
+		$('#height_in_label').val(ht);
+		adjustSlider('height_in_label', 'height_in', _alerts['height'], null, true);
 	}
 }
 
@@ -1082,7 +1126,8 @@ function toggleWeightUnit() {
 		
 		var wt = Math.round($('#weight_lbs').val() / factor * 0.5) / 0.5;	//increments by 0.5 kg
 		$('#weight_kg').val(wt);
-		adjustValue('weight_kg_label',wt, true);
+		$('#weight_kg_label').val(wt);
+		adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], null, true);
 	}
 	else {
 		$('#divWeightKg').hide();
@@ -1090,7 +1135,8 @@ function toggleWeightUnit() {
 		
 		var wt = Math.round($('#weight_kg').val() * factor * 1) / 1;	//increments by 1 lb
 		$('#weight_lbs').val(wt);
-		adjustValue('weight_lbs_label',wt, true);
+		$('#weight_lbs_label').val(wt);
+		adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], null, true);
 	}
 }
 

@@ -1,6 +1,7 @@
 html, body { margin: 0; font: 400 11pt/16pt "Helvetica Neue", Helvetica, Arial, sans-serif; }
 
-h1 { text-align: center; }
+h1 { text-align: center; font-size: 2.4em; margin: 0 0 0.2em 0; }
+@media screen and (max-width: 1024px) { h1 { font-size: 2em; } }
 
 h1, h2, h3, h4, strong { font-weight: 500; line-height: 1.2; }
 
@@ -33,7 +34,7 @@ hr { height: 1px; margin: 1em 0 2em; border: none; border-top: 1px solid #999; }
 @media screen and (max-width: 320px) { #header { margin-left: 20px; margin-right: 20px; } }
 @media screen and (min-width: 768px) { #header { max-width: 710px; } }
 
-#formula_selector { max-width: 320px; margin: 2em auto 1em; }
+#formula_selector { max-width: 320px; margin: 0; }
 @media screen and (max-width: 320px) { #formula_selector { margin-left: 20px; margin-right: 20px; } }
 @media screen and (min-width: 768px) { #formula_selector { max-width: 710px; } }
 @media screen and (min-width: 1024px) { #formula_selector { max-width: 1000px; } }
@@ -81,9 +82,19 @@ select.toggle, input[type="text"].toggle {
 	padding: 3px;
 }
 input[type="number"] {
-	width: 2.5em !important;
 	padding: 3px;
 	font-size: 1.1em;
+    border: 1px solid #003366; border-radius: 2pt;
+    height: inherit !important;
+}
+input[type="number"].two {
+    width: 2.5em !important;
+}
+input[type="number"].three {
+    width: 3.5em !important;
+}
+.slider_40 {
+    width: 40% !important;
 }
 
 .toggle { float: right; border: 1px solid #003366; border-radius: 2pt; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
@@ -93,11 +104,12 @@ input[type="number"] {
 .toggle span.active { background-color: #003366; color: white; font-weight: 500; }
 .toggle.disabled { opacity: 0.5; }
 
-.tab { list-style-type: none; padding: 0; font-size: 1.2em; }
-.tab li { display: inline-block; width: 31%; margin: 0; padding: 0.5em 1%; color: black; text-align: center; border-radius: 2pt; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;  }
+.tab { list-style-type: none; padding: 0; margin: 0.25em 0; font-size: 1.2em; text-align: center; }
+.tab li { display: inline-block; width: 30%; margin: 0; padding: 0.5em 1%; color: black; text-align: center; border-radius: 2pt; cursor: pointer; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;  }
 .tab li:hover { background-color: gainsboro; }
 .tab li.active { background-color: #003366; color: white; font-weight: 500; }
 @media screen and (max-width: 1024px) { .tab li { width: 46%; } }
+.tab li > div { line-height: 1.2 }
 
 @media screen and (max-width: 1024px) { #liFramingham { width: 100%;} }
 #liFramingham { cursor: inherit; }
@@ -114,23 +126,18 @@ input[type="number"] {
 	line-height: 2em;
 }
 #ulFraminghamSubtypes li span { display: none; }
-#FraminghamInstructions {
-	text-align: center;
-	font-size: 0.5em;
-}
 
 .item_info { margin: 0.5em 0 0; font-size: 0.8em; color: #444444; }
 h3 + .item_info { margin: 0 0 0.5em; }
 
 .errorAlert {
 	display: none;
-	background: #E59494;
-	border: 1px solid #AD0000;
+	background: #f6e3e3;
+	border: 1px solid #c84545;
 	text-align: center;
-	font-weight: bold;
 	padding: 0.5em;
 	margin: 1em 0;
-	min-height: inherit !important;
+    min-height: initial !important;
 }
 .errorAlert sup, .errorAlert sub {
    vertical-align: baseline;
@@ -139,12 +146,20 @@ h3 + .item_info { margin: 0 0 0.5em; }
 }
 .errorAlert sub { top: 0.4em; }
 .errorTextbox {
-	background: #E59494;
-	border: 1px solid #AD0000;
-	font-weight: bold;
+	background: #f6e3e3;
+	border: 1px solid #c84545 !important;
 }
 .opacity10 {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
   filter: alpha(opacity=10);
   opacity: 0.1;
+}
+
+h3.relativeBenefit {
+    text-align: center;
+    font-size: 1.5em;
+}
+h3.relativeBenefit > span.active {
+    background-color: #003366; color: white; font-weight: 500;
+    padding: 5px;
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
 	Licensed to the Apache Software Foundation (ASF) under one
 	or more contributor license agreements.  See the NOTICE file
@@ -8,7 +8,7 @@
 	"License"); you may not use this file except in compliance
 	with the License.  You may obtain a copy of the License at
 
-	    http://www.apache.org/licenses/LICENSE-2.0
+	http://www.apache.org/licenses/LICENSE-2.0
 
 	Unless required by applicable law or agreed to in writing,
 	software distributed under the License is distributed on an
@@ -41,24 +41,20 @@
 	<div id="container">
 		<div id="header">
 			<h1>The Absolute CVD Risk/Benefit Calculator</h1>
-			<p>
-				Please provide feedback and suggestions to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>. For more detailed information and acronym definitions etc see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>. For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
-			</p>
 		</div>
-		
+
 		<div id="formula_selector">
 			<ul class="tab">
 				<li onclick="setFormula(this)" data-calc="ascvd">
-					ASCVD
-					<span>CHD death + nonfatal heart attacks + fatal/nonfatal strokes</span>
+					<div>ASCVD</div>
+					<span>CHD death + nonfatal heart attacks <br />+ fatal/nonfatal strokes</span>
 				</li>
 				<li onclick="setFormula(this)" data-calc="qrisk">
-					QRISK
-					<span>Heart attacks + strokes<br/>&nbsp;</span>
+					<div>QRISK</div>
+					<span>Heart attacks + strokes<br />&nbsp;</span>
 				</li>
 				<li id="liFramingham">
-					Framingham
-					<div id="FraminghamInstructions" onclick="$(this).fadeOut();">(select outcome below)</div>
+					<div>Framingham</div>
 					<ul id="ulFraminghamSubtypes">
 						<li onclick="setFormula(this)" data-calc="cvd" title="CHD + HF + strokes + intermit. claudication">
 							CVD
@@ -89,16 +85,20 @@
 			<div>
 				<h3>Risk Time Period</h3>
 				<div class="slider_parent">
-					<input id="rangeTime" type="range" min="1" max="10" value="10" oninput="adjust('time', this)" onchange="adjust('time', this)" />
-					<b id="time">10</b>&nbsp;years
+					<div id="divTime">
+						<input id="rangeTime" type="range" min="1" max="10" value="10" step="1" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="    adjustSlider('time', 'rangeTime', _alerts['time'], this)" />
+						<input id="time" type="number" class="two" min="1" max="10" maxlength="2" step="1" value="10" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="    adjustSlider('time', 'rangeTime', _alerts['time'], this)" />&nbsp;years
+					</div>
+					<b id="time_fixed" style="display: none;">10 years</b>
 				</div>
 			</div>
+			<div class="errorAlert" id="alert_time"></div>
 			
 			<div>
 				<h3>Age</h3>
 				<div class="slider_parent">
-					<input id="slider_age" type="range" min="40" max="80" value="50" oninput="adjustSlider('age','slider_age', _alerts['age'], this)" onchange="adjustSlider('age','slider_age', _alerts['age'], this)" />
-					<input id="age" type="number" min="40" max="80" maxlength="2" pattern="\d{2}" size="2" step="1" value="50"  oninput="adjustSlider('age','slider_age', _alerts['age'], this)" onchange="adjustSlider('age','slider_age', _alerts['age'], this)" />&nbsp;years
+					<input id="slider_age" type="range" min="40" max="80" value="50" step="1" oninput="adjustSlider('age','slider_age', _alerts['age'], this)" onchange="adjustSlider('age','slider_age', _alerts['age'], this)" />
+					<input id="age" type="number" class="two" min="40" max="80" maxlength="2" step="1" value="50" oninput="adjustSlider('age','slider_age', _alerts['age'], this)" onchange="adjustSlider('age','slider_age', _alerts['age'], this)" />&nbsp;years
 				</div>
 			</div>
 			<div class="errorAlert" id="alert_age"></div>
@@ -107,7 +107,7 @@
 				<strong>Gender</strong>
 				<span class="toggle">
 					<span id="male" onclick="gender(this), CALC()">Male</span><!--
-				 --><span id="female" onclick="gender(this), CALC()" class="active">Female</span>
+					--><span id="female" onclick="gender(this), CALC()" class="active">Female</span>
 				</span>
 			</div>
 			
@@ -115,7 +115,7 @@
 				<strong>Race</strong>
 				<span class="toggle">
 					<span id="black" onclick="race(this), CALC()">Black</span><!--
-				 --><span id="nonblack" onclick="race(this), CALC()" class="active">Non-Black</span>
+					--><span id="nonblack" onclick="race(this), CALC()" class="active">Non-Black</span>
 				</span>
 			</div>
 			
@@ -123,22 +123,22 @@
 				<strong>Ethnicity</strong>
 				<select id="ethnicity" onchange="CALC()" class="toggle">
 					<option value="1" selected>White or not stated</option>
-					<option value="2" >Indian</option>
-					<option value="3" >Pakistani</option>
-					<option value="4" >Bangladeshi</option>
-					<option value="5" >Other Asian</option>
-					<option value="6" >Black Caribbean</option>
-					<option value="7" >Black African</option>
-					<option value="8" >Chinese</option>
-					<option value="9" >Other ethnic group</option>
+					<option value="2">Indian</option>
+					<option value="3">Pakistani</option>
+					<option value="4">Bangladeshi</option>
+					<option value="5">Other Asian</option>
+					<option value="6">Black Caribbean</option>
+					<option value="7">Black African</option>
+					<option value="8">Chinese</option>
+					<option value="9">Other ethnic group</option>
 				</select>
 			</div>
-
+			
 			<div id="smoker_dicotomous">
 				<strong>Smoker</strong>
 				<span class="toggle">
 					<span id="smoker_yes" onclick="smoker(this), CALC()">Yes</span><!--
-				 --><span id="smoker_no" onclick="smoker(this), CALC()" class="active">No</span>
+					--><span id="smoker_no" onclick="smoker(this), CALC()" class="active">No</span>
 				</span>
 				<p class="item_info">CVD risk is reversed after 5-10 years of no smoking </p>
 			</div>
@@ -147,10 +147,10 @@
 				<strong>Smoker</strong>
 				<select id="smoke_cat" onchange="CALC()" class="toggle">
 					<option value="0" selected>Non-smoker</option>
-					<option value="1" >Ex-smoker</option>
-					<option value="2" >Less than 10 cig/day</option>
-					<option value="3" >10 to 19 cig/day</option>
-					<option value="4" >20 or more cig/day</option>
+					<option value="1">Ex-smoker</option>
+					<option value="2">Less than 10 cig/day</option>
+					<option value="3">10 to 19 cig/day</option>
+					<option value="4">20 or more cig/day</option>
 				</select>
 			</div>
 			
@@ -158,24 +158,24 @@
 				<strong>Diabetes</strong>
 				<span class="toggle">
 					<span id="diabetes_yes" onclick="diabetes(this), CALC()">Yes</span><!--
-				 --><span id="diabetes_no" onclick="diabetes(this), CALC()" class="active">No</span>
+					--><span id="diabetes_no" onclick="diabetes(this), CALC()" class="active">No</span>
 				</span>
 			</div>
 			
 			<div id="dm_detailed">
-				<strong>Diabetes</strong>				
+				<strong>Diabetes</strong>
 				<select id="dm_cat" onchange="CALC()" class="toggle">
 					<option value="0" selected>No</option>
-					<option value="1" >Type 1</option>
-					<option value="2" >Type 2</option>
+					<option value="1">Type 1</option>
+					<option value="2">Type 2</option>
 				</select>
 			</div>
-				
+			
 			<div>
 				<h3>Systolic Blood Pressure</h3>
 				<div class="slider_parent">
-					<input id="slider_sbp" type="range" min="110" max="190" value="120" oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />
-					<input id="sbp" type="number" min="110" max="190" maxlength="3" pattern="\d{3}" size="3" step="1" value="120"  oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />&nbsp;mmHg
+					<input id="slider_sbp" class="slider_40" type="range" min="110" max="190" value="120" step="1" oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />
+					<input id="sbp" type="number" class="three" min="110" max="190" maxlength="3" step="1" value="120" oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />&nbsp;mmHg
 				</div>
 				<p class="item_info">120 mmHg is used for baseline risk</p>
 			</div>
@@ -185,7 +185,7 @@
 				<strong>On treatment for BP</strong>
 				<span id="bptreatment_toggle" class="toggle disabled">
 					<span id="bptreatment_yes" onclick="bptreatment(this), CALC()">Yes</span><!--
-				 --><span id="bptreatment_no" onclick="bptreatment(this), CALC()" class="active">No</span>
+					--><span id="bptreatment_no" onclick="bptreatment(this), CALC()" class="active">No</span>
 				</span>
 				<p id="bptreatment_hint" class="item_info">Only applies if SBP is greater than 120 mmHg</p>
 			</div>
@@ -193,12 +193,12 @@
 			<div>
 				<h3>Total Cholesterol</h3>
 				<div class="slider_parent chol_mmol">
-					<input id="totalchol_mmol" type="range" min="3" max="8" value="3" step="0.1" oninput="adjust('chol_mmol', this)" onchange="adjust('chol_mmol', this)" />
-					<b id="chol_mmol">3</b>&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mmol/L</a>
+					<input id="totalchol_mmol" type="range" min="3" max="8" value="3" step="0.1" oninput="adjustSlider('chol_mmol', 'totalchol_mmol', _alerts['tchol'], this)" onchange="adjustSlider('chol_mmol', 'totalchol_mmol', _alerts['tchol'], this)" />
+					<input id="chol_mmol" type="number" class="two" min="3" max="8" maxlength="3" step="0.1" value="3" oninput="adjustSlider('chol_mmol', 'totalchol_mmol', _alerts['tchol'], this)" onchange="adjustSlider('chol_mmol', 'totalchol_mmol', _alerts['tchol'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mmol/L</a>
 				</div>
 				<div class="slider_parent chol_mgdl">
-					<input id="totalchol_mgdl" type="range" min="116" max="320" value="116" step="2" oninput="adjust('chol_mgdl', this)" onchange="adjust('chol_mgdl', this)" />
-					<b id="chol_mgdl">116</b>&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mg/dL</a>
+					<input id="totalchol_mgdl" class="slider_40" type="range" min="116" max="310" value="116" step="2" oninput="adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], this)" onchange="adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], this)" />
+					<input id="chol_mgdl" type="number" class="three" min="116" max="310" maxlength="3" step="2" value="116" oninput="adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], this)" onchange="adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mg/dL</a>
 				</div>
 				<p class="item_info chol_mmol">3 mmol/L is used for baseline risk.<br /><a href="javascript:void(0);" onclick="toggleCholesterolUnit()">Click to change to mg/dL.</a></p>
 				<p class="item_info chol_mgdl">116 mg/dL is used for baseline risk.<br /><a href="javascript:void(0);" onclick="toggleCholesterolUnit()">Click to change to mmol/L.</a></p>
@@ -207,23 +207,25 @@
 			<div>
 				<h3>HDL Cholesterol</h3>
 				<div class="slider_parent chol_mmol">
-					<input id="hdlchol_mmol" type="range" min="0.5" max="2" value="1.3" step="0.1" oninput="adjust('hdl_mmol', this)" onchange="adjust('hdl_mmol', this)" />
-					<b id="hdl_mmol">1.3</b>&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mmol/L</a>
+					<input id="hdlchol_mmol" type="range" min="0.5" max="2" value="1.3" step="0.1" oninput="adjustSlider('hdl_mmol', 'hdlchol_mmol', _alerts['hdl'], this)" onchange="adjustSlider('hdl_mmol', 'hdlchol_mmol', _alerts['hdl'], this)" />
+					<input id="hdl_mmol" type="number" class="two" min="0.5" max="2" maxlength="3" step="0.1" value="1.3" oninput="adjustSlider('hdl_mmol', 'hdlchol_mmol', _alerts['hdl'], this)" onchange="adjustSlider('hdl_mmol', 'hdlchol_mmol', _alerts['hdl'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mmol/L</a>
 				</div>
 				<div class="slider_parent chol_mgdl">
-					<input id="hdlchol_mgdl" type="range" min="20" max="62" value="50" step="1" oninput="adjust('hdl_mgdl', this)" onchange="adjust('hdl_mgdl', this)" />
-					<b id="hdl_mgdl">50</b>&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mg/dL</a>
+					<input id="hdlchol_mgdl" type="range" min="20" max="77" value="50" step="1" oninput="adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], this)" onchange="adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], this)" />
+					<input id="hdl_mgdl" type="number" class="two" min="20" max="77" maxlength="3" step="1" value="50" oninput="adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], this)" onchange="adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mg/dL</a>
 				</div>
 				<p class="item_info chol_mmol">1.3 mmol/L is used for baseline risk.</p>
 				<p class="item_info chol_mgdl">50 mg/dL is used for baseline risk.</p>
 			</div>
 			<div class="errorAlert" id="alert_chol"></div>
+			<div class="errorAlert" id="alert_tchol"></div>
+			<div class="errorAlert" id="alert_hdl"></div>
 			
 			<div class="qrisk_questions">
 				<strong>Family History of CVD</strong>
 				<span class="toggle">
 					<span id="famhistory_yes" onclick="famhistory(this), CALC()">Yes</span><!--
-				 --><span id="famhistory_no" onclick="famhistory(this), CALC()" class="active">No</span>
+					--><span id="famhistory_no" onclick="famhistory(this), CALC()" class="active">No</span>
 				</span>
 				<p class="item_info">Angina or heart attack in a 1<sup>st</sup> degree relative < 60 yrs</p>
 			</div>
@@ -232,67 +234,70 @@
 				<strong>Chronic Kidney Disease</strong>
 				<span class="toggle">
 					<span id="ckd_yes" onclick="ckd(this), CALC()">Yes</span><!--
-				 --><span id="ckd_no" onclick="ckd(this), CALC()" class="active">No</span>
+					--><span id="ckd_no" onclick="ckd(this), CALC()" class="active">No</span>
 				</span>
 			</div>
-		
+			
 			<div class="qrisk_questions">
 				<strong>Atrial Fibrillation</strong>
 				<span class="toggle">
 					<span id="afib_yes" onclick="afib(this), CALC()">Yes</span><!--
-				 --><span id="afib_no" onclick="afib(this), CALC()" class="active">No</span>
+					--><span id="afib_no" onclick="afib(this), CALC()" class="active">No</span>
 				</span>
 			</div>
-		
+			
 			<div class="qrisk_questions">
 				<strong>Rheumatoid Arthritis</strong>
 				<span class="toggle">
 					<span id="ra_yes" onclick="ra(this), CALC()">Yes</span><!--
-				 --><span id="ra_no" onclick="ra(this), CALC()" class="active">No</span>
+					--><span id="ra_no" onclick="ra(this), CALC()" class="active">No</span>
 				</span>
 			</div>
 			
 			<div class="qrisk_questions">
 				<h3>Height</h3>
 				<div class="slider_parent" id="divHeightCm">
-					<input id="height_cm" type="range" min="120" max="226" value="152" step="2" oninput="adjust('height_cm_label', this)" onchange="adjust('height_cm_label', this)" />
-					<b id="height_cm_label">152</b>&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">cm</a>
+					<input id="height_cm" class="slider_40" type="range" min="120" max="198" value="152" step="2" oninput="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="    adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" />
+					<input id="height_cm_label" type="number" class="three" min="120" max="198" maxlength="3" step="2" value="152" oninput="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="    adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">cm</a>
 				</div>
 				<div class="slider_parent" id="divHeightIn">
-					<input id="height_in" type="range" min="47" max="89" value="60" step="1" oninput="adjust('height_in_label', this)" onchange="adjust('height_in_label', this)" />
-					<b id="height_in_label">60</b>&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">in</a>
+					<input id="height_in" type="range" min="47" max="78" value="60" step="1" oninput="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" onchange="    adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" />
+					<input id="height_in_label" type="number" class="two" min="47" max="78" maxlength="2" step="1" value="60" oninput="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" onchange="    adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="    toggleHeightUnit()">in</a>
 				</div>
+				<div class="errorAlert" id="alert_height"></div>
 			</div>
+			
 			
 			<div class="qrisk_questions">
 				<h3>Weight</h3>
 				<div class="slider_parent" id="divWeightKg">
-					<input id="weight_kg" type="range" min="30" max="250" value="80" step="0.5" oninput="adjust('weight_kg_label', this)" onchange="adjust('weight_kg_label', this)" />
-					<b id="weight_kg_label">80</b>&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">kg</a>
+					<input id="weight_kg" class="slider_40" type="range" min="30" max="250" value="80" step="0.5" oninput="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="    adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />
+					<input id="weight_kg_label" type="number" class="three" min="30" max="250" maxlength="3" step="0.5" value="80" oninput="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="    adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="    toggleWeightUnit()">kg</a>
 				</div>
 				<div class="slider_parent" id="divWeightLbs">
-					<input id="weight_lbs" type="range" min="66" max="551" value="176" step="1" oninput="adjust('weight_lbs_label', this)" onchange="adjust('weight_lbs_label', this)" />
-					<b id="weight_lbs_label">176</b>&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">lbs</a>
+					<input id="weight_lbs" class="slider_40" type="range" min="66" max="551" value="176" step="1" oninput="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="    adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />
+					<input id="weight_lbs_label" type="number" class="three" min="66" max="551" maxlength="3" step="1" value="176" oninput="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="    adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="    toggleWeightUnit()">lbs</a>
 				</div>
-				<div class="errorAlert" id="alert_BMI"></div>
-				
-				<p class="item_info">BMI of 30 kg/m<sup>2</sup> for baseline risk</p>
+				<div class="errorAlert" id="alert_weight"></div>
 			</div>
-				
-				
 			
 			
+			<div class="qrisk_questions">
+				<strong>BMI</strong>
+				<span style="float: right; font-size: 1.1em; font-weight: bold;" id="bmi"></span>
+				<p class="item_info">BMI of 30 kg/m<sup>2</sup> for baseline risk</p>
+				<div class="errorAlert" id="alert_BMI"></div>
+			</div>
 		</div>
 		
 		<div id="input-2">
 			<div>
-				<h3>Relative Benefit:&nbsp;&nbsp;<span id="benefit">0</span>%</h3>
+				<h3 class="relativeBenefit">Relative Benefit:&nbsp;&nbsp;<span><span id="benefit">0</span>%</span></h3>
 				<p class="item_info">Benefit often has <i>nothing</i> to do with the effect on the surrogate marker. At present, you can only select one intervention at a time.</p>
 				<!--div class="slider_parent">
 					<input type="range" min="0" max="50" value="0" oninput="adjust('benefit', this)" onchange="adjust('benefit', this)" />
 					<b id="benefit">0</b>&nbsp;%
 				</div-->
-				
 				<!-- The benefit table. It goes here so Canadians can edit it. -->
 				<script>
 				var _alerts = {
@@ -305,118 +310,148 @@
 						'alert_id': 'alert_sbp',
 						'label': 'Systolic BP',
 						'suffix': 'mmHg'
+					},
+					'time': {
+						'alert_id': 'alert_time',
+						'label': 'Risk time period',
+						'suffix': 'years'
+					},
+					'tchol': {
+						'alert_id': 'alert_tchol',
+						'label': 'Total cholesterol',
+						'suffix': ''
+					},
+					'hdl': {
+						'alert_id': 'alert_hdl',
+						'label': 'HDL cholesterol',
+						'suffix': ''
+					},
+					'height': {
+						'alert_id': 'alert_height',
+						'label': 'Height',
+						'suffix': ''
+					},
+					'weight': {
+						'alert_id': 'alert_weight',
+						'label': 'Weight',
+						'suffix': ''
+					},
+					'overestimate': {
+						'alert_id': 'alert_overestimate',
+						'label': 'Risk adjustment',
+						'suffix': '%'
 					}
 				}
 				
 				var _bp_threshold = 140;			// BP meds benefits are NOT being applied if BP is LOWER THAN this number
 				var _benefit = {
-						'cvd': {
+					'cvd': {
 						'activity': 25,
 						'meddiet': 30,
 						'vitaomeg': 0,
-						'bp': {'default': 30, 'diabetes': 50},
+						'bp': { 'default': 30, 'diabetes': 50 },
 						'statins': 25,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
-						'metformin': {'default': 0, 'diabetes': 35},
-						'sulfonylureas': {'default': 0, 'diabetes': 0},
-						'insulins': {'default': 0, 'diabetes': 0},
-						'glitazones': {'default': 0, 'diabetes': 0},
-						'glp': {'default': 0, 'diabetes': 0},
-						'dpp-4': {'default': 0, 'diabetes': 0},
-						'meglit': {'default': 0, 'diabetes': 0},
-						'asa': {'male': 15, 'female': 10}
+						'metformin': { 'default': 0, 'diabetes': 35 },
+						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
+						'insulins': { 'default': 0, 'diabetes': 0 },
+						'glitazones': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 0 },
+						'dpp-4': { 'default': 0, 'diabetes': 0 },
+						'meglit': { 'default': 0, 'diabetes': 0 },
+						'asa': { 'male': 15, 'female': 10 }
 					},
 					'ascvd': {
 						'activity': 25,
 						'meddiet': 30,
 						'vitaomeg': 0,
-						'bp': {'default': 30, 'diabetes': 50},
+						'bp': { 'default': 30, 'diabetes': 50 },
 						'statins': 25,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
-						'metformin': {'default': 0, 'diabetes': 35},
-						'sulfonylureas': {'default': 0, 'diabetes': 0},
-						'insulins': {'default': 0, 'diabetes': 0},
-						'glitazones': {'default': 0, 'diabetes': 0},
-						'glp': {'default': 0, 'diabetes': 0},
-						'dpp-4': {'default': 0, 'diabetes': 0},
-						'meglit': {'default': 0, 'diabetes': 0},
-						'asa': {'male': 15, 'female': 10}
+						'metformin': { 'default': 0, 'diabetes': 35 },
+						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
+						'insulins': { 'default': 0, 'diabetes': 0 },
+						'glitazones': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 0 },
+						'dpp-4': { 'default': 0, 'diabetes': 0 },
+						'meglit': { 'default': 0, 'diabetes': 0 },
+						'asa': { 'male': 15, 'female': 10 }
 					},
 					'qrisk': {
 						'activity': 25,
 						'meddiet': 30,
 						'vitaomeg': 0,
-						'bp': {'default': 30, 'diabetes': 50},
+						'bp': { 'default': 30, 'diabetes': 50 },
 						'statins': 25,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
-						'metformin': {'default': 0, 'diabetes': 35},
-						'sulfonylureas': {'default': 0, 'diabetes': 0},
-						'insulins': {'default': 0, 'diabetes': 0},
-						'glitazones': {'default': 0, 'diabetes': 0},
-						'glp': {'default': 0, 'diabetes': 0},
-						'dpp-4': {'default': 0, 'diabetes': 0},
-						'meglit': {'default': 0, 'diabetes': 0},
-						'asa': {'male': 15, 'female': 10}
+						'metformin': { 'default': 0, 'diabetes': 35 },
+						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
+						'insulins': { 'default': 0, 'diabetes': 0 },
+						'glitazones': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 0 },
+						'dpp-4': { 'default': 0, 'diabetes': 0 },
+						'meglit': { 'default': 0, 'diabetes': 0 },
+						'asa': { 'male': 15, 'female': 10 }
 					},
 					'chd': {
 						'activity': 25,
 						'meddiet': 20,
-						'vitaomeg': 0,						
-						'bp': {'default': 20, 'diabetes': 20},
+						'vitaomeg': 0,
+						'bp': { 'default': 20, 'diabetes': 20 },
 						'statins': 30,
 						'fibrates': 20,
 						'ezetimibe': 0,
 						'niacin': 0,
-						'metformin': {'default': 0, 'diabetes': 35},
-						'sulfonylureas': {'default': 0, 'diabetes': 0},
-						'insulins': {'default': 0, 'diabetes': 0},
-						'glitazones': {'default': 0, 'diabetes': 0},
-						'glp': {'default': 0, 'diabetes': 0},
-						'dpp-4': {'default': 0, 'diabetes': 0},
-						'meglit': {'default': 0, 'diabetes': 0},
-						'asa': {'male': 30, 'female': 0}
+						'metformin': { 'default': 0, 'diabetes': 35 },
+						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
+						'insulins': { 'default': 0, 'diabetes': 0 },
+						'glitazones': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 0 },
+						'dpp-4': { 'default': 0, 'diabetes': 0 },
+						'meglit': { 'default': 0, 'diabetes': 0 },
+						'asa': { 'male': 30, 'female': 0 }
 					},
 					'mi': {
 						'activity': 20,
 						'meddiet': 20,
 						'vitaomeg': 0,
-						'bp': {'default': 20, 'diabetes': 20},
+						'bp': { 'default': 20, 'diabetes': 20 },
 						'statins': 30,
 						'fibrates': 20,
 						'ezetimibe': 0,
 						'niacin': 0,
-						'metformin': {'default': 0, 'diabetes': 35},
-						'sulfonylureas': {'default': 0, 'diabetes': 0},
-						'insulins': {'default': 0, 'diabetes': 0},
-						'glitazones': {'default': 0, 'diabetes': 0},
-						'glp': {'default': 0, 'diabetes': 0},
-						'dpp-4': {'default': 0, 'diabetes': 0},
-						'meglit': {'default': 0, 'diabetes': 0},
-						'asa': {'male': 30, 'female': 0}
+						'metformin': { 'default': 0, 'diabetes': 35 },
+						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
+						'insulins': { 'default': 0, 'diabetes': 0 },
+						'glitazones': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 0 },
+						'dpp-4': { 'default': 0, 'diabetes': 0 },
+						'meglit': { 'default': 0, 'diabetes': 0 },
+						'asa': { 'male': 30, 'female': 0 }
 					},
 					'stroke': {
 						'activity': 25,
 						'meddiet': 40,
 						'vitaomeg': 0,
-						'bp': {'default': 40, 'diabetes': 40},
+						'bp': { 'default': 40, 'diabetes': 40 },
 						'statins': 20,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
-						'metformin': {'default': 0, 'diabetes': 35},
-						'sulfonylureas': {'default': 0, 'diabetes': 0},
-						'insulins': {'default': 0, 'diabetes': 0},
-						'glitazones': {'default': 0, 'diabetes': 0},
-						'glp': {'default': 0, 'diabetes': 0},
-						'dpp-4': {'default': 0, 'diabetes': 0},
-						'meglit': {'default': 0, 'diabetes': 0},
-						'asa': {'male': 0, 'female': 15}
+						'metformin': { 'default': 0, 'diabetes': 35 },
+						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
+						'insulins': { 'default': 0, 'diabetes': 0 },
+						'glitazones': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 0 },
+						'dpp-4': { 'default': 0, 'diabetes': 0 },
+						'meglit': { 'default': 0, 'diabetes': 0 },
+						'asa': { 'male': 0, 'female': 15 }
 					}
 				};
 				var _benefit_risks = {
@@ -425,13 +460,13 @@
 					'vitaomeg': [
 						"Vitamin A and E have evidence for increased mortality",
 						"Drug Cost/Pill Burden"
-					],												
+					],
 					'bp': [
 						"Types of side effects vary between drugs",
 						"Having to stop drug due to intolerability NNH 10",
 						"Inconvenience of surrogate remeasurements",
 						"Drug Cost/Pill Burden"
-					],						
+					],
 					'statins': [
 						"Muscle aches and stiffness NNH 10-20",
 						"Increased liver function tests NNH 50",
@@ -529,21 +564,20 @@
 			</div>
 			
 			<div id="divFamilyHistoryOfEarlyCHD">
-				<h3>Family History of Early CHD</h3>			
+				<h3>Family History of Early CHD</h3>
 				<p class="item_info">If CHD in men &lt; 55 years, women &lt; 65 years - increase risk by 50%. If no family history - decrease estimates by 33%.</p>
 			</div>
 			
 			<div>
 				<h3>Adjust Overall Risk</h3>
 				<div class="slider_parent">
-					<input type="range" min="50" max="150" value="100" oninput="adjust('overestimate', this)" onchange="adjust('overestimate', this)" />
-					<b id="overestimate">100</b>&nbsp;%
+					<input id="slider_overestimate" class="slider_40" type="range" min="50" max="150" value="100" step="1" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" />
+					<input id="overestimate" type="number" class="three" min="50" max="150" maxlength="3" step="1" value="100" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','overestimate', _alerts['overestimate'], this)" />%
 				</div>
+				<div class="errorAlert" id="alert_overestimate"></div>
 				<p class="item_info">Use to adjust risk based on family history or if patient is at a lower/higher risk than the Framingham cohort. See the <a href="FAQ.html#calculator" target="_blank">FAQ</a> for guidance.</p>
 			</div>
 		</div>
-		
-		
 		<!-- Outcome -->
 		<div id="outcome">
 			<div id="faces"></div>
@@ -557,34 +591,34 @@
 						<col />
 					</colgroup>
 					<tr>
-						<td><img src="imgs/good@2x.png" alt="" /></td>
+						<td><img src="imgs/blue@2x.png" alt="" /></td>
 						<th id="score_good"></th>
-						<td>No events</td>
+						<td><strong>No event</strong></td>
 					</tr>
 					<tr>
-						<td><img src="imgs/badS2@2x.png" alt="" onclick="$(this).attr('src')=='imgs/badS@2x.png' ? $(this).attr('src','imgs/badS2@2x.png') : $(this).attr('src', 'imgs/badS@2x.png');" /></td>
+						<td><img src="imgs/badS@2x.png" alt="" /></td>
 						<th id="score_bad_sum"></th>
-						<td>Total events (baseline and risk factors)</td>
+						<td><strong>Total with an event</strong></td>
 					</tr>
 					<tr>
-						<td><img src="imgs/bad@2x.png" alt="" /></td>
-						<th id="score_bad"></th>
-						<td>Baseline events using baseline factors alone</td>
-					</tr>
-					<tr>
-						<td><img src="imgs/badA@2x.png" alt="" /></td>
-						<th id="score_bad_add"></th>
-						<td>Additional events – “caused” by risk factors over baseline</td>
-					</tr>
-					<tr>
-						<td><img src="imgs/badP@2x.png" alt="" /></td>
+						<td><img src="imgs/green@2x.png" alt="" /></td>
 						<th id="score_benefits"></th>
-						<td>Benefits – will not have an event because of “treatment”</td>
+						<td><strong>Number who benefit from treatment</strong></td>
 					</tr>
 					<tr>
 						<td style="font-size:1.4em; font-family:'Arial Narrow',Arial,sans-serif;">NNT</td>
 						<th><span id="score_nnt"></span><span style="color:transparent;">%</span></th>
-						<td>Number needed to treat</td>
+						<td><strong>Number needed to treat</strong></td>
+					</tr>
+					<tr>
+						<td><img src="imgs/bad@2x.png" alt="" /></td>
+						<th id="score_bad"></th>
+						<td><strong>Baseline events using baseline factors alone</strong></td>
+					</tr>
+					<tr>
+						<td><img src="imgs/badA@2x.png" alt="" /></td>
+						<th id="score_bad_add"></th>
+						<td><strong>Additional events “caused” by risk factors</strong></td>
 					</tr>
 				</table>
 				<p class="item_info">
@@ -600,6 +634,10 @@
 		
 		<!-- Footer -->
 		<div id="footer">
+			<p>
+				Please provide feedback to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>. For more detailed information and acronym definitions etc see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>. For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
+			</p>
+
 			James McCormack/Pascal Pfiffner, 2014
 			<span class="separator">★</span>
 			<a id="cache_status" href="javascript:void(0);" onclick="offlineHint()">Available offline</a>
@@ -618,16 +656,13 @@
 		CONVERT_SLIDERS = true;
 	</script>
 	<![endif]-->
-
 	<script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
 	ga('create', 'UA-42961029-1', 'bestsciencemedicine.com');
 	ga('send', 'pageview');
 	</script>
-
 </body>
 </html>

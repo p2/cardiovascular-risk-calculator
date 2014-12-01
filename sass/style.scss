@@ -22,8 +22,10 @@ html, body {
 }
 
 h1 {
-	text-align: center;
+	text-align: center;  font-size: 2.4em;
+	margin: 0 0 0.2em 0;
 }
+@media screen and (max-width: $ref-w-full) { h1 { font-size: 2em; } }
 h1, h2, h3, h4, strong {
 	font-weight: 500; line-height: 1.2;
 }
@@ -107,7 +109,7 @@ hr {
 
 #formula_selector {
 	max-width: $w-column;
-	margin: 2em auto 1em;
+	margin: 0;
 	
 	@media screen and (max-width: $ref-w-phone) {
 		margin-left: 20px; margin-right: 20px;
@@ -288,17 +290,25 @@ ul#benefit_estimates {
 
 
 // Elements
-.chol_mgdl, #divHeightIn, #divWeightLbs {
-	display: none;
-}
+.chol_mgdl, #divHeightIn, #divWeightLbs { display: none; }
 
 select.toggle, input[type="text"].toggle {
 	padding: 3px;
 }
 input[type="number"] {
-	width: 2.5em !important;
 	padding: 3px;
 	font-size: 1.1em;
+    border: 1px solid #003366; border-radius: 2pt;
+    height: inherit !important;
+}
+input[type="number"].two {
+    width: 2.5em !important;
+}
+input[type="number"].three {
+    width: 3.5em !important;
+}
+.slider_40 {
+    width: 40% !important;
 }
 
 .toggle {
@@ -334,11 +344,13 @@ input[type="number"] {
 .tab {
 	list-style-type: none;
 	padding: 0;
+	margin: 0.25em 0;
 	font-size: 1.2em;
+	text-align: center;
 	
 	li {
 		display: inline-block;
-		width: 31%;
+		width: 30%;
 		margin: 0; padding: 0.5em 1%;
 		color: darken($col-main, 20%); text-align: center;
 		border-radius: 2pt;
@@ -358,8 +370,9 @@ input[type="number"] {
 		}
 	}
 }
+.tab li > div { line-height: 1.2 }
 
-@media screen and (max-width: $ref-w-full) { #liFramingham { width: 100%;} }
+@media screen and (max-width: 1024px) { #liFramingham { width: 100%;} }
 #liFramingham { cursor: inherit; }
 #liFramingham:hover { background-color: inherit; }
 #ulFraminghamSubtypes {
@@ -373,10 +386,7 @@ input[type="number"] {
 	height: 2em;
 	line-height: 2em;
 }
-#FraminghamInstructions {
-	text-align: center;
-	font-size: 0.5em;
-}
+#ulFraminghamSubtypes li span { display: none; }
 
 .item_info {
 	margin: 0.5em 0 0;
@@ -390,12 +400,12 @@ input[type="number"] {
 
 .errorAlert {
 	display: none;
-	background: #E59494;
-	border: 1px solid #AD0000;
+	background: #f6e3e3;
+	border: 1px solid #c84545;
 	text-align: center;
-	font-weight: bold;
 	padding: 0.5em;
 	margin: 1em 0;
+    min-height: initial !important;
 }
 .errorAlert sup, .errorAlert sub {
    vertical-align: baseline;
@@ -404,12 +414,20 @@ input[type="number"] {
 }
 .errorAlert sub { top: 0.4em; }
 .errorTextbox {
-	background: #E59494;
-	border: 1px solid #AD0000;
-	font-weight: bold;
+	background: #f6e3e3;
+	border: 1px solid #c84545 !important;
 }
 .opacity10 {
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=10)";
   filter: alpha(opacity=10);
   opacity: 0.1;
+}
+
+h3.relativeBenefit {
+    text-align: center;
+    font-size: 1.5em;
+}
+h3.relativeBenefit > span.active {
+    background-color: #003366; color: white; font-weight: 500;
+    padding: 5px;
 }
