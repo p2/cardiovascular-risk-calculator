@@ -26,7 +26,6 @@ $(document).ready(function() {
 	if (CONVERT_SLIDERS) {		// this flag is specifically set by IE 9 and lower because we have a plugin for FireFox and don't care about old WebKit
 		convertSliders();
 	}
-	setFormulaById('cvd');
 	
 	// setup offline mode
 	if ('applicationCache' in window) {
@@ -37,6 +36,66 @@ $(document).ready(function() {
 		window.applicationCache.addEventListener('updateready', offlineStatusChanged, false);
 		window.applicationCache.addEventListener('obsolete', offlineStatusChanged, false);
 		window.applicationCache.addEventListener('error', offlineStatusChanged, false);
+	}
+	
+	// "basic" vs. normal functionality
+	if (location.href.toLowerCase().indexOf("#basic") == -1) {
+		// Load the normal page (the page should be setup by default to support the 'normal' functionality without any JavaScript magic
+		setFormulaById('cvd');
+		
+	} else {
+		// Load a "basic" version of the page
+		// Reset the toggle button
+		$('#toggleBasicView').text('Switch to "Normal" View');
+		$('#toggleBasicView').click(function() {window.location.href = window.location.href.split("#")[0]; });
+		
+		// Hide some of the treatments
+		$('li[data-benefit="vitaomeg"]').hide();
+		$('li[data-benefit="bp"]').hide();
+		$('li[data-benefit="fibrates"]').hide();
+		$('li[data-benefit="niacin"]').hide();
+		$('li[data-benefit="ezetimibe"]').hide();
+		$('li[data-benefit="metformin"]').hide();
+		$('li[data-benefit="sulfonylureas"]').hide();
+		$('li[data-benefit="insulins"]').hide();
+		$('li[data-benefit="glitazones"]').hide();
+		$('li[data-benefit="glp"]').hide();
+		$('li[data-benefit="dpp-4"]').hide();
+		$('li[data-benefit="meglit"]').hide();
+		
+		// "Unfill" the textboxes to force the user to input data
+		$('#age').val('').change();
+		$('#sbp').val('').change();
+		$('#chol_mmol').val('').change();
+		$('#chol_mgdl').val('').change();
+		$('#hdl_mmol').val('').change();
+		$('#hdl_mgdl').val('').change();
+		$('#height_cm_label').val('').change();
+		$('#height_in_label').val('').change();
+		$('#weight_kg_label').val('').change();
+		$('#weight_lbs_label').val('').change();
+		
+		// Hide some of the calculators
+		$('li[data-calc="chd"]').hide();
+		$('li[data-calc="mi"]').hide();
+		$('li[data-calc="stroke"]').hide();
+		
+		// Make Framingham look more normal...
+		$('#liFramingham').attr('id','liFraminghamSimple');		// Changing the ID removes much of the Framingham-specific styling in the CSS
+		$('li[data-calc="cvd"]').attr('onclick','');
+		$('#liFraminghamSimple').attr('data-calc','cvd');
+		$('#liFraminghamSimple').click(function() {
+			setFormula(this);
+			$('#liFraminghamSimple').addClass('active');
+		});
+		
+		// Hide some of the results table
+		$('#trScoreBad').hide();
+		$('#trScoreBadAdd').hide();
+		// Change the icon in the results table
+		$('#trScoreBadSum td img').attr('src','imgs/bad.png');
+		
+		$('li[data-calc="cvd"]').click();
 	}
 	
 	// detect if we're running standalone
@@ -197,18 +256,19 @@ function adjustSlider(txt_id, slider_id, alert_info, sender, no_calc) {
 		// Gently warn the user about min/max errors.  Changing the textbox input with min/max gets overzealous because the min/max check can occur mid-typing (eg, typing the '3' for '30' will trigger a check and change)
 		if (parseFloat(txt_val) < parseFloat(min)) {
 
+			$('#outcome').addClass('opacity10');
 		    setTimeout(function () {
 		        if (parseFloat($('#' + txt_id).val()) < parseFloat(min)) {
 		            $('#' + alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
 		            $('#' + txt_id).addClass('errorTextbox');
 		        }
 		    }, errorDelay);
-
-		    $('#outcome').addClass('opacity10');
+			
 			return;
 		}
 		if (parseFloat(txt_val) > parseFloat(max)) {
 
+			$('#outcome').addClass('opacity10');
 		    setTimeout(function () {
 		        if (parseFloat($('#' + txt_id).val()) > parseFloat(max)) {
 		            $('#' + alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
@@ -216,7 +276,6 @@ function adjustSlider(txt_id, slider_id, alert_info, sender, no_calc) {
 		        }
 		    }, errorDelay);
 
-		    $('#outcome').addClass('opacity10');
 		    return;
 		}
 		
@@ -392,6 +451,59 @@ function setFormulaById(formula_id) {
 		return $(this).data('calc') == _formula_id;
 	}).addClass('active');
 	// showImages(formula_id);
+	
+	// Do some special hide/show magic for the ASCVD calculator ...
+	if ('ascvd' == formula_id) {
+		$('#divRace').show();
+	} else {
+		$('#divRace').hide();
+	}
+	
+	// Do some special hide/show magic for QRISK calculator ...
+	if ('qrisk' == formula_id) {
+		$('#divEthnicity').show();
+		$('#smoker_dicotomous').hide();
+		$('#smoker_detailed').show();
+		$('#dm_dichotomous').hide();
+		$('#dm_detailed').show();
+		$('.qrisk_questions').show();
+		
+		$('#qrisk_disclaimer').show();	
+		$('#divFamilyHistoryOfEarlyCHD').hide();	//CHD family history is defined and part of the algorithm for QRISK
+	} else {
+		$('#divEthnicity').hide();
+		$('#smoker_dicotomous').show();
+		$('#smoker_detailed').hide();
+		$('#dm_dichotomous').show();
+		$('#dm_detailed').hide();
+		$('.qrisk_questions').hide();
+		$('#qrisk_disclaimer').hide();
+		$('#divFamilyHistoryOfEarlyCHD').show();
+	}
+	
+	// BP Treatment only exists for qrisk and ascvd
+	if (('qrisk' == formula_id) || ('ascvd' == formula_id)) {
+		$('#divBPTreatment').show();
+	} else {
+		$('#divBPTreatment').hide();
+	}
+	 
+	// Should the "Risk Time Period" option be enabled?
+	if (('qrisk' == formula_id) || ('ascvd' == formula_id)) {
+	    $('#rangeTime').prop('disabled', true);
+	    $('#time').prop('disabled', true);
+	    $('#rangeTime').val(10);
+	    $('#time').val(10);
+	    $('#divTime').hide();
+		$('#time_fixed').show();
+		adjust('time', $('#rangeTime'), true);
+	} else {
+	    $('#divTime').show();
+	    $('#time').prop('disabled', false);
+	    $('#rangeTime').prop('disabled', false);
+	    $('#time_fixed').hide();
+	}
+	
 	calculate(formula_id);
 }
 
@@ -508,18 +620,21 @@ function calculate(formula_id) {
 	// Reset some of the alerts
 	$('.errorAlert').hide();
 	$('#outcome').removeClass('opacity10');
-
+	
     // Run through the visible textbox fields (looking for invalid entries)
-	$('input[type="number"]:visible').each(function () {
+	var minmax_error = false;
+	$('input[type="number"]:visible').each( function () {
 	    var val = parseFloat($(this).val());
 	    var min = parseFloat($(this).attr('min'));
 	    var max = parseFloat($(this).attr('max'));
 
-	    if ((val < min) || (val > max)) {
+	    if ((val < min) || (val > max) || (!isNumeric(val))) {
 	        $(this).change();   //Calling the 'change' event will force a check
+			minmax_error = true;
 	    }
 	});
-	
+	if (minmax_error) { return; }
+
 	// CVD
 	if ('cvd' == formula_id) {
 		badFormula = OVERESTIMATE*(1-Math.exp(-Math.exp((Math.log(TIME)-(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP))+(-0.3899*SMOKE)+(-0.539*Math.log(TCHOL/HDLCHOL))+(-0.3036*DIABETES)+(-0.1697*DIABETES*(1-IS_MALE))+(-0.3362*IVH)+(0*IVH*IS_MALE)))/(Math.exp(0.6536)*Math.exp(-0.2402*(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP))+(-0.3899*SMOKE)+(-0.539*Math.log(TCHOL/HDLCHOL))+(-0.3036*DIABETES)+(-0.1697*DIABETES*(1-IS_MALE))+(-0.3362*IVH)+(0*IVH*IS_MALE)))))));
@@ -592,54 +707,6 @@ function calculate(formula_id) {
 			badFormula = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)/100;
 			badFormulaBaseline = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,0,0,0,25.0,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
 		}
-	}
-	
-	// Do some special hide/show magic for the ASCVD calculator ...
-	if ('ascvd' == formula_id) {
-		$('#divRace').show();
-		$('#divBPTreatment').show();
-	} else {
-		$('#divRace').hide();
-		$('#divBPTreatment').hide();
-	}
-	
-	// Do some special hide/show magic for QRISK calculator ...
-	if ('qrisk' == formula_id) {
-		$('#divEthnicity').show();
-		$('#smoker_dicotomous').hide();
-		$('#smoker_detailed').show();
-		$('#dm_dichotomous').hide();
-		$('#dm_detailed').show();
-		$('.qrisk_questions').show();
-		$('#divBPTreatment').show();
-		$('#qrisk_disclaimer').show();	
-		$('#divFamilyHistoryOfEarlyCHD').hide();	//CHD family history is defined and part of the algorithm for QRISK
-	} else {
-		$('#divEthnicity').hide();
-		$('#smoker_dicotomous').show();
-		$('#smoker_detailed').hide();
-		$('#dm_dichotomous').show();
-		$('#dm_detailed').hide();
-		$('.qrisk_questions').hide();
-		$('#divBPTreatment').hide();
-		$('#qrisk_disclaimer').hide();
-		$('#divFamilyHistoryOfEarlyCHD').show();
-	}
-	
-	// Should the "Risk Time Period" option be enabled?
-	if (('qrisk' == formula_id) || ('ascvd' == formula_id)) {
-	    $('#rangeTime').prop('disabled', true);
-	    $('#time').prop('disabled', true);
-	    $('#rangeTime').val(10);
-	    $('#time').val(10);
-	    $('#divTime').hide();
-		$('#time_fixed').show();
-		adjust('time', $('#rangeTime'), true);
-	} else {
-	    $('#divTime').show();
-	    $('#time').prop('disabled', false);
-	    $('#rangeTime').prop('disabled', false);
-	    $('#time_fixed').hide();
 	}
 	
 	// calculate

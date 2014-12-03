@@ -45,14 +45,6 @@
 
 		<div id="formula_selector">
 			<ul class="tab">
-				<li onclick="setFormula(this)" data-calc="ascvd">
-					<div>ASCVD</div>
-					<span>CHD death + nonfatal heart attacks <br />+ fatal/nonfatal strokes</span>
-				</li>
-				<li onclick="setFormula(this)" data-calc="qrisk">
-					<div>QRISK</div>
-					<span>Heart attacks + strokes<br />&nbsp;</span>
-				</li>
 				<li id="liFramingham">
 					<div>Framingham</div>
 					<ul id="ulFraminghamSubtypes">
@@ -74,6 +66,14 @@
 						</li>
 					</ul>
 				</li>
+				<li onclick="setFormula(this)" data-calc="qrisk">
+					<div>QRISK</div>
+					<span>Heart attacks + strokes<br />&nbsp;</span>
+				</li>
+				<li onclick="setFormula(this)" data-calc="ascvd">
+					<div>ASCVD</div>
+					<span>CHD death + nonfatal heart attacks <br />+ fatal/nonfatal strokes</span>
+				</li>
 			</ul>
 			
 			<hr />
@@ -81,19 +81,7 @@
 		
 		
 		<!-- Input -->
-		<div id="input">
-			<div>
-				<h3>Risk Time Period</h3>
-				<div class="slider_parent">
-					<div id="divTime">
-						<input id="rangeTime" type="range" min="1" max="10" value="10" step="1" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="adjustSlider('time', 'rangeTime', _alerts['time'], this)" />
-						<input id="time" type="number" class="two" min="1" max="10" maxlength="2" step="1" value="10" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="adjustSlider('time', 'rangeTime', _alerts['time'], this)" />&nbsp;years
-					</div>
-					<b id="time_fixed" style="display: none;">10 years</b>
-				</div>
-			</div>
-			<div class="errorAlert" id="alert_time"></div>
-			
+		<div id="input">		
 			<div>
 				<h3>Age</h3>
 				<div class="slider_parent">
@@ -350,7 +338,8 @@
 						'meddiet': 30,
 						'vitaomeg': 0,
 						'bp': { 'default': 30, 'diabetes': 50 },
-						'statins': 25,
+						'statins_lowmod': 25,
+						'statins_high': 30,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -368,7 +357,8 @@
 						'meddiet': 30,
 						'vitaomeg': 0,
 						'bp': { 'default': 30, 'diabetes': 50 },
-						'statins': 25,
+						'statins_lowmod': 25,
+						'statins_high': 30,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -386,7 +376,8 @@
 						'meddiet': 30,
 						'vitaomeg': 0,
 						'bp': { 'default': 30, 'diabetes': 50 },
-						'statins': 25,
+						'statins_lowmod': 25,
+						'statins_high': 30,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -404,7 +395,8 @@
 						'meddiet': 20,
 						'vitaomeg': 0,
 						'bp': { 'default': 20, 'diabetes': 20 },
-						'statins': 30,
+						'statins_lowmod': 25,
+						'statins_high': 30,
 						'fibrates': 20,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -422,7 +414,8 @@
 						'meddiet': 20,
 						'vitaomeg': 0,
 						'bp': { 'default': 20, 'diabetes': 20 },
-						'statins': 30,
+						'statins_lowmod': 25,
+						'statins_high': 30,
 						'fibrates': 20,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -440,7 +433,8 @@
 						'meddiet': 40,
 						'vitaomeg': 0,
 						'bp': { 'default': 40, 'diabetes': 40 },
-						'statins': 20,
+						'statins_lowmod': 25,
+						'statins_high': 30,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -467,7 +461,15 @@
 						"Inconvenience of surrogate remeasurements",
 						"Drug Cost/Pill Burden"
 					],
-					'statins': [
+					'statins_lowmod': [
+						"Muscle aches and stiffness NNH 10-20",
+						"Increased liver function tests NNH 50",
+						"Severe muscle/kidney damage NNH 10,000",
+						"Nausea, constipation, diarrhea",
+						"Inconvenience of surrogate remeasurements",
+						"Drug Cost/Pill Burden"
+					],
+					'statins_high': [
 						"Muscle aches and stiffness NNH 10-20",
 						"Increased liver function tests NNH 50",
 						"Severe muscle/kidney damage NNH 10,000",
@@ -547,7 +549,8 @@
 					<li onclick="toggleBenefit(this)" data-benefit="meddiet">Mediterranean Diet vs Low fat</li>
 					<li onclick="toggleBenefit(this)" data-benefit="vitaomeg">Vitamin/Omega-3 supplements</li>
 					<li onclick="toggleBenefit(this)" data-benefit="bp">BP meds (not atenolol/doxazosin)</li>
-					<li onclick="toggleBenefit(this)" data-benefit="statins">Statins</li>
+					<li onclick="toggleBenefit(this)" data-benefit="statins_lowmod">Low-mod intensity statins</li>
+					<li onclick="toggleBenefit(this)" data-benefit="statins_high">High intensity statins</li>
 					<li onclick="toggleBenefit(this)" data-benefit="fibrates">Fibrates</li>
 					<li onclick="toggleBenefit(this)" data-benefit="niacin">Niacin</li>
 					<li onclick="toggleBenefit(this)" data-benefit="ezetimibe">Ezetimibe</li>
@@ -567,6 +570,18 @@
 				<h3>Family History of Early CHD</h3>
 				<p class="item_info">If CHD in men &lt; 55 years, women &lt; 65 years - increase risk by 50%. If no family history - decrease estimates by 33%.</p>
 			</div>
+			
+			<div>
+				<h3>Risk Time Period</h3>
+				<div class="slider_parent">
+					<div id="divTime">
+						<input id="rangeTime" type="range" min="1" max="10" value="10" step="1" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="adjustSlider('time', 'rangeTime', _alerts['time'], this)" />
+						<input id="time" type="number" class="two" min="1" max="10" maxlength="2" step="1" value="10" oninput="adjustSlider('time', 'rangeTime', _alerts['time'], this)" onchange="adjustSlider('time', 'rangeTime', _alerts['time'], this)" />&nbsp;years
+					</div>
+					<b id="time_fixed" style="display: none;">10 years</b>
+				</div>
+			</div>
+			<div class="errorAlert" id="alert_time"></div>
 			
 			<div>
 				<h3>Adjust Overall Risk</h3>
@@ -590,32 +605,32 @@
 						<col width="92" />
 						<col />
 					</colgroup>
-					<tr>
+					<tr id="trScoreGood">
 						<td><img src="imgs/blue@2x.png" alt="" /></td>
 						<th id="score_good"></th>
 						<td><strong>No event</strong></td>
 					</tr>
-					<tr>
+					<tr id="trScoreBadSum">
 						<td><img src="imgs/badS@2x.png" alt="" /></td>
 						<th id="score_bad_sum"></th>
 						<td><strong>Total with an event</strong></td>
 					</tr>
-					<tr>
+					<tr id="trScoreBenefits">
 						<td><img src="imgs/green@2x.png" alt="" /></td>
 						<th id="score_benefits"></th>
 						<td><strong>Number who benefit from treatment</strong></td>
 					</tr>
-					<tr>
+					<tr id="trScoreNNT">
 						<td style="font-size:1.4em; font-family:'Arial Narrow',Arial,sans-serif;">NNT</td>
 						<th><span id="score_nnt"></span><span style="color:transparent;">%</span></th>
 						<td><strong>Number needed to treat</strong></td>
 					</tr>
-					<tr>
+					<tr id="trScoreBad">
 						<td><img src="imgs/bad@2x.png" alt="" /></td>
 						<th id="score_bad"></th>
 						<td><strong>Baseline events using baseline factors alone</strong></td>
 					</tr>
-					<tr>
+					<tr id="trScoreBadAdd">
 						<td><img src="imgs/badA@2x.png" alt="" /></td>
 						<th id="score_bad_add"></th>
 						<td><strong>Additional events “caused” by risk factors</strong></td>
@@ -634,6 +649,10 @@
 		
 		<!-- Footer -->
 		<div id="footer">
+			<div id="toggleBasicView" class="button" onclick="window.location.hash = '#basic'; window.location.reload();">
+				Switch to "Basic" View
+			</div>
+		
 			<p>
 				Please provide feedback to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>. For more detailed information and acronym definitions etc see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>. For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
 			</p>
