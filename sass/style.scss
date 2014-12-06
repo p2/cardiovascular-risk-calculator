@@ -378,39 +378,39 @@ input[type="number"].three {
 .tab li > div { line-height: 1.2 }
 
 @media screen and (max-width: 1024px) { #liFramingham { width: 100%;} }
-#liFramingham { cursor: inherit; }
-#liFramingham:hover { background-color: inherit; }
-#ulFraminghamSubtypes {
-	list-style-type: none;
-	padding:0;
-}
-#ulFraminghamSubtypes li {
-	font-size: 0.6em;
-	width: 22%;
-	padding: 0.5em 0.5%;
-	height: 2em;
-	line-height: 2em;
-}
-#ulFraminghamSubtypes li span { display: none; }
+//#liFramingham { cursor: inherit; }
+//#liFramingham:hover { background-color: inherit; }
+//#ulFraminghamSubtypes {
+//	list-style-type: none;
+//	padding:0;
+//}
+//#ulFraminghamSubtypes li {
+//	font-size: 0.6em;
+//	width: 22%;
+//	padding: 0.5em 0.5%;
+//	height: 2em;
+//	line-height: 2em;
+//}
+//#ulFraminghamSubtypes li span { display: none; }
 
-#liFraminghamSimple {
-    cursor: pointer !important;
-}
+//#liFraminghamSimple {
+//    cursor: pointer !important;
+//}
 
-#liFraminghamSimple li[data-calc="cvd"] {
-    font-size: 0.5em !important;
-    line-height: 1 !important;
-    padding-top: 0.5em !important;
-    padding-bottom: 2px !important;
-}
+//#liFraminghamSimple li[data-calc="cvd"] {
+//    font-size: 0.5em !important;
+//    line-height: 1 !important;
+//    padding-top: 0.5em !important;
+//    padding-bottom: 2px !important;
+//}
 
-#liFraminghamSimple li[data-calc="cvd"]:hover {
-    background-color: inherit !important;
-}
+//#liFraminghamSimple li[data-calc="cvd"]:hover {
+//    background-color: inherit !important;
+//}
 
-#liFraminghamSimple.active li[data-calc="cvd"] {
-    color: white;
-}
+//#liFraminghamSimple.active li[data-calc="cvd"] {
+//   color: white;
+//}
 
 @media screen and (max-width: 1024px) {
     li[data-calc="qrisk"] {
@@ -472,3 +472,4 @@ h3.relativeBenefit > span.active {
 	background-color: #fff;
 	color: #003366;
 }
+#toggleAlbertaView { display: none; }

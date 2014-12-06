@@ -38,16 +38,17 @@ $(document).ready(function() {
 		window.applicationCache.addEventListener('error', offlineStatusChanged, false);
 	}
 	
-	// "basic" vs. normal functionality
-	if (location.href.toLowerCase().indexOf("#basic") == -1) {
+	// "alberta" vs. enhanced functionality
+	setFormulaById('cvd');
+	if (!AlbertaView()) {
 		// Load the normal page (the page should be setup by default to support the 'normal' functionality without any JavaScript magic
-		setFormulaById('cvd');
 		
 	} else {
-		// Load a "basic" version of the page
+		// Load an "alberta" version of the page
 		// Reset the toggle button
-		$('#toggleBasicView').text('Switch to "Normal" View');
-		$('#toggleBasicView').click(function() {window.location.href = window.location.href.split("#")[0]; });
+		$('#toggleAlbertaView').text('Switch to "Enhanced" View');
+		$('#toggleAlbertaView').css('display','inline');
+		$('#toggleAlbertaView').click(function() {window.location.href = window.location.href.split("#")[0]; });
 		
 		// Hide some of the treatments
 		$('li[data-benefit="vitaomeg"]').hide();
@@ -76,11 +77,14 @@ $(document).ready(function() {
 		$('#weight_lbs_label').val('').change();
 		
 		// Hide some of the calculators
+		/*
 		$('li[data-calc="chd"]').hide();
 		$('li[data-calc="mi"]').hide();
 		$('li[data-calc="stroke"]').hide();
+		*/
 		
 		// Make Framingham look more normal...
+		/*
 		$('#liFramingham').attr('id','liFraminghamSimple');		// Changing the ID removes much of the Framingham-specific styling in the CSS
 		$('li[data-calc="cvd"]').attr('onclick','');
 		$('#liFraminghamSimple').attr('data-calc','cvd');
@@ -88,19 +92,22 @@ $(document).ready(function() {
 			setFormula(this);
 			$('#liFraminghamSimple').addClass('active');
 		});
+		*/
 		
 		// Hide some of the results table
 		$('#trScoreBad').hide();
 		$('#trScoreBadAdd').hide();
 		// Change the icon in the results table
 		$('#trScoreBadSum td img').attr('src','imgs/bad.png');
-		
-		$('li[data-calc="cvd"]').click();
 	}
 	
 	// detect if we're running standalone
 	// if (window.navigator.standalone)
 });
+
+function AlbertaView() {
+	return (location.href.toLowerCase().indexOf("#alberta") >= 0)
+}
 
 
  
@@ -166,23 +173,24 @@ function hdlchol() {
 
 function height() {
 	if (_useCm) {
-		return $('#height_cm').val() *1;
+		return $('#height_cm_label').val() *1;
 	}
 	
 	// 2.54 cm = 1 inch
-	return $('#height_in').val() * 2.54;
+	return $('#height_in_label').val() * 2.54;
 }
 
 function weight() {
 	if (_useKg) {
-		return $('#weight_kg').val() *1;
+		return $('#weight_kg_label').val() *1;
 	}
 	
 	// 1 kg = 2.2 lbs
-	return $('#weight_lbs').val() / 2.2;
+	return $('#weight_lbs_label').val() / 2.2;
 }
 
 function bodymassindex() {
+	if ((weight() == 0) || (height() == 0)) { return 0; }
 	return weight() / (height()/100 * height()/100);
 }
 
@@ -236,6 +244,32 @@ function bptreatment(item) {
 
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function adjustSliderAllowZeroOrEmpty(txt_id, slider_id, alert_info, sender, no_calc) {
+
+	// Who sent you?
+	var val = $('#'+txt_id).val();
+	var min = $('#'+slider_id).attr('min');
+	var max = $('#'+slider_id).attr('max');
+	
+	if ($(sender).attr('id') == txt_id) {
+		val = $('#'+txt_id).val();
+	} else {
+		// Trust the slider by default if a sender isn't known or doesn't match
+		val = $('#'+slider_id).val();
+	}
+	
+	if ((val.trim().length == 0) || (parseFloat(val) == 0)) {
+		val = 0;
+		$('#'+txt_id).val(val);
+	} else {
+		// The value entered is not empty and not zero -- do a normal check
+		adjustSlider(txt_id, slider_id, alert_info, sender, no_calc);
+	}
+
+	//$('#'+txt_id).removeClass('errorTextbox');		// Leave the textbox as red, but allow the calculation to proceed
+	adjust(txt_id, sender, no_calc);
 }
 
 function adjustSlider(txt_id, slider_id, alert_info, sender, no_calc) {
@@ -624,14 +658,26 @@ function calculate(formula_id) {
     // Run through the visible textbox fields (looking for invalid entries)
 	var minmax_error = false;
 	$('input[type="number"]:visible').each( function () {
-	    var val = parseFloat($(this).val());
+		var val = parseFloat($(this).val());
 	    var min = parseFloat($(this).attr('min'));
 	    var max = parseFloat($(this).attr('max'));
-
-	    if ((val < min) || (val > max) || (!isNumeric(val))) {
-	        $(this).change();   //Calling the 'change' event will force a check
-			minmax_error = true;
-	    }
+	
+		// Special circumstance: allow height/weight textboxes to be zero (for BMI)
+		var allowZero = ['height_cm', 'height_cm_label', 'height_in', 'height_in_label', 'weight_kg', 'weight_kg_label', 'weight_lbs', 'weight_lbs_label'];
+		var allowZeroIndex = $.inArray($(this).attr('id'), allowZero);
+		if (allowZeroIndex != -1) {
+			// Only check max (don't check min/zero)
+			if ((val > max) || (!isNumeric(val))) {
+				$(this).change();   //Calling the 'change' event will force a check
+				minmax_error = true;
+			}
+		} else {
+			// Check min/max
+			if ((val < min) || (val > max) || (!isNumeric(val))) {
+				$(this).change();   //Calling the 'change' event will force a check
+				minmax_error = true;
+			}
+		}
 	});
 	if (minmax_error) { return; }
 
@@ -696,7 +742,11 @@ function calculate(formula_id) {
 		var town = 0;	//	"We include the University of Nottingham "Postcode to Townsend" deprivation table, which means a patient's deprivation can be estimated by their postcode."
 
 	    // Fill in the BMI for the user ...
-		$('#bmi').html(bmi.toFixed(1) + " kg/m<sup>2</sup>");
+		if (bmi == 0) {
+			(IS_MALE) ? $('#bmi').html("25 kg/m<sup>2</sup> (imputed)") : $('#bmi').html("25 kg/m<sup>2</sup> (imputed)");
+		} else {
+			$('#bmi').html(bmi.toFixed(1) + " kg/m<sup>2</sup>");
+		}
 		
 		// Function arguments: (age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)
 		if (IS_MALE) {
@@ -736,7 +786,11 @@ function calculate(formula_id) {
 		faces.prepend(newFace('bad'));
 	}
 	for (var i = 0; i < numAddFaces; i++) {
-		faces.prepend(newFace('badA'));
+		if (AlbertaView()) {
+			faces.prepend(newFace('bad'));
+		} else {
+			faces.prepend(newFace('badA'));
+		}
 	}
 	for (var i = 0; i < numProFaces; i++) {
 		faces.prepend(newFace('green'));
@@ -812,21 +866,26 @@ Converted from http://svn.clinrisk.co.uk/opensource/qrisk2/c/Q80_model_4_1.c
  * This file was created on: Mon  9 Dec 2013 17:58:53 GMT
 */
 function QRISK_Male(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town) {
+	// Impute BMI if necessary
+	if (bmi == 0) {
+		bmi = 25.0;
+	}
+	
 	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
 	var error = 0;
 	if ((age<25) || (age>84)) {
 		$('#alert_age').html('Age must be between 25 and 84 years for QRISK').show();
 		error=1;
 	}
-	if ((bodymassindex()<20) || (bodymassindex()>40)) {
+	if (((bmi<20) || (bmi>40))) {
 		$('#alert_BMI').html('BMI must be between 20 and 40 kg/m<sup>2</sup> for QRISK').show();
 		error=1;
 	}
-	if ((systole()<70) || (systole() > 210)) {
+	if ((sbp<70) || (sbp > 210)) {
 		$('#alert_sbp').html('Systolic BP must be between 70 and 210 mmHg for QRISK').show();
 		error=1;
 	}
-	if ((totalchol()/hdlchol() < 1) || (totalchol()/hdlchol() > 12)) {
+	if ((rati < 1) || (rati > 12)) {
 		$('#alert_chol').html('Total:HDL cholesterol ratio must be between 1 and 12 for QRISK (' + Math.round(totalchol()/hdlchol()*10)/10 + ' entered)').show();
 		error=1;
 	}
@@ -961,22 +1020,27 @@ Converted from http://svn.clinrisk.co.uk/opensource/qrisk2/c/Q80_model_4_0.c
  * This file was created on: Mon  9 Dec 2013 17:58:53 GMT
 */
 function QRISK_Female(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town) {
+	// Impute BMI if necessary
+	if (bmi == 0) {
+		bmi = 25.0;
+	}
+	
 	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
 	var error = 0;
 	if ((age<25) || (age>84)) {
-	    $('#alert_age').html('Age must be between 25 and 84 years for QRISK').show();
+		$('#alert_age').html('Age must be between 25 and 84 years for QRISK').show();
 		error=1;
 	}
-	if ((bodymassindex()<20) || (bodymassindex()>40)) {
-	    $('#alert_BMI').html('BMI must be between 20 and 40 kg/m<sup>2</sup> for QRISK').show();
+	if (((bmi<20) || (bmi>40))) {
+		$('#alert_BMI').html('BMI must be between 20 and 40 kg/m<sup>2</sup> for QRISK').show();
 		error=1;
 	}
-	if ((systole()<70) || (systole() > 210)) {
-	    $('#alert_sbp').html('Systolic BP must be between 70 and 210 mmHg for QRISK').show();
+	if ((sbp<70) || (sbp > 210)) {
+		$('#alert_sbp').html('Systolic BP must be between 70 and 210 mmHg for QRISK').show();
 		error=1;
 	}
-	if ((totalchol()/hdlchol() < 1) || (totalchol()/hdlchol() > 12)) {
-	    $('#alert_chol').html('Total:HDL cholesterol ratio must be between 1 and 12 for QRISK (' + Math.round(totalchol() / hdlchol() * 10) / 10 + ' entered)').show();
+	if ((rati < 1) || (rati > 12)) {
+		$('#alert_chol').html('Total:HDL cholesterol ratio must be between 1 and 12 for QRISK (' + Math.round(totalchol()/hdlchol()*10)/10 + ' entered)').show();
 		error=1;
 	}
 	if (error) { // Display all possible error messages before returning zero

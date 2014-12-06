@@ -45,8 +45,11 @@
 
 		<div id="formula_selector">
 			<ul class="tab">
-				<li id="liFramingham">
+				<li id="liFramingham" onclick="setFormula(this)" data-calc="cvd">
 					<div>Framingham</div>
+					<span>heart attacks, angina/coronary insufficiency, heart failure, strokes, intermit. claudication</span>
+					
+					<!--
 					<ul id="ulFraminghamSubtypes">
 						<li onclick="setFormula(this)" data-calc="cvd" title="CHD + HF + strokes + intermit. claudication">
 							CVD
@@ -65,6 +68,7 @@
 							<span>stroke + TIA</span>
 						</li>
 					</ul>
+					-->
 				</li>
 				<li onclick="setFormula(this)" data-calc="qrisk">
 					<div>QRISK</div>
@@ -245,12 +249,12 @@
 			<div class="qrisk_questions">
 				<h3>Height</h3>
 				<div class="slider_parent" id="divHeightCm">
-					<input id="height_cm" class="slider_40" type="range" min="120" max="198" value="152" step="2" oninput="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" />
-					<input id="height_cm_label" type="number" class="three" min="120" max="198" maxlength="3" step="2" value="152" oninput="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="adjustSlider('height_cm_label', 'height_cm', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">cm</a>
+					<input id="height_cm" class="slider_40" type="range" min="120" max="198" value="152" step="2" oninput="adjustSliderAllowZeroOrEmpty('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="adjustSliderAllowZeroOrEmpty('height_cm_label', 'height_cm', _alerts['height'], this)" />
+					<input id="height_cm_label" type="number" class="three" min="120" max="198" maxlength="3" step="2" value="152" oninput="adjustSliderAllowZeroOrEmpty('height_cm_label', 'height_cm', _alerts['height'], this)" onchange="adjustSliderAllowZeroOrEmpty('height_cm_label', 'height_cm', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">cm</a>
 				</div>
 				<div class="slider_parent" id="divHeightIn">
-					<input id="height_in" type="range" min="47" max="78" value="60" step="1" oninput="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" onchange="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" />
-					<input id="height_in_label" type="number" class="two" min="47" max="78" maxlength="2" step="1" value="60" oninput="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" onchange="adjustSlider('height_in_label', 'height_in', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">in</a>
+					<input id="height_in" type="range" min="47" max="78" value="60" step="1" oninput="adjustSliderAllowZeroOrEmpty('height_in_label', 'height_in', _alerts['height'], this)" onchange="adjustSliderAllowZeroOrEmpty('height_in_label', 'height_in', _alerts['height'], this)" />
+					<input id="height_in_label" type="number" class="two" min="47" max="78" maxlength="2" step="1" value="60" oninput="adjustSliderAllowZeroOrEmpty('height_in_label', 'height_in', _alerts['height'], this)" onchange="adjustSliderAllowZeroOrEmpty('height_in_label', 'height_in', _alerts['height'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleHeightUnit()">in</a>
 				</div>
 				<div class="errorAlert" id="alert_height"></div>
 			</div>
@@ -259,12 +263,12 @@
 			<div class="qrisk_questions">
 				<h3>Weight</h3>
 				<div class="slider_parent" id="divWeightKg">
-					<input id="weight_kg" class="slider_40" type="range" min="30" max="250" value="80" step="0.5" oninput="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />
-					<input id="weight_kg_label" type="number" class="three" min="30" max="250" maxlength="3" step="0.5" value="80" oninput="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="adjustSlider('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">kg</a>
+					<input id="weight_kg" class="slider_40" type="range" min="30" max="250" value="80" step="0.5" oninput="adjustSliderAllowZeroOrEmpty('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="adjustSliderAllowZeroOrEmpty('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />
+					<input id="weight_kg_label" type="number" class="three" min="30" max="250" maxlength="3" step="0.5" value="80" oninput="adjustSliderAllowZeroOrEmpty('weight_kg_label', 'weight_kg', _alerts['weight'], this)" onchange="adjustSliderAllowZeroOrEmpty('weight_kg_label', 'weight_kg', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">kg</a>
 				</div>
 				<div class="slider_parent" id="divWeightLbs">
-					<input id="weight_lbs" class="slider_40" type="range" min="66" max="551" value="176" step="1" oninput="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />
-					<input id="weight_lbs_label" type="number" class="three" min="66" max="551" maxlength="3" step="1" value="176" oninput="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="adjustSlider('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">lbs</a>
+					<input id="weight_lbs" class="slider_40" type="range" min="66" max="551" value="176" step="1" oninput="adjustSliderAllowZeroOrEmpty('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="adjustSliderAllowZeroOrEmpty('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />
+					<input id="weight_lbs_label" type="number" class="three" min="66" max="551" maxlength="3" step="1" value="176" oninput="adjustSliderAllowZeroOrEmpty('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" onchange="adjustSliderAllowZeroOrEmpty('weight_lbs_label', 'weight_lbs', _alerts['weight'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleWeightUnit()">lbs</a>
 				</div>
 				<div class="errorAlert" id="alert_weight"></div>
 			</div>
@@ -339,7 +343,7 @@
 						'vitaomeg': 0,
 						'bp': { 'default': 30, 'diabetes': 50 },
 						'statins_lowmod': 25,
-						'statins_high': 30,
+						'statins_high': 35,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -358,7 +362,7 @@
 						'vitaomeg': 0,
 						'bp': { 'default': 30, 'diabetes': 50 },
 						'statins_lowmod': 25,
-						'statins_high': 30,
+						'statins_high': 35,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -377,7 +381,7 @@
 						'vitaomeg': 0,
 						'bp': { 'default': 30, 'diabetes': 50 },
 						'statins_lowmod': 25,
-						'statins_high': 30,
+						'statins_high': 35,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -396,7 +400,7 @@
 						'vitaomeg': 0,
 						'bp': { 'default': 20, 'diabetes': 20 },
 						'statins_lowmod': 25,
-						'statins_high': 30,
+						'statins_high': 35,
 						'fibrates': 20,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -415,7 +419,7 @@
 						'vitaomeg': 0,
 						'bp': { 'default': 20, 'diabetes': 20 },
 						'statins_lowmod': 25,
-						'statins_high': 30,
+						'statins_high': 35,
 						'fibrates': 20,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -434,7 +438,7 @@
 						'vitaomeg': 0,
 						'bp': { 'default': 40, 'diabetes': 40 },
 						'statins_lowmod': 25,
-						'statins_high': 30,
+						'statins_high': 35,
 						'fibrates': 0,
 						'ezetimibe': 0,
 						'niacin': 0,
@@ -449,98 +453,96 @@
 					}
 				};
 				var _benefit_risks = {
-					'activity': "Overuse injuries<br><h3>Additional Benefits</h3><ul><li>Less depression</li><li>Improves sleep quality</li><li>Improves OA pain and function</li></ul>",
-					'meddiet': "No real harms if you like Mediterranean food. I think it is delicious and it includes wine so...",
+					'activity': "Potential for activity-related injury<br><h3>Additional Benefits</h3><ul><li>Less depression</li><li>Improves sleep quality</li><li>Improves OA pain and function</li></ul>",
+					'meddiet': "No real harms",
 					'vitaomeg': [
 						"Vitamin A and E have evidence for increased mortality",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'bp': [
 						"Types of side effects vary between drugs",
 						"Having to stop drug due to intolerability NNH 10",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'statins_lowmod': [
-						"Muscle aches and stiffness NNH 10-20",
-						"Increased liver function tests NNH 50",
+						"Muscle aches and stiffness NNH 10-20 (similar to placebo in most studies)",
+						"Increased liver function tests (3x normal) NNH 250",
 						"Severe muscle/kidney damage NNH 10,000",
 						"Nausea, constipation, diarrhea",
-						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'statins_high': [
-						"Muscle aches and stiffness NNH 10-20",
-						"Increased liver function tests NNH 50",
+						"Muscle aches and stiffness NNH 10-20 (similar to placebo in most studies)",
+						"Increased liver function tests (3x normal) NNH 150",
 						"Severe muscle/kidney damage NNH 10,000",
 						"Nausea, constipation, diarrhea",
-						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'fibrates': [
 						"Nausea, abdominal pain, flatulence",
 						"Increased risk of muscle damage when combined with statins",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'niacin': [
 						"Flushing/itching NNH 20",
 						"Increased glucose NNH 100",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'ezetimibe': [
 						"Headache, diarrhea",
 						"Muscle aches",
 						"Increased liver function tests",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'sulfonylureas': [
 						"Severe low blood sugar (yearly) NNH 175",
 						"Weight gain - average 2 kg",
 						"Rash, diarrhea",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'insulins': [
 						"Severe low blood sugar (yearly) NNH 85",
 						"Weight gain - average 2 kg",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden",
+						"Drug Cost",
 					],
 					'metformin': [
 						"Indigestion, nausea, diarrhea",
 						"Lactic acidosis - inconclusive evidence",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'glitazones': [
 						"Fluid retention/heart failure NNH 25",
 						"Fractures (three years) NNH 85",
 						"Weight gain - average 2kg",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'glp': [
 						"Nausea, vomiting, diarrhea NNH 10-20",
 						"Weight loss - average 2 kg",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'dpp-4': [
 						"Hives, rash",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'meglit': [
 						"Hypoglycemia",
 						"Inconvenience of surrogate remeasurements",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					],
 					'asa': [
 						"Major bleed (yearly) NNH 200",
-						"Drug Cost/Pill Burden"
+						"Drug Cost"
 					]
 				};
 				</script>
@@ -649,8 +651,8 @@
 		
 		<!-- Footer -->
 		<div id="footer">
-			<div id="toggleBasicView" class="button" onclick="window.location.hash = '#basic'; window.location.reload();">
-				Switch to "Basic" View
+			<div id="toggleAlbertaView" class="button" onclick="window.location.hash = '#alberta'; window.location.reload();">
+				Switch to "Alberta" View
 			</div>
 		
 			<p>
@@ -667,7 +669,6 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="static/html5slider.min.js"></script>
 	<script src="static/calculator.min.js"></script>
-	
 	<script>
 		var CONVERT_SLIDERS = false;
 	</script>
