@@ -38,17 +38,17 @@ $(document).ready(function() {
 		window.applicationCache.addEventListener('error', offlineStatusChanged, false);
 	}
 	
-	// "alberta" vs. enhanced functionality
+	// "basic" vs. enhanced functionality
 	setFormulaById('cvd');
-	if (!AlbertaView()) {
+	if (!BasicView()) {
 		// Load the normal page (the page should be setup by default to support the 'normal' functionality without any JavaScript magic
 		
 	} else {
-		// Load an "alberta" version of the page
+		// Load an "basic" version of the page
 		// Reset the toggle button
-		$('#toggleAlbertaView').text('Switch to "Enhanced" View');
-		$('#toggleAlbertaView').css('display','inline');
-		$('#toggleAlbertaView').click(function() {window.location.href = window.location.href.split("#")[0]; });
+		$('#toggleBasicView').text('Switch to "Enhanced" View');
+		$('#toggleBasicView').css('display','inline');
+		$('#toggleBasicView').click(function() {window.location.href = window.location.href.split("#")[0]; });
 		
 		// Hide some of the treatments
 		$('li[data-benefit="vitaomeg"]').hide();
@@ -105,8 +105,8 @@ $(document).ready(function() {
 	// if (window.navigator.standalone)
 });
 
-function AlbertaView() {
-	return (location.href.toLowerCase().indexOf("#alberta") >= 0)
+function BasicView() {
+	return (location.href.toLowerCase().indexOf("#basic") >= 0)
 }
 
 
@@ -538,6 +538,12 @@ function setFormulaById(formula_id) {
 	    $('#time_fixed').hide();
 	}
 	
+	// Override for Basic version
+	if (BasicView()) {
+	    $('#divTime').hide();
+		$('#time_fixed').show();	
+	}
+	
 	calculate(formula_id);
 }
 
@@ -786,7 +792,7 @@ function calculate(formula_id) {
 		faces.prepend(newFace('bad'));
 	}
 	for (var i = 0; i < numAddFaces; i++) {
-		if (AlbertaView()) {
+		if (BasicView()) {
 			faces.prepend(newFace('bad'));
 		} else {
 			faces.prepend(newFace('badA'));

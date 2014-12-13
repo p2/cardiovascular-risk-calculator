@@ -47,7 +47,7 @@
 			<ul class="tab">
 				<li id="liFramingham" onclick="setFormula(this)" data-calc="cvd">
 					<div>Framingham</div>
-					<span>heart attacks, angina/coronary insufficiency, heart failure, strokes, intermit. claudication</span>
+					<span>Heart attacks, angina/coronary insufficiency, heart failure, strokes, intermittent claudication</span>
 					
 					<!--
 					<ul id="ulFraminghamSubtypes">
@@ -570,7 +570,12 @@
 			
 			<div id="divFamilyHistoryOfEarlyCHD">
 				<h3>Family History of Early CHD</h3>
-				<p class="item_info">If CHD in men &lt; 55 years, women &lt; 65 years - increase risk by 50%. If no family history - decrease estimates by 33%.</p>
+				<p class="item_info">
+					If mother (&lt; 65 yrs) increase risk 60%
+				</p>
+				<p class="item_info">
+					If father (&lt; 55 yrs) increase risk 75%
+				</p>
 			</div>
 			
 			<div>
@@ -588,11 +593,13 @@
 			<div>
 				<h3>Adjust Overall Risk</h3>
 				<div class="slider_parent">
-					<input id="slider_overestimate" class="slider_40" type="range" min="50" max="150" value="100" step="1" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" />
-					<input id="overestimate" type="number" class="three" min="50" max="150" maxlength="3" step="1" value="100" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','overestimate', _alerts['overestimate'], this)" />%
+					<input id="slider_overestimate" class="slider_40" type="range" min="100" max="175" value="100" step="1" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" />
+					<input id="overestimate" type="number" class="three" min="100" max="175" maxlength="3" step="1" value="100" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','overestimate', _alerts['overestimate'], this)" />%
 				</div>
 				<div class="errorAlert" id="alert_overestimate"></div>
-				<p class="item_info">Use to adjust risk based on family history or if patient is at a lower/higher risk than the Framingham cohort. See the <a href="FAQ.html#calculator" target="_blank">FAQ</a> for guidance.</p>
+				<p class="item_info">
+					The amount of risk conferred from a family member to a patient depends on: (1) how close a relative, (2) age of a relative, (3) number of affected family members.
+				</p>
 			</div>
 		</div>
 		<!-- Outcome -->
@@ -651,12 +658,14 @@
 		
 		<!-- Footer -->
 		<div id="footer">
-			<div id="toggleAlbertaView" class="button" onclick="window.location.hash = '#alberta'; window.location.reload();">
-				Switch to "Alberta" View
+			<div id="toggleBasicView" class="button" onclick="window.location.hash = '#basic'; window.location.reload();">
+				Switch to "Basic" View
 			</div>
 		
 			<p>
-				Please provide feedback to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>. For more detailed information and acronym definitions etc see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>. For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
+				Please provide feedback to <a href="mailto:james.mccormack@ubc.ca">james.mccormack@ubc.ca</a>.
+				<br />For more detailed information and acronym definitions etc see the <a href="FAQ.html#calculator" target="_blank">FAQ</a>.
+				<br />For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
 			</p>
 
 			James McCormack/Pascal Pfiffner, 2014
