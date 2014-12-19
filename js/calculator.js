@@ -501,6 +501,7 @@ function setFormulaById(formula_id) {
 		$('#dm_dichotomous').hide();
 		$('#dm_detailed').show();
 		$('.qrisk_questions').show();
+		$('#AmountOfRisk').hide();
 		
 		$('#qrisk_disclaimer').show();	
 		$('#divFamilyHistoryOfEarlyCHD').hide();	//CHD family history is defined and part of the algorithm for QRISK
@@ -513,6 +514,7 @@ function setFormulaById(formula_id) {
 		$('.qrisk_questions').hide();
 		$('#qrisk_disclaimer').hide();
 		$('#divFamilyHistoryOfEarlyCHD').show();
+		$('#AmountOfRisk').show();
 	}
 	
 	// BP Treatment only exists for qrisk and ascvd
@@ -764,6 +766,10 @@ function calculate(formula_id) {
 			badFormulaBaseline = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,0,0,0,25.0,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
 		}
 	}
+	
+	// round off nearest 10th to prevent very large NNTs
+	badFormula = Math.round(badFormula*10)/10;
+	badFormulaBaseline = Math.round(badFormulaBaseline*10)/10;
 	
 	// calculate
 	var over_baseline = badFormula - badFormulaBaseline;

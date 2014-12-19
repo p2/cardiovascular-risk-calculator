@@ -47,7 +47,7 @@
 			<ul class="tab">
 				<li id="liFramingham" onclick="setFormula(this)" data-calc="cvd">
 					<div>Framingham</div>
-					<span>Heart attacks, angina/coronary insufficiency, heart failure, strokes, intermittent claudication</span>
+					<span>Heart attacks + angina/coronary insufficiency + heart failure + strokes + intermittent claudication</span>
 					
 					<!--
 					<ul id="ulFraminghamSubtypes">
@@ -71,11 +71,11 @@
 					-->
 				</li>
 				<li onclick="setFormula(this)" data-calc="qrisk">
-					<div>QRISK</div>
+					<div>QRISK&reg;2-2014</div>
 					<span>Heart attacks + strokes<br />&nbsp;</span>
 				</li>
 				<li onclick="setFormula(this)" data-calc="ascvd">
-					<div>ASCVD</div>
+					<div>ACC/AHA ASCVD</div>
 					<span>CHD death + nonfatal heart attacks <br />+ fatal/nonfatal strokes</span>
 				</li>
 			</ul>
@@ -277,7 +277,7 @@
 			<div class="qrisk_questions">
 				<strong>BMI</strong>
 				<span style="float: right; font-size: 1.1em; font-weight: bold;" id="bmi"></span>
-				<p class="item_info">BMI of 30 kg/m<sup>2</sup> for baseline risk</p>
+				<p class="item_info">BMI of 25 kg/m<sup>2</sup> for baseline risk</p>
 				<div class="errorAlert" id="alert_BMI"></div>
 			</div>
 		</div>
@@ -597,7 +597,7 @@
 					<input id="overestimate" type="number" class="three" min="100" max="175" maxlength="3" step="1" value="100" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','overestimate', _alerts['overestimate'], this)" />%
 				</div>
 				<div class="errorAlert" id="alert_overestimate"></div>
-				<p class="item_info">
+				<p class="item_info" id="AmountOfRisk">
 					The amount of risk conferred from a family member to a patient depends on: (1) how close a relative, (2) age of a relative, (3) number of affected family members.
 				</p>
 			</div>
@@ -650,7 +650,7 @@
 					<a class="infoT various" href="FAQ.html#percentage" target="_blank">More information</a>.
 				<p>
 				<p class="item_info" id="qrisk_disclaimer">
-					See the <a href="FAQ.html#QRISK">QRISK disclaimer</a> for more information.
+					See the <a href="FAQ.html#QRISK">QRISK&reg;2 disclaimer</a> for more information.
 				</p>
 			</div>
 		</div>
