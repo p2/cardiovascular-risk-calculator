@@ -51,6 +51,11 @@ hr { height: 1px; margin: 1em 0 2em; border: none; border-top: 1px solid #999; }
 #input > div .slider_parent, #input-2 > div .slider_parent { padding-left: 1.5em; font-size: 1.1em; }
 #input > div .slider_parent input, #input-2 > div .slider_parent input { width: 45%; margin-right: 0.5em; height: 1em; }
 
+#divRiskTimePeriod { min-height: 2.5em; margin-bottom: 1em; }
+#divRiskTimePeriod .slider_parent { padding-left: 1.5em; font-size: 1.1em; }
+#rangeTime { width: 45%; margin-right: 0.5em; height: 1em; }
+#time { margin-rigth: 0.5em;}
+
 #outcome { width: 320px; }
 @media screen and (max-width: 767px) { #outcome { margin-left: auto; margin-right: auto; } }
 @media screen and (min-width: 768px) { #outcome { margin-left: 390px; } }

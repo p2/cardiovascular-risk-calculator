@@ -169,7 +169,9 @@
 					<input id="slider_sbp" class="slider_40" type="range" min="110" max="190" value="120" step="1" oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />
 					<input id="sbp" type="number" class="three" min="110" max="190" maxlength="3" step="1" value="120" oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />&nbsp;mmHg
 				</div>
+				<p id="BpPriorToDrugs" class="item_info">Blood pressure should be prior to drug treatment</p>
 				<p class="item_info">120 mmHg is used for baseline risk</p>
+				
 			</div>
 			<div class="errorAlert" id="alert_sbp"></div>
 			
@@ -192,6 +194,7 @@
 					<input id="totalchol_mgdl" class="slider_40" type="range" min="116" max="310" value="116" step="2" oninput="adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], this)" onchange="adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], this)" />
 					<input id="chol_mgdl" type="number" class="three" min="116" max="310" maxlength="3" step="2" value="116" oninput="adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], this)" onchange="adjustSlider('chol_mgdl', 'totalchol_mgdl', _alerts['tchol'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mg/dL</a>
 				</div>
+				<p class="item_info">Cholesterol should be prior to drug treatment</p>
 				<p class="item_info chol_mmol">3 mmol/L is used for baseline risk.<br /><a href="javascript:void(0);" onclick="toggleCholesterolUnit()">Click to change to mg/dL.</a></p>
 				<p class="item_info chol_mgdl">116 mg/dL is used for baseline risk.<br /><a href="javascript:void(0);" onclick="toggleCholesterolUnit()">Click to change to mmol/L.</a></p>
 			</div>
@@ -206,6 +209,7 @@
 					<input id="hdlchol_mgdl" type="range" min="20" max="77" value="50" step="1" oninput="adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], this)" onchange="adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], this)" />
 					<input id="hdl_mgdl" type="number" class="two" min="20" max="77" maxlength="3" step="1" value="50" oninput="adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], this)" onchange="adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], this)" />&nbsp;<a href="javascript:void(0);" onclick="toggleCholesterolUnit()">mg/dL</a>
 				</div>
+				<p class="item_info">HDL should be prior to drug treatment</p>
 				<p class="item_info chol_mmol">1.3 mmol/L is used for baseline risk.</p>
 				<p class="item_info chol_mgdl">50 mg/dL is used for baseline risk.</p>
 			</div>
@@ -280,11 +284,29 @@
 				<p class="item_info">BMI of 25 kg/m<sup>2</sup> for baseline risk</p>
 				<div class="errorAlert" id="alert_BMI"></div>
 			</div>
+			
+			<div id="divFamilyHistoryOfEarlyCHD">
+				<h3>Family History of Early CHD</h3>
+				<div class="slider_parent">
+					<input id="slider_overestimate" class="slider_40" type="range" min="100" max="175" value="100" step="1" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" />
+					<input id="overestimate" type="number" class="three" min="100" max="175" maxlength="3" step="1" value="100" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','overestimate', _alerts['overestimate'], this)" />%
+				</div>
+				<div class="errorAlert" id="alert_overestimate"></div>
+				<p class="item_info" id="AmountOfRisk">
+					The amount of risk conferred from a family member to a patient depends on: (1) how close a relative, (2) age of a relative, (3) number of affected family members.
+				</p>
+				<p class="item_info">
+					If mother (&lt; 65 yrs) increase risk 60%
+				</p>
+				<p class="item_info">
+					If father (&lt; 55 yrs) increase risk 75%
+				</p>
+			</div>
 		</div>
 		
 		<div id="input-2">
 			<div>
-				<h3 class="relativeBenefit">Relative Benefit:&nbsp;&nbsp;<span><span id="benefit">0</span>%</span></h3>
+				<h3 class="relativeBenefit">Relative Benefit:&nbsp;&nbsp;<span><span id="benefit">0</span></span></h3>
 				<p class="item_info">Benefit often has <i>nothing</i> to do with the effect on the surrogate marker. At present, you can only select one intervention at a time.</p>
 				<!--div class="slider_parent">
 					<input type="range" min="0" max="50" value="0" oninput="adjust('benefit', this)" onchange="adjust('benefit', this)" />
@@ -354,6 +376,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'smoking': 'Variable',
 						'asa': { 'male': 15, 'female': 10 }
 					},
 					'ascvd': {
@@ -373,6 +396,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'smoking': 'Variable',
 						'asa': { 'male': 15, 'female': 10 }
 					},
 					'qrisk': {
@@ -392,6 +416,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'smoking': 'Variable',
 						'asa': { 'male': 15, 'female': 10 }
 					},
 					'chd': {
@@ -411,6 +436,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'smoking': 'Variable',
 						'asa': { 'male': 30, 'female': 0 }
 					},
 					'mi': {
@@ -430,6 +456,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'smoking': 'Variable',
 						'asa': { 'male': 30, 'female': 0 }
 					},
 					'stroke': {
@@ -449,6 +476,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'smoking': 'Variable',
 						'asa': { 'male': 0, 'female': 15 }
 					}
 				};
@@ -540,6 +568,9 @@
 						"Inconvenience of surrogate remeasurements",
 						"Drug Cost"
 					],
+					'smoking': [
+						"No Harms",
+					],
 					'asa': [
 						"Major bleed (yearly) NNH 200",
 						"Drug Cost"
@@ -563,22 +594,17 @@
 					<li onclick="toggleBenefit(this)" data-benefit="glp">GLPs</li>
 					<li onclick="toggleBenefit(this)" data-benefit="dpp-4">DPP-4s</li>
 					<li onclick="toggleBenefit(this)" data-benefit="meglit">Meglitinides</li>
-					<li onclick="toggleBenefit(this)" data-benefit="asa">ASA</li>
+					<li onclick="toggleBenefit(this)" data-benefit="smoking">Smoking Cessation</li>
+					<li onclick="toggleBenefit(this)" data-benefit="asa" style="display: table;">ASA</li> <!-- display: table to put onto a single line -->
 				</ul>
+				<div style="clear: both;"></div>
 				<a class="item_info" href="FAQ.html#calculator" target="_blank">Benefit Estimate Details</a>
-			</div>
-			
-			<div id="divFamilyHistoryOfEarlyCHD">
-				<h3>Family History of Early CHD</h3>
-				<p class="item_info">
-					If mother (&lt; 65 yrs) increase risk 60%
-				</p>
-				<p class="item_info">
-					If father (&lt; 55 yrs) increase risk 75%
-				</p>
-			</div>
-			
-			<div>
+			</div>		
+
+		</div>
+		<!-- Outcome -->
+		<div id="outcome">
+			<div id="divRiskTimePeriod">
 				<h3>Risk Time Period</h3>
 				<div class="slider_parent">
 					<div id="divTime">
@@ -589,21 +615,7 @@
 				</div>
 			</div>
 			<div class="errorAlert" id="alert_time"></div>
-			
-			<div>
-				<h3>Adjust Overall Risk</h3>
-				<div class="slider_parent">
-					<input id="slider_overestimate" class="slider_40" type="range" min="100" max="175" value="100" step="1" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" />
-					<input id="overestimate" type="number" class="three" min="100" max="175" maxlength="3" step="1" value="100" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','overestimate', _alerts['overestimate'], this)" />%
-				</div>
-				<div class="errorAlert" id="alert_overestimate"></div>
-				<p class="item_info" id="AmountOfRisk">
-					The amount of risk conferred from a family member to a patient depends on: (1) how close a relative, (2) age of a relative, (3) number of affected family members.
-				</p>
-			</div>
-		</div>
-		<!-- Outcome -->
-		<div id="outcome">
+		
 			<div id="faces"></div>
 			<div id="disease"></div>
 			
@@ -631,7 +643,7 @@
 					</tr>
 					<tr id="trScoreNNT">
 						<td style="font-size:1.4em; font-family:'Arial Narrow',Arial,sans-serif;">NNT</td>
-						<th><span id="score_nnt"></span><span style="color:transparent;">%</span></th>
+						<th><span id="score_nnt"></span><span style="color:transparent; visibility: hidden;">%</span></th>
 						<td><strong>Number needed to treat</strong></td>
 					</tr>
 					<tr id="trScoreBad">

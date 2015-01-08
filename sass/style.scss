@@ -183,6 +183,11 @@ hr {
 	}
 }
 
+#divRiskTimePeriod { min-height: 2.5em; margin-bottom: 1em; }
+#divRiskTimePeriod .slider_parent { padding-left: 1.5em; font-size: 1.1em; }
+#rangeTime { width: 45%; margin-right: 0.5em; height: 1em; }
+#time { margin-rigth: 0.5em;}
+
 #outcome {
 	width: $w-output;
 	

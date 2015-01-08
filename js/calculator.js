@@ -146,11 +146,14 @@ function nonblack() {
 }
 
 function smoker(item) {
-	if (item) {
-		$(item).addClass('active').siblings().removeClass('active');
+	if ('qrisk' == _formula_id) {
+		return (parseInt($('#smoke_cat').val()) > 1);
+	} else {
+		if (item) {
+			$(item).addClass('active').siblings().removeClass('active');
+		}	
+		return $('#smoker_yes').hasClass('active') ? 1 : 0;
 	}
-	
-	return $('#smoker_yes').hasClass('active') ? 1 : 0;
 }
 
 function totalchol() {
@@ -396,6 +399,24 @@ function toggleBenefit(elem) {
 	CALC();
 }
 
+function returnBenefitName(formula_id) {
+	var active = $('#benefit_estimates').find('li').map(function(idx, item) {
+		var elem = $(item);
+		if (elem.hasClass('active')) {
+			return elem.data('benefit');
+		}
+	}).get();
+	
+	var max = 0;
+	for (var bf in _benefit[formula_id]) {
+		if (!active.contains(bf)) {
+			continue;
+		}
+		
+		return bf;
+	}
+}
+
 /**
  *  Calculates the current benefit for the given formula.
  */
@@ -422,6 +443,10 @@ function benefit(formula_id) {
 		
 		// for the BP meds ("bp"), it ONLY applies if BP is "_bp_threshold" and higher
 		if ('bp' == bf && systole() < _bp_threshold) {
+			continue;
+		}
+		
+		if ('smoking' == bf) {
 			continue;
 		}
 		
@@ -515,6 +540,13 @@ function setFormulaById(formula_id) {
 		$('#qrisk_disclaimer').hide();
 		$('#divFamilyHistoryOfEarlyCHD').show();
 		$('#AmountOfRisk').show();
+	}
+	
+	// Hide/show for Framingham
+	if (('cvd' == formula_id) || ('chd' == formula_id) || ('mi' == formula_id) || ('stroke' == formula_id)) {
+		$('#BpPriorToDrugs').show();
+	} else {
+		$('#BpPriorToDrugs').hide();
 	}
 	
 	// BP Treatment only exists for qrisk and ascvd
@@ -635,8 +667,10 @@ function WhiteMale() {
  */
 function calculate(formula_id) {
 	var OVERESTIMATE = $('#overestimate').val() *1;
+	
 	var BENE = benefit(formula_id);
-	$('#benefit').text(BENE);
+	$('#benefit').text(BENE+'%');
+	
 	var TIME = $('#time').val() *1;
 	var IS_MALE = gender();
 	var AGE = $('#age').val() *1;
@@ -657,6 +691,7 @@ function calculate(formula_id) {
 	
 	// formulas
 	var badFormula = 0;
+	var badFormula_NonSmoker = 0;
 	var badFormulaBaseline = 0;
 	
 	// Reset some of the alerts
@@ -691,11 +726,17 @@ function calculate(formula_id) {
 
 	// CVD
 	if ('cvd' == formula_id) {
-		badFormula = OVERESTIMATE*(1-Math.exp(-Math.exp((Math.log(TIME)-(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP))+(-0.3899*SMOKE)+(-0.539*Math.log(TCHOL/HDLCHOL))+(-0.3036*DIABETES)+(-0.1697*DIABETES*(1-IS_MALE))+(-0.3362*IVH)+(0*IVH*IS_MALE)))/(Math.exp(0.6536)*Math.exp(-0.2402*(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP))+(-0.3899*SMOKE)+(-0.539*Math.log(TCHOL/HDLCHOL))+(-0.3036*DIABETES)+(-0.1697*DIABETES*(1-IS_MALE))+(-0.3362*IVH)+(0*IVH*IS_MALE)))))));
-		badFormulaBaseline = OVERESTIMATE*(1-Math.exp(-Math.exp((Math.log(TIME)-(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP_A))+(-0.3899*SMOKE_A)+(-0.539*Math.log(TCHOL_A/HDLCHOL_A))+(-0.3036*DIABETES_A)+(-0.1697*DIABETES_A*(1-IS_MALE))+(-0.3362*IVH_A)+(0*IVH_A*IS_MALE)))/(Math.exp(0.6536)*Math.exp(-0.2402*(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP_A))+(-0.3899*SMOKE_A)+(-0.539*Math.log(TCHOL_A/HDLCHOL_A))+(-0.3036*DIABETES_A)+(-0.1697*DIABETES_A*(1-IS_MALE))+(-0.3362*IVH_A)+(0*IVH_A*IS_MALE)))))));
+		badFormula = OVERESTIMATE*calc_cvd(TIME, IS_MALE, AGE, BLOODP, SMOKE, TCHOL, HDLCHOL, DIABETES, IVH);
+		badFormula_NonSmoker = OVERESTIMATE*calc_cvd(TIME, IS_MALE, AGE, BLOODP, SMOKE_A, TCHOL, HDLCHOL, DIABETES, IVH);
+		badFormulaBaseline = OVERESTIMATE*calc_cvd(TIME, IS_MALE, AGE, BLOODP_A, SMOKE_A, TCHOL_A, HDLCHOL_A, DIABETES_A, IVH_A);
 	}
 	
 	// CHD
+	/*
+	 *  NOTE: If these equations are ever re-used, they need to be converted into a function in order to support "smoking cessation" as a beneneficial treatment
+	 *
+	 *
+	 
 	else if ('chd' == formula_id) {
 		badFormula = OVERESTIMATE*(1-Math.exp(-Math.exp((Math.log(TIME)-(15.5305+(28.4441*(1-IS_MALE))+(-1.4792*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(-14.4588*Math.log(AGE)*(1-IS_MALE))+(1.8515*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-0.9119*Math.log(BLOODP))+(-0.2767*SMOKE)+(-0.7181*Math.log(TCHOL/HDLCHOL))+(-0.1759*DIABETES)+(-0.1999*DIABETES*(1-IS_MALE))+(-0.5865*IVH)+(0*IVH*IS_MALE)))/(Math.exp(0.9145)*Math.exp(-0.2784*(15.5305+(28.4441*(1-IS_MALE))+(-1.4792*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(-14.4588*Math.log(AGE)*(1-IS_MALE))+(1.8515*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-0.9119*Math.log(BLOODP))+(-0.2767*SMOKE)+(-0.7181*Math.log(TCHOL/HDLCHOL))+(-0.1759*DIABETES)+(-0.1999*DIABETES*(1-IS_MALE))+(-0.5865*IVH)+(0*IVH*IS_MALE)))))));
 		badFormulaBaseline = OVERESTIMATE*(1-Math.exp(-Math.exp((Math.log(TIME)-(15.5305+(28.4441*(1-IS_MALE))+(-1.4792*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(-14.4588*Math.log(AGE)*(1-IS_MALE))+(1.8515*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-0.9119*Math.log(BLOODP_A))+(-0.2767*SMOKE_A)+(-0.7181*Math.log(TCHOL_A/HDLCHOL_A))+(-0.1759*DIABETES_A)+(-0.1999*DIABETES_A*(1-IS_MALE))+(-0.5865*IVH_A)+(0*IVH_A*IS_MALE)))/(Math.exp(0.9145)*Math.exp(-0.2784*(15.5305+(28.4441*(1-IS_MALE))+(-1.4792*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(-14.4588*Math.log(AGE)*(1-IS_MALE))+(1.8515*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-0.9119*Math.log(BLOODP_A))+(-0.2767*SMOKE_A)+(-0.7181*Math.log(TCHOL_A/HDLCHOL_A))+(-0.1759*DIABETES_A)+(-0.1999*DIABETES_A*(1-IS_MALE))+(-0.5865*IVH_A)+(0*IVH_A*IS_MALE)))))));
@@ -712,6 +753,7 @@ function calculate(formula_id) {
 		badFormula = OVERESTIMATE*(1-Math.exp(-Math.exp((Math.log(TIME)-(26.5116+(0.2019*(1-IS_MALE))+(-2.3741*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-2.4643*Math.log(BLOODP))+(-0.3914*SMOKE)+(-0.0229*Math.log(TCHOL/HDLCHOL))+(-0.3087*DIABETES)+(-0.2627*DIABETES*(1-IS_MALE))+(-0.2355*IVH)+(0*IVH*IS_MALE)))/(Math.exp(-0.4312)*Math.exp(0*(26.5116+(0.2019*(1-IS_MALE))+(-2.3741*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-2.4643*Math.log(BLOODP))+(-0.3914*SMOKE)+(-0.0229*Math.log(TCHOL/HDLCHOL))+(-0.3087*DIABETES)+(-0.2627*DIABETES*(1-IS_MALE))+(-0.2355*IVH)+(0*IVH*IS_MALE)))))));
 		badFormulaBaseline = OVERESTIMATE*(1-Math.exp(-Math.exp((Math.log(TIME)-(26.5116+(0.2019*(1-IS_MALE))+(-2.3741*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-2.4643*Math.log(BLOODP_A))+(-0.3914*SMOKE_A)+(-0.0229*Math.log(TCHOL_A/HDLCHOL_A))+(-0.3087*DIABETES_A)+(-0.2627*DIABETES_A*(1-IS_MALE))+(-0.2355*IVH_A)+(0*IVH_A*IS_MALE)))/(Math.exp(-0.4312)*Math.exp(0*(26.5116+(0.2019*(1-IS_MALE))+(-2.3741*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-2.4643*Math.log(BLOODP_A))+(-0.3914*SMOKE_A)+(-0.0229*Math.log(TCHOL_A/HDLCHOL_A))+(-0.3087*DIABETES_A)+(-0.2627*DIABETES_A*(1-IS_MALE))+(-0.2355*IVH_A)+(0*IVH_A*IS_MALE)))))));
 	}
+	*/
 	
 	// ASCVD
 	else if ('ascvd' == formula_id) {
@@ -726,6 +768,7 @@ function calculate(formula_id) {
 		if ((!IS_MALE) && (IS_BLACK)) { coeff = new BlackFemale(); }
 		
 		badFormula = OVERESTIMATE*ASCVD10YrRisk(coeff, AGE, Math.round(TCHOL/0.0259), Math.round(HDLCHOL/0.0259), BLOODP, BPTREATMENT, DIABETES, SMOKE);
+		badFormula_NonSmoker = OVERESTIMATE*ASCVD10YrRisk(coeff, AGE, Math.round(TCHOL/0.0259), Math.round(HDLCHOL/0.0259), BLOODP, BPTREATMENT, DIABETES, 0);
 		badFormulaBaseline = OVERESTIMATE*ASCVD10YrRisk(coeff, AGE, Math.round(TCHOL_A/0.0259), Math.round(HDLCHOL_A/0.0259), BLOODP_A, 0, 0, 0);
 	}
 	
@@ -760,25 +803,42 @@ function calculate(formula_id) {
 		if (IS_MALE) {
 			// QRISK multiplies by 100 within the function (to make a percentage).  We do this with OVERESTIMATE throughout this function.  I decided to divide by 100 (here) for QRISK to maintain the format of the QRISK code
 			badFormula = OVERESTIMATE*QRISK_Male(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)/100;
+			badFormula_NonSmoker = OVERESTIMATE*QRISK_Male(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,0,surv,town)/100;
 			badFormulaBaseline = OVERESTIMATE*QRISK_Male(age, b_AF, b_ra,b_renal,0,0,0,25.0,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
 		} else {
 			badFormula = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,smoke_cat,surv,town)/100;
+			badFormula_NonSmoker = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethrisk,fh_cvd,rati,sbp,0,surv,town)/100;
 			badFormulaBaseline = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,0,0,0,25.0,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
 		}
 	}
 	
 	// round off nearest 10th to prevent very large NNTs
 	badFormula = Math.round(badFormula*10)/10;
-	badFormulaBaseline = Math.round(badFormulaBaseline*10)/10;
+	badFormula_NonSmoker = Math.round(badFormula_NonSmoker*10)/10;
+	badFormulaBaseline = Math.round(badFormulaBaseline*10)/10;			// red faces
 	
 	// calculate
-	var over_baseline = badFormula - badFormulaBaseline;
-	var my_benefit = Math.max(0, Math.min(over_baseline, badFormula * BENE / 100));
-	var additional = Math.max(0, over_baseline - my_benefit);
-	var good = 100 - (badFormulaBaseline + my_benefit + additional);
+	var my_benefit;
+	if ('smoking' == returnBenefitName(formula_id)) {
+		// Benefit calculation for smoking cessation
+		if (!smoker()) {
+			BENE = 0;
+			$('#benefit').text("N/A");
+			my_benefit = 0;
+		} else {
+			my_benefit = Math.max(0, Math.round((badFormula - badFormula_NonSmoker)*10)/10);
+			$('#benefit').text('Variable');
+		}
+	} else {
+		// Benefit not related to smoking status
+		my_benefit = Math.max(0, (badFormula * BENE / 100));			// green faces
+	}
+	
+	var additional = Math.max(0, (badFormula - badFormulaBaseline) - my_benefit);			// pink faces
+	var good = 100 - (badFormulaBaseline + my_benefit + additional);	// blue faces
 	
 	// risk percentages
-	$("#score_good").text(good.toFixed(1) + "%");
+	$("#score_good").text(good.toFixed(1) + "%");	// blue faces
 	$("#score_bad_sum").text((parseFloat(badFormulaBaseline.toFixed(1))+parseFloat(additional.toFixed(1))).toFixed(1) + "%");		//Because of rounding, using badFormula.toFixed(1) may not add up to the baseline + additional
 	$("#score_bad").text(badFormulaBaseline.toFixed(1) + "%");
 	$("#score_bad_add").text(additional.toFixed(1) + "%");
@@ -786,10 +846,10 @@ function calculate(formula_id) {
 	$("#score_nnt").text(my_benefit > 0 ? Math.round(100 / my_benefit) : "∞");
 	
 	// TODO: the rounding here is wrong, it needs to be combined and then a dominant face gets to use up the space
-	var numSadFaces = Math.round(badFormulaBaseline);
-	var numProFaces = Math.round(my_benefit);
-	var numAddFaces = Math.round(additional + my_benefit) - numProFaces;
-	var totalSum = 100 - (numSadFaces + numAddFaces + numProFaces);
+	var numSadFaces = Math.round(badFormulaBaseline); // red faces
+	var numProFaces = Math.round(my_benefit);	// green faces
+	var numAddFaces = Math.round(additional + my_benefit) - numProFaces; // pink faces
+	var totalSum = 100 - (numSadFaces + numAddFaces + numProFaces); // blue faces
 	
 	// add the faces
 	var faces = $("#faces").empty();
@@ -810,6 +870,10 @@ function calculate(formula_id) {
 	for (var i = 0; i < totalSum; i++) {
 		faces.prepend(newFace('blue'));
 	}
+}
+
+function calc_cvd(TIME, IS_MALE, AGE, BLOODP, SMOKE, TCHOL, HDLCHOL, DIABETES, IVH) {
+ return (1-Math.exp(-Math.exp((Math.log(TIME)-(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP))+(-0.3899*SMOKE)+(-0.539*Math.log(TCHOL/HDLCHOL))+(-0.3036*DIABETES)+(-0.1697*DIABETES*(1-IS_MALE))+(-0.3362*IVH)+(0*IVH*IS_MALE)))/(Math.exp(0.6536)*Math.exp(-0.2402*(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP))+(-0.3899*SMOKE)+(-0.539*Math.log(TCHOL/HDLCHOL))+(-0.3036*DIABETES)+(-0.1697*DIABETES*(1-IS_MALE))+(-0.3362*IVH)+(0*IVH*IS_MALE)))))));
 }
 
 function ASCVD10YrRisk(coeff, age, TC, HDL, SBP, BPTreatment, DM, Smoker) {
