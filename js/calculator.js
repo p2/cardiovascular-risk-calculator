@@ -834,7 +834,21 @@ function calculate(formula_id) {
 		my_benefit = Math.max(0, (badFormula * BENE / 100));			// green faces
 	}
 	
-	var additional = Math.max(0, (badFormula - badFormulaBaseline) - my_benefit);			// pink faces
+	var additional = Math.max(0, (badFormula - badFormulaBaseline));	// pink faces
+
+	// Subtract away the benefit ...
+	var benefit_remaining = my_benefit;
+	if ((additional > 0) && (benefit_remaining > 0)) {
+		var subtract = Math.min(additional, benefit_remaining);
+		additional = additional - subtract;
+		benefit_remaining = benefit_remaining - subtract;
+	}
+	if ((badFormulaBaseline > 0) && (benefit_remaining > 0)) {
+		var subtract = Math.min(badFormulaBaseline, benefit_remaining);
+		badFormulaBaseline = badFormulaBaseline - subtract;
+		benefit_remaining = benefit_remaining - subtract;
+	}
+	
 	var good = 100 - (badFormulaBaseline + my_benefit + additional);	// blue faces
 	
 	// risk percentages
