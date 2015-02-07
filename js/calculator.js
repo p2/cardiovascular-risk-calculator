@@ -198,11 +198,14 @@ function bodymassindex() {
 }
 
 function diabetes(item) {
-	if (item) {
-		$(item).addClass('active').siblings().removeClass('active');
+	if ('qrisk' == _formula_id) {
+		return (parseInt($('#dm_cat').val()) > 0);
+	} else {
+		if (item) {
+			$(item).addClass('active').siblings().removeClass('active');
+		}
+		return $('#diabetes_yes').hasClass('active') ? 1 : 0;
 	}
-	
-	return $('#diabetes_yes').hasClass('active') ? 1 : 0;
 }
 
 function famhistory(item) {
@@ -835,7 +838,11 @@ function calculate(formula_id) {
 	}
 	
 	var additional = Math.max(0, (badFormula - badFormulaBaseline));	// pink faces
-
+	
+	// TODO: the rounding here is wrong, it needs to be combined and then a dominant face gets to use up the space
+	var numSadFaces = Math.round(badFormulaBaseline); // red faces
+	var numAddFaces = Math.round(additional); // pink faces
+	
 	// Subtract away the benefit ...
 	var benefit_remaining = my_benefit;
 	if ((additional > 0) && (benefit_remaining > 0)) {
@@ -849,6 +856,18 @@ function calculate(formula_id) {
 		benefit_remaining = benefit_remaining - subtract;
 	}
 	
+	// The difference between our old/new red and pink faces will equal our green faces
+	var numProFaces = 0;	// green faces
+	if (numSadFaces != Math.round(badFormulaBaseline)) {
+		numProFaces += Math.max(0,numSadFaces - Math.round(badFormulaBaseline));
+		numSadFaces -= Math.max(0,numSadFaces - Math.round(badFormulaBaseline));
+	}
+	if (numAddFaces != Math.round(additional)) {
+		numProFaces += Math.max(0,numAddFaces - Math.round(additional));
+		numAddFaces -= Math.max(0,numAddFaces - Math.round(additional));
+	}
+	
+	var totalSum = 100 - (numSadFaces + numAddFaces + numProFaces); // blue faces
 	var good = 100 - (badFormulaBaseline + my_benefit + additional);	// blue faces
 	
 	// risk percentages
@@ -858,12 +877,6 @@ function calculate(formula_id) {
 	$("#score_bad_add").text(additional.toFixed(1) + "%");
 	$("#score_benefits").text(my_benefit.toFixed(1) + "%");
 	$("#score_nnt").text(my_benefit > 0 ? Math.round(100 / my_benefit) : "∞");
-	
-	// TODO: the rounding here is wrong, it needs to be combined and then a dominant face gets to use up the space
-	var numSadFaces = Math.round(badFormulaBaseline); // red faces
-	var numProFaces = Math.round(my_benefit);	// green faces
-	var numAddFaces = Math.round(additional + my_benefit) - numProFaces; // pink faces
-	var totalSum = 100 - (numSadFaces + numAddFaces + numProFaces); // blue faces
 	
 	// add the faces
 	var faces = $("#faces").empty();
