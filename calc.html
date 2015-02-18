@@ -288,12 +288,12 @@
 			<div id="divFamilyHistoryOfEarlyCHD">
 				<h3>Family History of Early CHD</h3>
 				<div class="slider_parent">
-					<input id="slider_overestimate" class="slider_40" type="range" min="100" max="175" value="100" step="1" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" />
-					<input id="overestimate" type="number" class="three" min="100" max="175" maxlength="3" step="1" value="100" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','overestimate', _alerts['overestimate'], this)" />%
+					<input id="slider_overestimate" class="slider_40" type="range" min="0" max="75" value="0" step="1" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" />
+					<input id="overestimate" type="number" class="three" min="0" max="75" maxlength="3" step="1" value="0" oninput="adjustSlider('overestimate','slider_overestimate', _alerts['overestimate'], this)" onchange="adjustSlider('overestimate','overestimate', _alerts['overestimate'], this)" />%
 				</div>
 				<div class="errorAlert" id="alert_overestimate"></div>
 				<p class="item_info" id="AmountOfRisk">
-					The amount of risk conferred from a family member to a patient depends on: (1) how close a relative, (2) age of a relative, (3) number of affected family members.
+					The amount of <u>additional</u> risk conferred from a family member to a patient depends on: (1) how close a relative, (2) age of a relative, (3) number of affected family members.
 				</p>
 				<p class="item_info">
 					If mother (&lt; 65 yrs) increase risk 60%

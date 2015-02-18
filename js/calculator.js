@@ -47,7 +47,6 @@ $(document).ready(function() {
 		// Load an "basic" version of the page
 		// Reset the toggle button
 		$('#toggleBasicView').text('Switch to "Enhanced" View');
-		$('#toggleBasicView').css('display','inline');
 		$('#toggleBasicView').click(function() {window.location.href = window.location.href.split("#")[0]; });
 		
 		// Hide some of the treatments
@@ -669,7 +668,7 @@ function WhiteMale() {
  *  Our main calculation formula.
  */
 function calculate(formula_id) {
-	var OVERESTIMATE = $('#overestimate').val() *1;
+	var OVERESTIMATE = ($('#overestimate').val() *1) + 100; // Results in a number 100 to 175, eventually multiplied by a decimal (eg, 0.05) to describe a risk in percent (0.05 -> 5%)
 	
 	var BENE = benefit(formula_id);
 	$('#benefit').text(BENE+'%');
