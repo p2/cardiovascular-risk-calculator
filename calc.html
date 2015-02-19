@@ -376,6 +376,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'sglt': { 'default': 0, 'diabetes': 0 },						
 						'smoking': 'Variable',
 						'asa': { 'male': 15, 'female': 10 }
 					},
@@ -396,6 +397,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'sglt': { 'default': 0, 'diabetes': 0 },
 						'smoking': 'Variable',
 						'asa': { 'male': 15, 'female': 10 }
 					},
@@ -416,6 +418,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'sglt': { 'default': 0, 'diabetes': 0 },						
 						'smoking': 'Variable',
 						'asa': { 'male': 15, 'female': 10 }
 					},
@@ -436,6 +439,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'sglt': { 'default': 0, 'diabetes': 0 },						
 						'smoking': 'Variable',
 						'asa': { 'male': 30, 'female': 0 }
 					},
@@ -456,6 +460,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'sglt': { 'default': 0, 'diabetes': 0 },						
 						'smoking': 'Variable',
 						'asa': { 'male': 30, 'female': 0 }
 					},
@@ -476,6 +481,7 @@
 						'glp': { 'default': 0, 'diabetes': 0 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
+						'sglt': { 'default': 0, 'diabetes': 0 },
 						'smoking': 'Variable',
 						'asa': { 'male': 0, 'female': 15 }
 					}
@@ -568,6 +574,11 @@
 						"Inconvenience of surrogate remeasurements",
 						"Drug Cost"
 					],
+					'sglt': [
+						"Genital infections NNH 15",
+						"Inconvenience of surrogate remeasurements",
+						"Drug Cost"
+					],
 					'smoking': [
 						"No Harms",
 					],
@@ -594,6 +605,7 @@
 					<li onclick="toggleBenefit(this)" data-benefit="glp">GLPs</li>
 					<li onclick="toggleBenefit(this)" data-benefit="dpp-4">DPP-4s</li>
 					<li onclick="toggleBenefit(this)" data-benefit="meglit">Meglitinides</li>
+					<li onclick="toggleBenefit(this)" data-benefit="sglt">SGLT2</li>					
 					<li onclick="toggleBenefit(this)" data-benefit="smoking">Smoking Cessation</li>
 					<li onclick="toggleBenefit(this)" data-benefit="asa" style="display: table;">ASA</li> <!-- display: table to put onto a single line -->
 				</ul>
@@ -680,7 +692,7 @@
 				<br />For important calculator caveats click <a href="Caveats.html#calculator" target="_blank">here</a>.
 			</p>
 
-			James McCormack/Pascal Pfiffner, 2014
+			James McCormack/Pascal Pfiffner, 2015
 			<span class="separator">★</span>
 			<a id="cache_status" href="javascript:void(0);" onclick="offlineHint()">Available offline</a>
 		</div>

@@ -16,6 +16,7 @@
 		2) <b>QRISK<sup>&reg;</sup>2-2014</b> - this calculates the risk of heart attacks + strokes</p>
 		3) <b>ACC/AHA ASCVD</b> - this calculates the risk of CHD death + nonfatal heart attacks + fatal/nonfatal strokes
 		<p>This calculator was designed to dynamically show how the value of specific risk factors impact cardiovascular risk. Results are shown using a representation of 100 "happy faces" to help illustrate risk. This format seems to be one of the better ways to present risks visually. Risks are also provided as absolute numbers and rounded off to one decimal point even though <b>any cardiovascular estimates likely are +/- 5-10% at best.</b></p>
+		<p>There are TWO different views for this calculator. An ENHANCED VIEW which displays all the different types of interventions including non-drug, drugs for cholesterol, drugs for statins, drugs for blood pressure, drugs for glucose. The BASIC VIEW displays only non-drug, statins and ASA as interventions and all patient variables need to be inserted before any numbers are presented. In addition, it only displays three different faces - those with no event, those with an event, and those for benefit. You can toggle back and forth between the two different views.</p>
 		
 		<h2>How do I use the Absolute CVD Risk/Benefit Calculator?</h2>
 		
@@ -51,7 +52,7 @@
 		<p>e) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>		
 		
 		<h3>3) Estimate benefit</h3>
-		<p>Estimate of benefit - clicking on an intervention like Physical Activity, Mediterranean Diet vs Low Fat, Vitamin/Omega-3 supplements, (if SBP is >/= 140 mmHg) BP Meds, (regardless of cholesterol) Low-mod intensity statins, High intensity statins, Fibrates, Niacin, Ezetimibe, (if diabetic) Metformin, Sulfonylureas, Insulins, Glitazones, GLPs, DPP-4s, Meglitinides, and ASA will input a specific relative benefit and this will be applied to the absolute risk to calculate the % of people who could benefit from a therapy. Examples of relative benefits are taken from a synopsis of the best available evidence - see below for more details</p>
+		<p>Estimate of benefit - clicking on an intervention like Physical Activity, Mediterranean Diet vs Low Fat, Vitamin/Omega-3 supplements, (if SBP is >/= 140 mmHg) BP Meds, (regardless of cholesterol) Low-mod intensity statins, High intensity statins, Fibrates, Niacin, Ezetimibe, (if diabetic) Metformin, Sulfonylureas, Insulins, Glitazones, GLPs, DPP-4s, Meglitinides, SGLT2 and ASA will input a specific relative benefit and this will be applied to the absolute risk to calculate the % of people who could benefit from a therapy. Examples of relative benefits are taken from a synopsis of the best available evidence - see below for more details</p>
 
 		<h3 id="percentage">ABSOLUTE NUMBERS - calculated risk and benefits</h3>
 		<p>a)&nbsp;<strong>NO EVENT</strong> BLUE FACES - are the % of people who would NOT have an event over the time period</p>
@@ -217,6 +218,15 @@
 					-->
 					<td></td>
 				</tr>
+				<tr>				
+					<th>SGLT2</th>
+					<td class="big">No studies</td>
+					<!--
+					<td class="big">No studies</td>
+					<td class="big">No studies</td>
+					-->
+					<td></td>
+				</tr>	
 				<tr>
 					<th>ASA</th>
 					<td class="big">~15%M ~10%F</td>
@@ -246,7 +256,7 @@
 		<p>Many cardiovascular risk calculators identify diabetes as a yes or no variable. Framingham defines diabetes as a fasting glucose of &gt; 7mmol/L (126 mg/dL) for the offspring cohort or 7.8 (140) for the original cohort. It is clear however that diabetes is not a yes or no risk factor. Based on the UKPDS risk engine for every 2% increase in A1c, over 6%CVD risk goes up 33%. Type-2 diabetes also increases the chance of microvascular disease. Compared to macrovascular risks the absolute risk of hard microvascular endpoints like renal failure or blindness are far less frequent. However incidence data is not as robust for these endpoints. In UKPDS 34 less than 1% of patients developed renal failure over 11 years and roughly 5% developed blindness in one eye. In STENO, in which patients also had microalbuminuria, 8% of patients in the standard treatment group went on dialysis and 9% became blind in at least 1 eye over 14 years. Vijan et al estimated a 60-year-old diabetic with an A1c of 9% has a lifetime chance of dialysis of around 1 in 100 and a similar lifetime chance of blindness.</p>
 		
 		<h2>Why aren't risk factors like family history and lifestyle included in the Framingham and ACC/AHA ASCVD calculators?</h2>
-		<p>These calculators use age, gender, SBP, total cholesterol, HDL cholesterol, smoking and diabetes to calculate cardiovascular risk. Adjustments for family history, weight, BMI etc are not available for these calculators.</p>
+		<p>These calculators use age, gender, SBP, total cholesterol, HDL cholesterol, smoking and diabetes to calculate cardiovascular risk. Calculator specific adjustments for family history, weight, BMI etc are not available for these calculators however we have added some guidance as to the impact of family history and one can adjust the overall risk by adding a variable percentage. These modifications are not sanctioned by the original groups who developed these calculators.</p>
 		
 		<h2 id="framingham">What specific outcomes do the cardiovascular terms include and how are they defined?</h2>
 		<h3>1) Framingham</h3>		
@@ -315,7 +325,7 @@
 	</div>
 	
 	<div id="footer">
-		James McCormack/Pascal Pfiffner, 2014
+		James McCormack/Pascal Pfiffner, 2015
 	</div>
 </body>
 </html>
