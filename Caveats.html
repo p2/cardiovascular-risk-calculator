@@ -8,20 +8,46 @@
 </head>
 <body>
 	<div id="container" class="pad">
-		<h1>Important Caveats To Consider</h1>
-		<h2>DO NOT USE THE RISK CALCULATOR AS A TOOL TO RECOMMEND SPECIFIC RISK FACTOR THRESHOLDS OR TARGETS</h2>
-		<p>As per the FAQs, this calculator should not be used to categorize patients into specific risk categories nor to identify specfic risk factor targets as these are arbitrary, do not use evidence from RCTs, and do not incorporate patient values or preferences.</p>
-		<h2>Do not use the calculator sliders to make an estimate of the benefit of treatment</h2>
-		<p>Changing the calculator sliders and/or buttons could, in theory, be used to show an estimate of benefit by just sliding them back to numbers or categories of lower risk. Unfortunately, this doesn't appear to be an accurate way to calculate estimates of benefits. The exception may be smoking, where likely the best way (as there are no RCTs of stopping smoking) to demonstrate the benefit of quitting smoking is to unclick smoking and use this to show the potential CVD benefit of stopping smoking. Most studies suggest the cardiovascular risks associated with smoking are reversed after 5-10 years of not smoking. To get an estimate of the potential cardiovascular benefit of other interventions, click on the specific intervention (BP, activity, statins, etc) below the risk sliders.</p>
-		<h2>Do not use the calculator to make estimates for patients above age 80 as the relation between increases in the risk factors used in most calculators and increased risk of CVD do not seem to hold</h2>
-		<p>Evidence suggests for younger people, there does appear to be an association between changes in risk factors and the risk of cardiovascular events and thus is the rationale for the use of risk calculators. However, this does not appear to be the case in patients over the age of 80 so refrain from using this calculator to estimate risk in this patient population. BMJ 2009;338:a3083
-doi:10.1136/bmj.a3083</p>
-		<h2>Do not use the calculator to make estimates for patients already receiving treatment except when using ASCVD</h2>
-		<p>The Framingham database is not designed to calculate risk if patients are already being treated with a drug that lowers blood pressure or some other surrogate marker. Previous untreated numbers should be used. For the ASCVD calculations one can add in if the person is on treatment for blood pressure.</p>
+		<div id="localization">
+			<span data-lang-id="languages">Languages</span>:
+			<select id="selectLocalization" onChange="language = $(this).val(); LoadLocalizationSubpage($(this).val())">
+				<option value="en" data-page-title="Risk Calculator – Important Caveats to Consider" selected="selected" >English (EN)</option>
+				<option value="fr"  data-page-title="Risk Calculator – Mise en garde importante à considérer">Français (FR)</option>
+			</select>
+		</div>
+	
+		<div class="localizeSubpage" data-lang="en">
+			<h1>Important Caveats To Consider</h1>
+			<h2>DO NOT USE THE RISK CALCULATOR AS A TOOL TO RECOMMEND SPECIFIC RISK FACTOR THRESHOLDS OR TARGETS</h2>
+			<p>As per the FAQs, this calculator should not be used to categorize patients into specific risk categories nor to identify specfic risk factor targets as these are arbitrary, do not use evidence from RCTs, and do not incorporate patient values or preferences.</p>
+			<h2>Do not use the calculator sliders to make an estimate of the benefit of treatment</h2>
+			<p>Changing the calculator sliders and/or buttons could, in theory, be used to show an estimate of benefit by just sliding them back to numbers or categories of lower risk. Unfortunately, this doesn't appear to be an accurate way to calculate estimates of benefits. The exception may be smoking, where likely the best way (as there are no RCTs of stopping smoking) to demonstrate the benefit of quitting smoking is to unclick smoking and use this to show the potential CVD benefit of stopping smoking. Most studies suggest the cardiovascular risks associated with smoking are reversed after 5-10 years of not smoking. To get an estimate of the potential cardiovascular benefit of other interventions, click on the specific intervention (BP, activity, statins, etc) below the risk sliders.</p>
+			<h2>Do not use the calculator to make estimates for patients above age 80 as the relation between increases in the risk factors used in most calculators and increased risk of CVD do not seem to hold</h2>
+			<p>Evidence suggests for younger people, there does appear to be an association between changes in risk factors and the risk of cardiovascular events and thus is the rationale for the use of risk calculators. However, this does not appear to be the case in patients over the age of 80 so refrain from using this calculator to estimate risk in this patient population. BMJ 2009;338:a3083 doi:10.1136/bmj.a3083</p>
+			<h2>Do not use the calculator to make estimates for patients already receiving treatment except when using ASCVD</h2>
+			<p>The Framingham database is not designed to calculate risk if patients are already being treated with a drug that lowers blood pressure or some other surrogate marker. Previous untreated numbers should be used. For the ASCVD calculations one can add in if the person is on treatment for blood pressure.</p>
+		</div>
+		
+		<div class="localizeSubpage" data-lang="fr" style="display: none;">
+		    <h1>Mise en garde</h1>
+			<h2>NE PAS UTILISER LA CALCULATRICE COMME OUTIL POUR RECOMMANDER DES SEUILS OU DES CIBLES À ATTEINDRE POUR UN FACTEUR DE RISQUE SPÉCIFIQUE</h2>
+			<p>Tel que mentionné à la page des questions fréquemment posées (FAQ), cette calculatrice ne doit pas être utilisée pour classer les patients dans des catégories de risque spécifiques, ni pour identifier des facteurs de risque spécifiques parce que ceux-ci sont arbitraires, n'utilisent pas des données issues d'ECR, et n'intégrent pas les valeurs ou les préférences des patients.</p>
+			<h2>Ne pas ajuster le facteur de risque pour faire une estimation du bénéfice du traitement </h2>
+			<p>En théorie, on pourrait montrer le bénéfice associé à la modification d'un facteur de risque en changeant (typiquement en diminuant) la valeur associée à ce facteur. Malheureusement, cela ne semble pas être un moyen précis pour estimer le bénéfice lié à ce changement. Une exception possible est le statut tabagique, où probablement la meilleure façon (car il n'y a pas d'ECR sur l'arrêt tabagique) pour démontrer les bénéfices de l'arrêt tabagique est de décocher le tabagisme pour montrer les bénéfices potentiels sur les maladies cardiovasculaires. La plupart des études suggèrent que les risques cardiovasculaires associés au tabagisme reviennent au risque de base 5-10 ans après l'arrêt. Pour obtenir une estimation du bénéfice cardiovasculaire potentiel d'autres interventions, cliquez sur l'intervention spécifique (BP, l'activité, les statines, etc.).</p>
+			<h2>Ne pas utiliser la calculatrice pour faire des estimations chez les personnes de plus de 80 ans puisque l'association entre les facteurs de risque utilisés dans la plupart des calculatrices et le risque  de maladie cardiovasculaire ne semble pas être fiable chez les personnes de cet âge.</h2>
+			<p>Les données des études suggèrent que pour les jeunes, il existe une association entre les changements dans les facteurs de risque et le risque d'événements cardiovasculaires. Ceci est la raison appuyant le bien-fondé de l'utilisation de calculatrices de risque. Toutefois, cela ne semble pas être le cas chez les patients âgés de plus de 80 ans. Donc, ne pas utiliser cette calculatrice pour estimer le risque dans cette population. BMJ 2009; 338: a3083 doi: 10.1136 / bmj.a3083</p>
+			<h2>Ne pas utiliser la calculatrice pour estimer le risque cardiovasculaire chez des personnes recevant déjà un traitement, sauf lors de l'utilisation de l'ASCVD ou du QRISK2</h2>
+			<p>La base de données de Framingham n'a pas été conçue pour calculer le risque cardiovasculaire si des personnes sont déjà traitées avec un médicament qui abaisse la tension artérielle ou modifie un autre paramètre de substitution. Les chiffres avant traitement devraient être utilisés. Pour les calculs avec l'ASCVD et le QRISK2, on peut ajouter si la personne prend un traitement pour l'hypertention artérielle.</p>
+		</div>
 	</div>
 	
 	<div id="footer">
 		James McCormack/Pascal Pfiffner, 2013
 	</div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="static/URI.min.js"></script>
+	<script src="static/localization.subpages.min.js"></script>
+	
 </body>
 </html>

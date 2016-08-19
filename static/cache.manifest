@@ -1,9 +1,13 @@
 CACHE MANIFEST
-#change this text: gfaeuxntd
+#change this text: gfaeuxntdtetet110
 #parent: 297e740
 style.css
+printable.css
 calculator.min.js
+localization.min.js
+localization.subpages.min.js
 html5slider.min.js
+URI.min.js
 http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 
 ../imgs/bad.png
@@ -18,3 +22,4 @@ http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 ../imgs/blue@2x.png
 ../imgs/green.png
 ../imgs/green@2x.png
+../imgs/icon-32.png

@@ -17,14 +17,31 @@
  *  KIND, either express or implied.  See the License for the
  *  specific language governing permissions and limitations
  *  under the License.
- */
+ */ 
 
 /* CONSTANTS */
 var errorDelay = 750;   //in msec
 
+/* GLOBALS */
+var language = 'en';	// Updates based on the <select> within document ready
+
 $(document).ready(function() {
 	if (CONVERT_SLIDERS) {		// this flag is specifically set by IE 9 and lower because we have a plugin for FireFox and don't care about old WebKit
 		convertSliders();
+	}
+	
+	// Localization support
+	// First, check the URL (if param 'lang' is set)
+	var uri = new URI(window.location);
+	if (uri.hasQuery('lang')) {
+		language = uri.search(true)['lang'];
+		$('#selectLocalization').val(language);
+		LoadLocalizationData(language);
+	} else {
+		// Nothing in the param list -- load default English
+		language = $('#selectLocalization').val();
+		if (language == '') { language = 'en'; }
+		LoadLocalizationData(language);
 	}
 	
 	// setup offline mode
@@ -39,15 +56,22 @@ $(document).ready(function() {
 	}
 	
 	// "basic" vs. enhanced functionality
-	setFormulaById('cvd');
+	setFormulaById('framingham2008');
 	if (!BasicView()) {
 		// Load the normal page (the page should be setup by default to support the 'normal' functionality without any JavaScript magic
 		
 	} else {
 		// Load an "basic" version of the page
 		// Reset the toggle button
-		$('#toggleBasicView').text('Switch to "Enhanced" View');
-		$('#toggleBasicView').click(function() {window.location.href = window.location.href.split("#")[0]; });
+		$('#toggleBasicView').text(LocalizeText('SwitchEnhanced',language));
+		$('#toggleBasicView').click(function() {
+		
+			var basicUri = new URI(window.location.href.split("#")[0]);
+			if (language != 'en') {
+				basicUri.addQuery('lang',language);
+			}
+			window.location = basicUri.toString();
+		});
 		
 		// Hide some of the treatments
 		$('li[data-benefit="vitaomeg"]').hide();
@@ -62,6 +86,7 @@ $(document).ready(function() {
 		$('li[data-benefit="glp"]').hide();
 		$('li[data-benefit="dpp-4"]').hide();
 		$('li[data-benefit="meglit"]').hide();
+		$('li[data-benefit="sglt"]').hide();
 		
 		// "Unfill" the textboxes to force the user to input data
 		$('#age').val('').change();
@@ -86,7 +111,7 @@ $(document).ready(function() {
 		/*
 		$('#liFramingham').attr('id','liFraminghamSimple');		// Changing the ID removes much of the Framingham-specific styling in the CSS
 		$('li[data-calc="cvd"]').attr('onclick','');
-		$('#liFraminghamSimple').attr('data-calc','cvd');
+		$('#liFraminghamSimple').attr('data-calc','framingham2008');
 		$('#liFraminghamSimple').click(function() {
 			setFormula(this);
 			$('#liFraminghamSimple').addClass('active');
@@ -104,11 +129,35 @@ $(document).ready(function() {
 	// if (window.navigator.standalone)
 });
 
+function PrintView() {
+	if ($('#outcome').hasClass('opacity10')) { return; }	// If opacity is activated, there's something wrong with the user input
+
+	$("#cssPrintable").load(function(){
+	window.print();
+	}).attr('href', 'static/printable.css');
+}
+
+function RemovePrintView() {
+	$('#cssPrintable').attr('href','');
+}
+
+function SwitchToBasicView() {
+	var uri = new URI(window.location.pathname + "#basic");
+	
+	if (language == 'en') {
+		if (uri.hasQuery('lang')) {
+			uri.removeQuery('lang');
+		}
+	} else {
+		uri.addQuery('lang',language);
+	}
+
+	window.location = uri.toString();
+}
+
 function BasicView() {
 	return (location.href.toLowerCase().indexOf("#basic") >= 0)
 }
-
-
  
 function gender(item) {
 	if (item) {
@@ -298,7 +347,7 @@ function adjustSlider(txt_id, slider_id, alert_info, sender, no_calc) {
 			$('#outcome').addClass('opacity10');
 		    setTimeout(function () {
 		        if (parseFloat($('#' + txt_id).val()) < parseFloat(min)) {
-		            $('#' + alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
+		            $('#' + alert_info['alert_id']).html(alert_info['label'] + ' ' + LocalizeText('MustBeBetween',language) + ' ' + min + ' ' + LocalizeText('and',language) + ' ' + max + ' ' + alert_info['suffix']).show();
 		            $('#' + txt_id).addClass('errorTextbox');
 		        }
 		    }, errorDelay);
@@ -310,7 +359,7 @@ function adjustSlider(txt_id, slider_id, alert_info, sender, no_calc) {
 			$('#outcome').addClass('opacity10');
 		    setTimeout(function () {
 		        if (parseFloat($('#' + txt_id).val()) > parseFloat(max)) {
-		            $('#' + alert_info['alert_id']).html(alert_info['label'] + ' must be between ' + min + ' and ' + max + ' ' + alert_info['suffix']).show();
+		            $('#' + alert_info['alert_id']).html(alert_info['label'] + ' ' + LocalizeText('MustBeBetween',language) + ' ' + min + ' ' + LocalizeText('and',language) + ' ' + max + ' ' + alert_info['suffix']).show();
 		            $('#' + txt_id).addClass('errorTextbox');
 		        }
 		    }, errorDelay);
@@ -377,7 +426,7 @@ function toggleBenefit(elem) {
 			}
 		}
 		else {
-			alert("There is no harm information for the intervention \"" + bene + "\"");
+			alert("There is no harm information for the intervention" + " \"" + bene + "\"");	// Do not localize
 		}
 	}
 	
@@ -385,7 +434,7 @@ function toggleBenefit(elem) {
 	$('#benefit_information').remove();
 	$('h3.relativeBenefit > span').removeClass('active');
 	if (text && text.length > 0) {
-		var html = "<h3>Harm of Intervention</h3><p>" + text + '</p>';
+		var html = "<h3 data-lang-id=\"HarmOfIntervention\">" + LocalizeText("HarmOfIntervention",language) + "</h3><p>" + text + '</p>';
 		var li = $('<li/>', {'id': 'benefit_information'}).html(html);
 		
 		// we only want to append to the item BEFORE a line break, not always after the clicked item because that might put some innocent items on the next line
@@ -424,7 +473,7 @@ function returnBenefitName(formula_id) {
  */
 function benefit(formula_id) {
 	if (!formula_id || ! (formula_id in _benefit)) {
-		alert("I cannot currently calculate benefits for this formula: " + (formula_id ? formula_id : "not defined"));
+		alert("I cannot currently calculate benefits for this formula: " + (formula_id ? formula_id : "not defined"));	// Intentionally not localized
 		return 0;
 	}
 	
@@ -465,7 +514,7 @@ function benefit(formula_id) {
 				else {
 					var func = window[t];
 					if (!func || 'function' != typeof(func)) {
-						alert("The benefit for " + bf + " of type " + t + " is invalid, needs to be a function name");
+						alert("The benefit for " + bf + " of type " + t + " is invalid, needs to be a function name"); // Intentionally not localized
 					}
 					else if (func()) {
 						use = this_benefit[t];
@@ -480,7 +529,7 @@ function benefit(formula_id) {
 		// make sure we have a number and add to our array
 		if ('number' != typeof(this_benefit)) {
 			console.error(this_benefit);
-			alert("Not a numerical value for benefit " + bf + ": " + this_benefit);
+			alert("Not a numerical value for benefit " + bf + ": " + this_benefit); // Intentionally not localized
 		}
 		else if (this_benefit > max) {
 			max = this_benefit;
@@ -545,21 +594,14 @@ function setFormulaById(formula_id) {
 	}
 	
 	// Hide/show for Framingham
-	if (('cvd' == formula_id) || ('chd' == formula_id) || ('mi' == formula_id) || ('stroke' == formula_id)) {
+	if (('framingham2008' == formula_id) || ('cvd' == formula_id) || ('chd' == formula_id) || ('mi' == formula_id) || ('stroke' == formula_id)) {
 		$('#BpPriorToDrugs').show();
 	} else {
 		$('#BpPriorToDrugs').hide();
 	}
-	
-	// BP Treatment only exists for qrisk and ascvd
-	if (('qrisk' == formula_id) || ('ascvd' == formula_id)) {
-		$('#divBPTreatment').show();
-	} else {
-		$('#divBPTreatment').hide();
-	}
 	 
 	// Should the "Risk Time Period" option be enabled?
-	if (('qrisk' == formula_id) || ('ascvd' == formula_id)) {
+	if (('framingham2008' == formula_id) || ('qrisk' == formula_id) || ('ascvd' == formula_id)) {
 	    $('#rangeTime').prop('disabled', true);
 	    $('#time').prop('disabled', true);
 	    $('#rangeTime').val(10);
@@ -668,6 +710,15 @@ function WhiteMale() {
  *  Our main calculation formula.
  */
 function calculate(formula_id) {
+	// Clear our printables in the event of an error
+	var printables = ['print_CalcMethod','print_Age','print_Gender','print_Ethnicity',
+					'print_Smoker','print_Diabetes','print_SystolicBP', 'print_OnBpTreatment', 
+					'print_TotalCholesterol', 'print_HdlCholesterol', 'print_EarlyFH', 'print_CKD', 'print_AFib',
+					'print_RA', 'print_BMI'];
+	for (i=0; i<printables.length; i++) {
+		$('#'+printables[i]).html('N/A');
+	}
+
 	var OVERESTIMATE = ($('#overestimate').val() *1) + 100; // Results in a number 100 to 175, eventually multiplied by a decimal (eg, 0.05) to describe a risk in percent (0.05 -> 5%)
 	
 	var BENE = benefit(formula_id);
@@ -757,6 +808,14 @@ function calculate(formula_id) {
 	}
 	*/
 	
+	else if ('framingham2008' == formula_id) {
+	
+		badFormula = OVERESTIMATE*Framingham2008(IS_MALE, AGE, BLOODP,  bptreatment(), SMOKE, Math.round(TCHOL/0.0259), Math.round(HDLCHOL/0.0259), DIABETES);
+		badFormula_NonSmoker = OVERESTIMATE*Framingham2008(IS_MALE, AGE, BLOODP, bptreatment(), SMOKE_A, Math.round(TCHOL/0.0259), Math.round(HDLCHOL/0.0259), DIABETES);
+		badFormulaBaseline = OVERESTIMATE*Framingham2008(IS_MALE, AGE, BLOODP_A, 0, 0, Math.round(TCHOL/0.0259), Math.round(HDLCHOL/0.0259), 0);
+		
+	}
+	
 	// ASCVD
 	else if ('ascvd' == formula_id) {
 		var IS_BLACK = black();
@@ -825,11 +884,11 @@ function calculate(formula_id) {
 		// Benefit calculation for smoking cessation
 		if (!smoker()) {
 			BENE = 0;
-			$('#benefit').text("N/A");
+			$('#benefit').text(LocalizeText("NA",language));
 			my_benefit = 0;
 		} else {
 			my_benefit = Math.max(0, Math.round((badFormula - badFormula_NonSmoker)*10)/10);
-			$('#benefit').text('Variable');
+			$('#benefit').text(LocalizeText("Variable",language));
 		}
 	} else {
 		// Benefit not related to smoking status
@@ -870,12 +929,12 @@ function calculate(formula_id) {
 	var good = 100 - (badFormulaBaseline + my_benefit + additional);	// blue faces
 	
 	// risk percentages
-	$("#score_good").text(good.toFixed(1) + "%");	// blue faces
-	$("#score_bad_sum").text((parseFloat(badFormulaBaseline.toFixed(1))+parseFloat(additional.toFixed(1))).toFixed(1) + "%");		//Because of rounding, using badFormula.toFixed(1) may not add up to the baseline + additional
-	$("#score_bad").text(badFormulaBaseline.toFixed(1) + "%");
-	$("#score_bad_add").text(additional.toFixed(1) + "%");
-	$("#score_benefits").text(my_benefit.toFixed(1) + "%");
-	$("#score_nnt").text(my_benefit > 0 ? Math.round(100 / my_benefit) : "∞");
+	$("#score_good").text(LocalizeDecimal(good.toFixed(1),language) + "%");	// blue faces
+	$("#score_bad_sum").text(LocalizeDecimal((parseFloat(badFormulaBaseline.toFixed(1))+parseFloat(additional.toFixed(1))).toFixed(1),language) + "%");		//Because of rounding, using badFormula.toFixed(1) may not add up to the baseline + additional
+	$("#score_bad").text(LocalizeDecimal(badFormulaBaseline.toFixed(1),language) + "%");
+	$("#score_bad_add").text(LocalizeDecimal(additional.toFixed(1),language) + "%");
+	$("#score_benefits").text(LocalizeDecimal(my_benefit.toFixed(1),language) + "%");
+	$("#score_nnt").html(my_benefit > 0 ? Math.round(100 / my_benefit) : "&infin;");	//.html instead of .text for HTML entity (infinity)
 	
 	// add the faces
 	var faces = $("#faces").empty();
@@ -896,10 +955,169 @@ function calculate(formula_id) {
 	for (var i = 0; i < totalSum; i++) {
 		faces.prepend(newFace('blue'));
 	}
+	
+	// Prepare our printable screen
+	if (formula_id == 'framingham2008') { $('#print_CalcMethod').html('Framingham'); }
+	if (formula_id == 'qrisk') { $('#print_CalcMethod').html('QRISK<sup>&reg;</sup>2-2014'); }
+	if (formula_id == 'ascvd') { $('#print_CalcMethod').html('ACC/AHA ASCVD'); }
+	
+	$('#print_Age').html(AGE + ' ' + LocalizeText('years',language));
+	$('#print_Gender').html(IS_MALE ? LocalizeText('Male',language) : LocalizeText('Female',language));
+	
+	if (formula_id == 'qrisk') {
+		//find(':selected').text() values are already localized
+		$('#print_Smoker').html($('#smoke_cat').find(':selected').text());
+		$('#print_Diabetes').html($('#dm_cat').find(':selected').text());
+	} else {
+		$('#print_Smoker').html($('#smoker_yes').hasClass('active') ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('#print_Diabetes').html($('#diabetes_yes').hasClass('active') ? LocalizeText('Yes',language) : LocalizeText('No',language));
+	}
+	
+	$('#print_SystolicBP').html(BLOODP);
+	$('#print_OnBpTreatment').html(bptreatment() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+	
+	if (_useMMOL) {
+		$('#print_TotalCholesterol').html(LocalizeDecimal($('#totalchol_mmol').val(),language) + ' mmol/L');
+		$('#print_HdlCholesterol').html(LocalizeDecimal($('#hdlchol_mmol').val(),language) + ' mmol/L');		
+	} else {
+		$('#print_TotalCholesterol').html(LocalizeDecimal($('#totalchol_mgdl').val(),language) + ' mg/dL');
+		$('#print_HdlCholesterol').html(LocalizeDecimal($('#hdlchol_mgdl').val(),language) + ' mg/dL');		
+	
+	}
+	
+	if ((formula_id == 'qrisk') || (formula_id == 'ascvd')) {
+		$('.restricted.qrisk, .restricted.ascvd').show();
+		if (formula_id == 'qrisk') {
+			$('#print_Ethnicity').html($('#ethnicity').find(':selected').text());	// Already localized
+		} else {
+			// ASCVD
+			$('#print_Ethnicity').html(IS_BLACK ? LocalizeText('Black',language) : LocalizeText('Non-Black',language));
+		}
+	} else {
+		$('.restricted.qrisk, .restricted.ascvd').show();
+		// Just in case...
+		$('#print_Ethnicity').html(LocalizeText('NA',language));
+	}
+	
+	if (formula_id == 'qrisk') {
+		$('#print_DataPoints .restricted.qrisk').show();
+		$('#print_CKD').html(ckd() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('#print_AFib').html(afib() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('#print_RA').html(ra() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('#print_BMI').html($('#bmi').html());
+		$('#print_EarlyFH').html(famhistory() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+	} else {
+		$('#print_DataPoints .restricted.qrisk').hide();		
+		// Just in case ...
+		$('#print_CKD').html(LocalizeText('NA',language));
+		$('#print_AFib').html(LocalizeText('NA',language));
+		$('#print_RA').html(LocalizeText('NA',language));
+		$('#print_BMI').html(LocalizeText('NA',language));
+		$('#print_EarlyFH').html($('#overestimate').val() + '% ' + LocalizeText('AdditionalRisk',language));
+	}
+	
+	if ($('#benefit_estimates .active').length > 0) {
+		$('#print_DataPoints .benefit').show();
+		$('#print_benefit').html($('#benefit_estimates .active').text() + ', ' + $('.relativeBenefit').text());	// Already localized
+		
+		var bene = $('#benefit_estimates .active').data('benefit');
+		var res = _benefit_risks[bene];	// Already localized
+		var harms = '';
+		if ('string' == typeof(res)) {
+			harms = res;
+		}
+		else if (res && res.length > 0) {
+			harms = "<ul><li>" + res.join("</li><li>") + "</li></ul>";
+		}
+		if (harms.indexOf('<br><h3>') > 0) {	// "Additional benefits" will not be included in printout
+			harms = harms.substring(0,harms.indexOf('<br><h3>'));	// Remove any 'additional benefits'
+		}
+		
+		if (harms.length > 0) {
+			$('#print_benefit_harms_li').show();
+			$('#print_benefit_harms_label').html($('#benefit_estimates .active').text() + ', ' + LocalizeText('HarmOfIntervention',language));
+			$('#print_benefit_harms').html(harms);
+		} else {
+			$('#print_benefit_harms_li').hide();	
+			$('#print_benefit_harms').html('');
+		}
+		
+	} else {
+		// No benefit has been selected
+		$('#print_DataPoints .benefit').hide();
+		// Just in case...
+		$('#print_benefit').html(LocalizeText('NA',language));
+	}
 }
 
 function calc_cvd(TIME, IS_MALE, AGE, BLOODP, SMOKE, TCHOL, HDLCHOL, DIABETES, IVH) {
  return (1-Math.exp(-Math.exp((Math.log(TIME)-(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP))+(-0.3899*SMOKE)+(-0.539*Math.log(TCHOL/HDLCHOL))+(-0.3036*DIABETES)+(-0.1697*DIABETES*(1-IS_MALE))+(-0.3362*IVH)+(0*IVH*IS_MALE)))/(Math.exp(0.6536)*Math.exp(-0.2402*(18.8144+(-1.2146*(1-IS_MALE))+(-1.8443*Math.log(AGE))+(0*Math.log(AGE)*Math.log(AGE))+(0.3668*Math.log(AGE)*(1-IS_MALE))+(0*Math.log(AGE)*Math.log(AGE)*(1-IS_MALE))+(-1.4032*Math.log(BLOODP))+(-0.3899*SMOKE)+(-0.539*Math.log(TCHOL/HDLCHOL))+(-0.3036*DIABETES)+(-0.1697*DIABETES*(1-IS_MALE))+(-0.3362*IVH)+(0*IVH*IS_MALE)))))));
+}
+
+function Framingham2008(IsMale, Age, SBP, BpTreat, Smoker, TotalChol, HDL, DM) {
+
+	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
+	var error = 0;
+	if ((Age<30) || (Age>74)) {
+		$('#alert_age').html(LocalizeText('Framingham2008AgeWarning',language)).show();
+		error=1;
+	}
+	if ((SBP < 90) || (SBP > 200)) {
+		$('#alert_sbp').html(LocalizeText('Framingham2008BpWarning',language)).show();
+		error=1;
+	}
+	if ((HDL < 10) || (HDL> 100)) {
+		$('#alert_hdl').html(LocalizeText('Framingham2008HdlWarning',language)).show();
+		error=1;
+	}
+	if ((TotalChol < 100) || (TotalChol> 405)) {
+		$('#alert_tchol').html(LocalizeText('Framingham2008TCWarning',language)).show();
+		error=1;
+	}
+	if (error) { // Display all possible error messages before returning zero
+		$('#outcome').addClass('opacity10');
+		return 0;
+	}
+
+
+	var sum = 0;
+	var base = 0;
+	var constant = 0;
+	
+	if (IsMale) {
+		base = 0.88936;
+		constant = 23.9802;
+		
+		sum += Math.log(Age) * 3.06117;
+		sum += Math.log(TotalChol) * 1.12370;
+		sum += Math.log(HDL) * -0.93263;
+		if (BpTreat == 1) {
+			sum += Math.log(SBP) * 1.99881;
+		} else {
+			sum += Math.log(SBP) * 1.93303;
+		}
+		
+		sum += Smoker * 0.65451;
+		sum += DM * 0.57367;
+	} else {
+		// Female
+		base = 0.95012;
+		constant = 26.1931;
+		
+		sum += Math.log(Age) * 2.32888;
+		sum += Math.log(TotalChol) * 1.20904;
+		sum += Math.log(HDL) * -0.70833;
+		if (BpTreat == 1) {
+			sum += Math.log(SBP) * 2.82263;
+		} else {
+			sum += Math.log(SBP) * 2.76157;
+		}
+		
+		sum += Smoker * 0.52873;
+		sum += DM * 0.69154;
+	}
+	
+	return 1 - Math.pow(base, Math.pow(Math.E, sum - constant));
 }
 
 function ASCVD10YrRisk(coeff, age, TC, HDL, SBP, BPTreatment, DM, Smoker) {
@@ -976,19 +1194,19 @@ function QRISK_Male(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,ethri
 	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
 	var error = 0;
 	if ((age<25) || (age>84)) {
-		$('#alert_age').html('Age must be between 25 and 84 years for QRISK').show();
+		$('#alert_age').html(LocalizeText('QriskAgeWarning',language)).show();
 		error=1;
 	}
 	if (((bmi<20) || (bmi>40))) {
-		$('#alert_BMI').html('BMI must be between 20 and 40 kg/m<sup>2</sup> for QRISK').show();
+		$('#alert_BMI').html(LocalizeText('QriskBmiWarning',language)).show();
 		error=1;
 	}
 	if ((sbp<70) || (sbp > 210)) {
-		$('#alert_sbp').html('Systolic BP must be between 70 and 210 mmHg for QRISK').show();
+		$('#alert_sbp').html(LocalizeText('QriskBpWarning',language)).show();
 		error=1;
 	}
 	if ((rati < 1) || (rati > 12)) {
-		$('#alert_chol').html('Total:HDL cholesterol ratio must be between 1 and 12 for QRISK (' + Math.round(totalchol()/hdlchol()*10)/10 + ' entered)').show();
+		$('#alert_chol').html(LocalizeText('QriskCholRatioWarning',language) + ' (' + Math.round(totalchol()/hdlchol()*10)/10 + ' ' + LocalizeText('entered',language) + ')').show();
 		error=1;
 	}
 	if (error) { // Display all possible error messages before returning zero
@@ -1130,19 +1348,19 @@ function QRISK_Female(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,eth
 	// Validate ... Most of these are not applicable because the calculator uses slider values with mins/maxes, but this is a good double check in case the user interface changes in the future ...	
 	var error = 0;
 	if ((age<25) || (age>84)) {
-		$('#alert_age').html('Age must be between 25 and 84 years for QRISK').show();
+		$('#alert_age').html(LocalizeText('QriskAgeWarning',language)).show();
 		error=1;
 	}
 	if (((bmi<20) || (bmi>40))) {
-		$('#alert_BMI').html('BMI must be between 20 and 40 kg/m<sup>2</sup> for QRISK').show();
+		$('#alert_BMI').html(LocalizeText('QriskBmiWarning',language)).show();
 		error=1;
 	}
 	if ((sbp<70) || (sbp > 210)) {
-		$('#alert_sbp').html('Systolic BP must be between 70 and 210 mmHg for QRISK').show();
+		$('#alert_sbp').html(LocalizeText('QriskBpWarning',language)).show();
 		error=1;
 	}
 	if ((rati < 1) || (rati > 12)) {
-		$('#alert_chol').html('Total:HDL cholesterol ratio must be between 1 and 12 for QRISK (' + Math.round(totalchol()/hdlchol()*10)/10 + ' entered)').show();
+		$('#alert_chol').html(LocalizeText('QriskCholRatioWarning',language) + ' (' + Math.round(totalchol()/hdlchol()*10)/10 + ' ' + LocalizeText('entered',language) + ')').show();
 		error=1;
 	}
 	if (error) { // Display all possible error messages before returning zero
@@ -1323,6 +1541,8 @@ function toggleCholesterolUnit() {
 		$('#hdl_mgdl').val(hdl);
 		adjustSlider('hdl_mgdl', 'hdlchol_mgdl', _alerts['hdl'], null, true);
 	}
+	
+	CALC();
 }
 
 var _useCm = true;
@@ -1377,6 +1597,7 @@ function toggleWeightUnit() {
 /**
  *  Shows the images for risk types.
  */
+/*
 function showImages(tab) {
 	var content = "";
 	
@@ -1395,7 +1616,7 @@ function showImages(tab) {
  	
 	$("#disease").html(content);
 }
-
+*/
 
 
 
@@ -1430,13 +1651,13 @@ function convertSliders() {
 
 
 function offlineHint() {
-	alert("This calculator can be used while offline.\n\nOn portable devices you may create a home screen icon for quick access, the calculator will act as if it was an App.");
+	alert(LocalizeText('OfflineInfo',language));
 }
 
 function offlineStatusChanged(event) {
-	var text = "Available offline";
+	var text = LocalizeText('OfflineHint',language);
 	if ('checking' == event.type || 'downloading' == event.type) {
-		text = "Cache " + event.type + "...";
+		text = LocalizeText('Cache',language) + ' ' + event.type + "...";
 	}
 	else if ('updateready' == event.type) {
 		window.applicationCache.swapCache();

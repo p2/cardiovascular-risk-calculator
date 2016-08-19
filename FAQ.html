@@ -8,324 +8,665 @@
 </head>
 <body>
 	<div id="container" class="pad">
-		<h1>Frequently Asked Questions</h1>
-		<h2>What does this calculator do?</h2>
-		<p>This cardiovascular risk calculator provides you with an interactive and individualized tool which provides an absolute estimate (%) of a person's chance of having a cardiovascular event over a specific period of time and an idea of the potential benefit of treatment. It is only valid for people who have never had a cardiovascular event.</p>
-		You can choose between 3 different databases by clicking on a specific calculator at the top.</p>
-		1) <b>Framingham</b> - this calculates the risk of heart attacks + angina/coronary insufficiency + heart failure + strokes + intermittent claudication</p>
-		2) <b>QRISK<sup>&reg;</sup>2-2014</b> - this calculates the risk of heart attacks + strokes</p>
-		3) <b>ACC/AHA ASCVD</b> - this calculates the risk of CHD death + nonfatal heart attacks + fatal/nonfatal strokes
-		<p>This calculator was designed to dynamically show how the value of specific risk factors impact cardiovascular risk. Results are shown using a representation of 100 "happy faces" to help illustrate risk. This format seems to be one of the better ways to present risks visually. Risks are also provided as absolute numbers and rounded off to one decimal point even though <b>any cardiovascular estimates likely are +/- 5-10% at best.</b></p>
-		<p>There are TWO different views for this calculator. An ENHANCED VIEW which displays all the different types of interventions including non-drug, drugs for cholesterol, drugs for statins, drugs for blood pressure, drugs for glucose. The BASIC VIEW displays only non-drug, statins and ASA as interventions and all patient variables need to be inserted before any numbers are presented. In addition, it only displays three different faces - those with no event, those with an event, and those for benefit. You can toggle back and forth between the two different views.</p>
-		
-		<h2>How do I use the Absolute CVD Risk/Benefit Calculator?</h2>
-		
-		<h3>1) Enter the unmodifiable factors</h3>
-		<p>These are the factors that really can't be changed - age, gender, ethnicity/race.</p>
-		
-		<h3>2) Enter the modifiable factors</h3>
-		<p>These are factors that can mostly be modified with lifestyle changes or medications - smoking, blood pressure, cholesterol, diabetes.</p>
-
-		<h4>Framingham</h4>
-		<p>a) smoking status - yes or no</p>
-		<p>b) diabetes - yes or no</p>
-		<p>c) systolic blood pressure in mmHg - the calculator uses 120mm/Hg to calculate baseline risk</p>
-		<p>d) total cholesterol in mmol/L - the calculator uses 3 mmol/L to calculate baseline risk</p>
-		<p>e) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>
-		
-		<h4>QRISK<sup>&reg;</sup>2-2014</h4>
-		<p>a) smoking status - yes or no</p>
-		<p>b) diabetes - yes or no</p>
-		<p>c) systolic blood pressure in mmHg - the calculator uses 120mm/Hg to calculate baseline risk</p>
-		<p>c) on treatment for BP - the calculator only applies this if systolic blood pressure is >120 mmHg</p>		
-		<p>d) total cholesterol in mmol/L - the calculator uses 3 mmol/L to calculate baseline risk</p>
-		<p>e) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>		
-		<p>c) family history of CVD, chronic kidney disease, atrial fibrillation, rheumatoid arthritis - yes or no</p>		
-		<p>d) height/weight - BMI is calculated automatically and if height and weight are not entered it imputes a value of 25kg/m2the calculator</p>
-		
-		<h4>ACC/AHA ASCVD</h4>
-		<p>a) smoking status - yes or no</p>
-		<p>b) diabetes - yes or no</p>
-		<p>b) systolic blood pressure in mmHg - the calculator uses 120mm/Hg to calculate baseline risk</p>
-		<p>c) on treatment for BP - the calculator only applies this if systolic blood pressure is >120 mmHg</p>
-		<p>d) total cholesterol in mmol/L - the calculator uses 3 mmol/L to calculate baseline risk</p>
-		<p>e) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>		
-		
-		<h3>3) Estimate benefit</h3>
-		<p>Estimate of benefit - clicking on an intervention like Physical Activity, Mediterranean Diet vs Low Fat, Vitamin/Omega-3 supplements, (if SBP is >/= 140 mmHg) BP Meds, (regardless of cholesterol) Low-mod intensity statins, High intensity statins, Fibrates, Niacin, Ezetimibe, (if diabetic) Metformin, Sulfonylureas, Insulins, Glitazones, GLPs, DPP-4s, Meglitinides, SGLT2 and ASA will input a specific relative benefit and this will be applied to the absolute risk to calculate the % of people who could benefit from a therapy. Examples of relative benefits are taken from a synopsis of the best available evidence - see below for more details</p>
-
-		<h3 id="percentage">ABSOLUTE NUMBERS - calculated risk and benefits</h3>
-		<p>a)&nbsp;<strong>NO EVENT</strong> BLUE FACES - are the % of people who would NOT have an event over the time period</p>
-		<div>
-		<p>b)&nbsp;<strong>TOTAL WITH AN EVENT</strong> RED/PINK FACES - are the % of people who will have an event over the time period</p>			
-		<p>d)&nbsp;<strong>NUMBER WHO BENEFIT&nbsp;</strong> GREEN FACES - are the % of people who would not have an event because of "treatment" and is based on reducing the absolute risk of an event by the relative estimate of benefit</p>			
-		<p>d)&nbsp;<strong>NNT&nbsp;</strong>is the number needed to treat and is infinity unless a treatment that has a benefit is added</p>			
-			<p>b) <strong>BASELINE&nbsp;EVENTS</strong> RED FACES - are the % of people who would have an event if they had "baseline" risk factors (non-smoker, non-diabetic, SBP = 120, Total cholesterol = 3, HDL = 1.3)</p>
-			<p>c) <strong>ADDITIONAL EVENTS</strong> PINK FACES - are the % of people who would have an event <strong>OVER AND ABOVE</strong> the baseline rate and is that risk attributable to the persons specific risk factors</p>
-
+		<div id="localization">
+			<span data-lang-id="languages">Languages</span>:
+			<select id="selectLocalization" onChange="language = $(this).val(); LoadLocalizationSubpage($(this).val())">
+				<option value="en" data-page-title="Risk Calculator – FAQ" selected="selected">English (EN)</option>
+				<option value="fr" data-page-title="Risk Calculator – Questions fréquemment posées">Français (FR)</option>
+			</select>
 		</div>
 	
+		<div class="localizeSubpage" data-lang="en">
+			<h1>Frequently Asked Questions</h1>
+			<h2>What does this calculator do?</h2>
+			<p>This cardiovascular risk calculator provides you with an interactive and individualized tool which provides an absolute estimate (%) of a person's chance of having a cardiovascular event over a specific period of time and an idea of the potential benefit of treatment. It is only valid for people who have never had a cardiovascular event.</p>
+			You can choose between 3 different databases by clicking on a specific calculator at the top.</p>
+			1) <b>Framingham</b> - this calculates the risk of heart attacks + angina/coronary insufficiency + heart failure + strokes + intermittent claudication</p>
+			2) <b>QRISK<sup>&reg;</sup>2-2014</b> - this calculates the risk of heart attacks + strokes</p>
+			3) <b>ACC/AHA ASCVD</b> - this calculates the risk of CHD death + nonfatal heart attacks + fatal/nonfatal strokes
+			<p>This calculator was designed to dynamically show how the value of specific risk factors impact cardiovascular risk. Results are shown using a representation of 100 "happy faces" to help illustrate risk. This format seems to be one of the better ways to present risks visually. Risks are also provided as absolute numbers and rounded off to one decimal point even though <b>any cardiovascular estimates likely are +/- 5-10% at best.</b></p>
+			<p>There are TWO different views for this calculator. An ENHANCED VIEW which displays all the different types of interventions including non-drug, drugs for cholesterol, drugs for statins, drugs for blood pressure, drugs for glucose. The BASIC VIEW displays only non-drug, statins and ASA as interventions and all patient variables need to be inserted before any numbers are presented. In addition, it only displays three different faces - those with no event, those with an event, and those for benefit. You can toggle back and forth between the two different views.</p>
 		
-		<h2 id="benefit">Where do the estimates of benefit come from?</h2>
-		<p>The table below includes a reasonable estimate of the relative benefits of certain "therapies" and comes from a variety of meta-analyses and studies. They have been rounded off and some of the numbers have far more solid evidence behind them than others.  Not all evidence shows the same numbers so there has been some neccesary personal judgement involved as well. One can apply these numbers to the individual patient's absolute risk by clicking on the specific treatment. Risk reductions for diabetes drugs only apply if the patient has been identified as a diabetic. For blood pressure, while somewhat arbitrary, risk reductions only apply if the patient has a blood pressure of 140mmHg or greater. A recent Cochrane review (CD006742) suggested that "Antihypertensive drugs used in the treatment of adults (primary prevention) with mild hypertension (systolic BP 140-159mmHg and/or diastolic BP 90-99mmHg) have not been shown to reduce mortality or morbidity in RCTs." In addition, the ACCORD study (type 2 diabetics) showed no benefit of lowering blood pressure below 140mmHg. However, a recent meta-analysis suggest that a benefit is achieved regardless of baseline systolic blood pressure. BMJ 2009;338:b1665doi:10.1136/bmj.b1665.</p>
-		<table style="border-collapse:collapse;">
-			<thead>
-				<tr>
-					<th>Intervention</th>
-					<th>Relative CVD Benefits</th>
-					<th>Evidence</th>
-				</tr>
-				<tr>
-					<th>&nbsp;</th>
+			<h2>How do I use the Absolute CVD Risk/Benefit Calculator?</h2>
+		
+			<h3>1) Enter the unmodifiable factors</h3>
+			<p>These are the factors that really can't be changed - age, gender, ethnicity/race.</p>
+		
+			<h3>2) Enter the modifiable factors</h3>
+			<p>These are factors that can mostly be modified with lifestyle changes or medications - smoking, blood pressure, cholesterol, diabetes.</p>
 
-					<th>&nbsp;</th>
-					<!--<th>CHD/MI</th>
-					<th>Strokes</th>-->
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<th>Physical Activity</th>
-					<td class="big">~25%</td>
-					<!--<td class="big">~25%</td>
-					<td class="big">~25%</td>
-					-->
-					<td>Eur J Cardiovasc Prev Rehabil 2008;15:239-46, Int J Environ Res Public Health 2012;9:391-407</td>
-				</tr>
-				<tr>
-					<th>Mediterranean Diet vs Low Fat</th>
-					<td class="big">~30%</td>
-					<!--
-					<td class="big">~20%</td>
-					<td class="big">~40%</td>
-					-->
-					<td>N Engl J Med 2013 DOI:10.1056/NEJMoa1200303</td>
-				</tr>
-				<tr>
-					<th>Vitamins/Omega 3 supplements</th>
-					<td class="big">~0%</td>
-					<!--
-					<td class="big">~0%</td>
-					<td class="big">~0%</td>
-					-->
-					<td>Lancet 1996;347:781-6, JAMA 2007;297:842-57, ACP Journal Club 2007;147(1):4 http://www.acfp.ca/Portals/0/docs/TFP/20120703_015221.pdf</td>
-				</tr>
-				<tr>
-					<th>Blood pressure (only if SBP 140 or higher)</th>
-					<td class="big">~30% (~50%&nbsp;if&nbsp;diabetic)</td>
-					<!--
-					<td class="big">~20%</td>
-					<td class="big">~40%</td>
-					-->
-					<td>J Htn 1993;11(suppl4):S61-73, Cochrane, Lancet 2004;364:1684–9, Ann Intern Med 2003;138:587-92, CD004349</td>
-				</tr>
-				<tr>
-					<th>Low-Moderate Intensity Statins</th>
-					<td class="big">~25%</td>
-					<!--
-					<td class="big">~30%</td>
-					<td class="big">~20%</td>
-					-->
-					<td>Lancet 2008;371:117-25; Women-J Am Coll Cardiol 2012;59:572–82; Over age 65-J Am Coll Cardiol 2013 Aug 14 pii:S0735-1097(13)03880-1</td>
-				</tr>
-				<tr>
-					<th>High-Intensity Statins</th>
-					<td class="big">~35%</td>
-					<!--
-					<td class="big">###</td>
-					<td class="big">###</td>
-					-->
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<th>Fibrates</th>
-					<td class="big">~0%</td>
-					<!--
-					<td class="big">~20% only&nbsp;non-fatal&nbsp;MIs</td>
-					<td class="big">~0%</td>
-					-->
-					<td>NEJM 2010;362:1563-74, Amer J Med 2009;122:962.e1-962.e8, Int J Cardiol 2009 doi:10.1016/j.ijcard.2008.11.211</td>
-				</tr>
-				<tr>
-					<th>Niacin</th>
-					<td class="big">No studies</td>
-					<!--
-					<td class="big">No studies</td>
-					<td class="big">No studies</td>
-					-->
-					<td></td>
-				</tr>
-				<tr>
-					<th>Ezetimibe</th>
-					<td class="big">~0%</td>
-					<!--
-					<td class="big">~0%</td>
-					<td class="big">~0%</td>
-					-->
-					<td>NEJM 2008;358:1431-43</td>
-				</tr>
-				<tr>
-					<th>Sulfonylureas</th>
-					<td class="big">~0%</td>
-					<!--
-					<td class="big">~0%</td>
-					<td class="big">~0%</td>
-					-->
-					<td>Diabet Med 2013;30:1160–71</td>
-				</tr>
-				<tr>
-					<th>Insulin</th>
-					<td class="big">~0%</td>
-					<!--
-					<td class="big">~0%</td>
-					<td class="big">~0%</td>
-					-->
-					<td>N Engl J Med 2012; 367:319-328</td>
-				</tr>
-				<tr>
-					<th>Metformin</th>
-					<td class="big">~35%</td>
-					<!--
-					<td class="big">~35%</td>
-					<td class="big">~35%</td>
-					-->
-					<td>UKPDS 34</td>
-				</tr>
-				<tr>
-					<th>Glitazones</th>
-					<td class="big">~0%</td>
-					<!--
-					<td class="big">?</td>
-					<td class="big">?</td>
-					-->
-					<td>CD006063,CD006060</td>
-				</tr>
-				<tr>
-					<th>Dipeptidyl peptidase-4 inhibitors (DPP-4)</th>
-					<td class="big">~0%</td>
-					<!--
-					<td class="big">~0%</td>
-					<td class="big">~0%</td>
-					-->
-					<td>SAVOR-TIMI 53, EXAMINE</td>
-				</tr>
-				<tr>
-					<th>Glucagon-like peptide (GLP) agonists</th>
-					<td class="big">No studies</td>
-					<!--
-					<td class="big">No studies</td>
-					<td class="big">No studies</td>
-					-->
-					<td></td>
-				</tr>
-				<tr>				
-					<th>SGLT2</th>
-					<td class="big">No studies</td>
-					<!--
-					<td class="big">No studies</td>
-					<td class="big">No studies</td>
-					-->
-					<td></td>
-				</tr>	
-				<tr>
-					<th>ASA</th>
-					<td class="big">~15%M ~10%F</td>
-					<!--
-					<td class="big">~30%M ~0%F</td>
-					<td class="big">~0%M ~15%F</td>
-					-->
-					<td>Arch Intern Med 2012;172:209-16</td>
-				</tr>
-				<tr>
-					<th>Combinations of the above interventions</th>
-					<td >&nbsp;</td>
-					<td>Nobody really knows but hopefully there is some sort of additive benefit. If you have data on this or a way this can be shown or calculated please let me know.</td>
-				</tr>
-			</tbody>
-		</table>
-		<h2>Why aren't surrogate marker or treatment thresholds provided?</h2>
-		<p>You will notice there are no designated target or treatment thresholds from guidelines. These were purposely not added as they are arbitrary and one should use a reasonable estimate of risks and benefits to help facilitate shared-informed decision-making.</p>
+			<h4>Framingham</h4>
+			<p>a) smoking status - yes or no</p>
+			<p>b) diabetes - yes or no</p>
+			<p>c) systolic blood pressure in mmHg - the calculator uses 120mm/Hg to calculate baseline risk</p>
+			<p>d) total cholesterol in mmol/L - the calculator uses 3 mmol/L to calculate baseline risk</p>
+			<p>e) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>
 		
-		<h2>Diabetes and smoking aren't really yes or no risk factors, what gives?</h2>
+			<h4>QRISK<sup>&reg;</sup>2-2014</h4>
+			<p>a) smoking status - yes or no</p>
+			<p>b) diabetes - yes or no</p>
+			<p>c) systolic blood pressure in mmHg - the calculator uses 120mm/Hg to calculate baseline risk</p>
+			<p>d) on treatment for BP - the calculator only applies this if systolic blood pressure is >120 mmHg</p>		
+			<p>e) total cholesterol in mmol/L - the calculator uses 3 mmol/L to calculate baseline risk</p>
+			<p>f) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>		
+			<p>g) family history of CVD, chronic kidney disease, atrial fibrillation, rheumatoid arthritis - yes or no</p>		
+			<p>h) height/weight - BMI is calculated automatically and if height and weight are not entered it imputes a value of 25kg/m2the calculator</p>
 		
-		<h3 id="smoking">Smoking</h3>
-		<p>Smoking history is typically based on self-report. It is unclear exactly what should constitute a smoker. What seems reasonable is that if a person has been a smoker over the last 5 years they should be considered a smoker. If they stopped smoking 5-10 years ago they should likely be considered a non-smoker for the purposes of cardiovascular risk calculation. However, it is important to remember that smoking also increases the risks for cancers and lung disease and these risks may not be as reversible when a person becomes a non-smoker.
-		</p>
+			<h4>ACC/AHA ASCVD</h4>
+			<p>a) smoking status - yes or no</p>
+			<p>b) diabetes - yes or no</p>
+			<p>c) systolic blood pressure in mmHg - the calculator uses 120mm/Hg to calculate baseline risk</p>
+			<p>d) on treatment for BP - the calculator only applies this if systolic blood pressure is >120 mmHg</p>
+			<p>e) total cholesterol in mmol/L - the calculator uses 3 mmol/L to calculate baseline risk</p>
+			<p>f) HDL&nbsp;cholesterol in mmol/L - the calculator uses 1.3 mmol/L to calculate baseline risk</p>		
 		
-		<h3 id="diabetes">Diabetes</h3>
-		<p>Many cardiovascular risk calculators identify diabetes as a yes or no variable. Framingham defines diabetes as a fasting glucose of &gt; 7mmol/L (126 mg/dL) for the offspring cohort or 7.8 (140) for the original cohort. It is clear however that diabetes is not a yes or no risk factor. Based on the UKPDS risk engine for every 2% increase in A1c, over 6%CVD risk goes up 33%. Type-2 diabetes also increases the chance of microvascular disease. Compared to macrovascular risks the absolute risk of hard microvascular endpoints like renal failure or blindness are far less frequent. However incidence data is not as robust for these endpoints. In UKPDS 34 less than 1% of patients developed renal failure over 11 years and roughly 5% developed blindness in one eye. In STENO, in which patients also had microalbuminuria, 8% of patients in the standard treatment group went on dialysis and 9% became blind in at least 1 eye over 14 years. Vijan et al estimated a 60-year-old diabetic with an A1c of 9% has a lifetime chance of dialysis of around 1 in 100 and a similar lifetime chance of blindness.</p>
-		
-		<h2>Why aren't risk factors like family history and lifestyle included in the Framingham and ACC/AHA ASCVD calculators?</h2>
-		<p>These calculators use age, gender, SBP, total cholesterol, HDL cholesterol, smoking and diabetes to calculate cardiovascular risk. Calculator specific adjustments for family history, weight, BMI etc are not available for these calculators however we have added some guidance as to the impact of family history and one can adjust the overall risk by adding a variable percentage. These modifications are not sanctioned by the original groups who developed these calculators.</p>
-		
-		<h2 id="framingham">What specific outcomes do the cardiovascular terms include and how are they defined?</h2>
-		<h3>1) Framingham</h3>		
-		<h3>Angina</h3>
-		<p>A brief recurrent chest discomfort of up to 15 minutes duration, precipitated by exertion or emotion and relieved by rest or by nitroglycerine AND coronary insufficiency = prolonged (&gt;15 minutes) chest pain but no indication of heart tissue damage.</p>
-		
-		<h3 id="chd">Coronary heart disease (CHD)</h3>
-		<p>CHD = fatal/non-fatal heart attacks + angina/coronary insufficiency.</p>
-		
-		<h3 id="cvd">Cardiovascular disease (CVD)</h3>
-		<p>CVD = coronary heart disease (CHD) + heart failure + strokes + intermittent claudication.</p>
-		
-		<h3 id="heart_attack">Heart attack</h3>
-		<p>Heart attacks = fatal or non-fatal myocardial infarctions.</p>
-		<p>Acute, recent, or old - an acute myocardial infarction is defined as the presence of at least two of three findings:</p>
-		<ul>
-			<li>symptoms indicative of ischemia;</li>
-			<li>changes in biomarkers of myocardial necrosis;</li>
-			<li>serial changes in the electrocardiograms indicating the evolution of an infarction, including the loss of initial QRS potentials (that is, development of "pathologic" Q-waves of 0.04 second duration or greater).</li>
-		</ul>
-		
-		<h3>Heart failure</h3>
-		<p>A minimum of two major or one major and two minor criteria to be present concurrently</p>
-		<p>Major Criteria:</p>
-		<ul>
-			<li>Paroxysmal nocturnal dyspnea or orthopnea;</li>
-			<li>Distended neck veins (in other than the supine position);</li>
-			<li>Rales;</li>
-			<li>Increasing heart size by x-ray;</li>
-			<li>Acute pulmonary edema on chest x-ray;</li>
-			<li>Ventricular S(3) gallop;</li>
-			<li>Increased venous pressure &gt; 16 cm H20;</li>
-			<li>Hepatojugular reflux;</li>
-			<li>Pulmonary edema, visceral congestion, cardiomegaly shown on autopsy;</li>
-			<li>Weight loss on CHF Rx: 10 lbs./5days.</li>
-		</ul>
-		<p>Minor criteria:</p>
-		<ul>
-			<li>Bilateral ankle edema;</li>
-			<li>Night cough;</li>
-			<li>Dyspnea on ordinary exertion;</li>
-			<li>Hepatomegaly;</li>
-			<li>Pleural effusion by x-ray;</li>
-			<li>Decrease in vital capacity by one-third from maximum record;</li>
-			<li>Tachycardia (120 beats per minute or more);</li>
-			<li>Pulmonary vascular engorgement on chest x-ray.</li>
-		</ul>
-		
-		<h3>Intermittent claudication</h3>
-		<p>A cramping discomfort in the calf clearly provoked by walking some distance with the pain appearing sooner when walking quickly or uphill and being relieved within a few minutes by rest.</p>
-		
-		<h3 id="stroke">Stroke</h3>
-		<p>A sudden or rapid onset of a focal neurologic deficit persisting for greater than 24 hours AND Transient ischemic event (TIA) = a focal neurologic deficit of sudden or rapid onset that fully resolves in less than 24 hours.
-		</p>
-		<h3>2) QRISK<sup>&reg;</sup>2-2014</h3>
-		<p>Heart attacks and strokes.</p>
-		<h3>3) ACC/AHA ASCVD</h3>
-		<p>Atherosclerotic cardiovascular disease = CHD death + nonfatal heart attacks + fatal/nonfatal strokes.</p>
-		
+			<h3>3) Estimate benefit</h3>
+			<p>Estimate of benefit - clicking on an intervention like Physical Activity, Mediterranean Diet vs Low Fat, Vitamin/Omega-3 supplements, (if SBP is >/= 140 mmHg) BP Meds, (regardless of cholesterol) Low-mod intensity statins, High intensity statins, Fibrates, Niacin, Ezetimibe, (if diabetic) Metformin, Sulfonylureas, Insulins, Glitazones, GLPs, DPP-4s, Meglitinides, SGLT2 and ASA will input a specific relative benefit and this will be applied to the absolute risk to calculate the % of people who could benefit from a therapy. Examples of relative benefits are taken from a synopsis of the best available evidence - see below for more details</p>
+
+			<h3 id="percentage">ABSOLUTE NUMBERS - calculated risk and benefits</h3>
+			<p>a)&nbsp;<strong>NO EVENT</strong> BLUE FACES - are the % of people who would NOT have an event over the time period</p>
+			<div>
+			<p>b)&nbsp;<strong>TOTAL WITH AN EVENT</strong> RED/PINK FACES - are the % of people who will have an event over the time period</p>			
+			<p>d)&nbsp;<strong>NUMBER WHO BENEFIT&nbsp;</strong> GREEN FACES - are the % of people who would not have an event because of "treatment" and is based on reducing the absolute risk of an event by the relative estimate of benefit</p>			
+			<p>d)&nbsp;<strong>NNT&nbsp;</strong>is the number needed to treat and is infinity unless a treatment that has a benefit is added</p>			
+				<p>b) <strong>BASELINE&nbsp;EVENTS</strong> RED FACES - are the % of people who would have an event if they had "baseline" risk factors (non-smoker, non-diabetic, SBP = 120, Total cholesterol = 3, HDL = 1.3)</p>
+				<p>c) <strong>ADDITIONAL EVENTS</strong> PINK FACES - are the % of people who would have an event <strong>OVER AND ABOVE</strong> the baseline rate and is that risk attributable to the persons specific risk factors</p>
+
+			</div>
 	
-		<h2><a name="QRISK"></a>Disclaimer Information Regarding QRISK<sup>&reg;</sup>2-2014</h2>
-		<p>The initial version of this file, to be found at <a href="http://svn.clinrisk.co.uk/opensource/qrisk2">http://svn.clinrisk.co.uk/opensource/qrisk2</a>, faithfully implements QRISK2-2014.  ClinRisk Ltd. have released this code under the GNU Lesser General Public License to enable others to implement the algorithm faithfully.  However, the nature of the GNU Lesser General Public License is such that we cannot prevent, for example, someone accidentally altering of the coefficients, getting the inputs wrong, or just poor programming. ClinRisk Ltd. stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at <a href="http://svn.clinrisk.co.uk/opensource/qrisk2">http://svn.clinrisk.co.uk/opensource/qrisk2</a>. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.</p>
 		
-		<p>This implementation of QRISK<sup>&reg;</sup>2-2014 does not implement the UK postcode parameter due to a variety of reasons (international audience and availability of postcode to townsend data).  QRISK<sup>&reg;</sup> is a registered trademark of the University of Nottingham and EMIS.  For more information, please visit <a href="http://qrisk.org">QRISK.org</a>.</p>
+			<h2 id="benefit">Where do the estimates of benefit come from?</h2>
+			<p>The table below includes a reasonable estimate of the relative benefits of certain "therapies" and comes from a variety of meta-analyses and studies. They have been rounded off and some of the numbers have far more solid evidence behind them than others.  Not all evidence shows the same numbers so there has been some neccesary personal judgement involved as well. One can apply these numbers to the individual patient's absolute risk by clicking on the specific treatment. Risk reductions for diabetes drugs only apply if the patient has been identified as a diabetic. For blood pressure, while somewhat arbitrary, risk reductions only apply if the patient has a blood pressure of 140mmHg or greater. A recent Cochrane review (CD006742) suggested that "Antihypertensive drugs used in the treatment of adults (primary prevention) with mild hypertension (systolic BP 140-159mmHg and/or diastolic BP 90-99mmHg) have not been shown to reduce mortality or morbidity in RCTs." In addition, the ACCORD study (type 2 diabetics) showed no benefit of lowering blood pressure below 140mmHg. However, a recent meta-analysis suggest that a benefit is achieved regardless of baseline systolic blood pressure. BMJ 2009;338:b1665doi:10.1136/bmj.b1665.</p>
+			<table style="border-collapse:collapse;">
+				<thead>
+					<tr>
+						<th>Intervention</th>
+						<th>Relative CVD Benefits</th>
+						<th>Evidence</th>
+					</tr>
+					<tr>
+						<th>&nbsp;</th>
+
+						<th>&nbsp;</th>
+						<!--<th>CHD/MI</th>
+						<th>Strokes</th>-->
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<th>Physical Activity</th>
+						<td class="big">~25%</td>
+						<!--<td class="big">~25%</td>
+						<td class="big">~25%</td>
+						-->
+						<td>Eur J Cardiovasc Prev Rehabil 2008;15:239-46, Int J Environ Res Public Health 2012;9:391-407</td>
+					</tr>
+					<tr>
+						<th>Mediterranean Diet vs Low Fat</th>
+						<td class="big">~30%</td>
+						<!--
+						<td class="big">~20%</td>
+						<td class="big">~40%</td>
+						-->
+						<td>N Engl J Med 2013 DOI:10.1056/NEJMoa1200303</td>
+					</tr>
+					<tr>
+						<th>Vitamins/Omega 3 supplements</th>
+						<td class="big">~0%</td>
+						<!--
+						<td class="big">~0%</td>
+						<td class="big">~0%</td>
+						-->
+						<td>Lancet 1996;347:781-6, JAMA 2007;297:842-57, ACP Journal Club 2007;147(1):4 http://www.acfp.ca/Portals/0/docs/TFP/20120703_015221.pdf</td>
+					</tr>
+					<tr>
+						<th>Blood pressure (only if SBP 140 or higher)</th>
+						<td class="big">~30% (~50%&nbsp;if&nbsp;diabetic)</td>
+						<!--
+						<td class="big">~20%</td>
+						<td class="big">~40%</td>
+						-->
+						<td>J Htn 1993;11(suppl4):S61-73, Cochrane, Lancet 2004;364:1684–9, Ann Intern Med 2003;138:587-92, CD004349</td>
+					</tr>
+					<tr>
+						<th>Low-Moderate Intensity Statins</th>
+						<td class="big">~25%</td>
+						<!--
+						<td class="big">~30%</td>
+						<td class="big">~20%</td>
+						-->
+						<td>Lancet 2008;371:117-25; Women-J Am Coll Cardiol 2012;59:572–82; Over age 65-J Am Coll Cardiol 2013 Aug 14 pii:S0735-1097(13)03880-1</td>
+					</tr>
+					<tr>
+						<th>High-Intensity Statins</th>
+						<td class="big">~35%</td>
+						<!--
+						<td class="big">###</td>
+						<td class="big">###</td>
+						-->
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<th>Fibrates</th>
+						<td class="big">~0%</td>
+						<!--
+						<td class="big">~20% only&nbsp;non-fatal&nbsp;MIs</td>
+						<td class="big">~0%</td>
+						-->
+						<td>NEJM 2010;362:1563-74, Amer J Med 2009;122:962.e1-962.e8, Int J Cardiol 2009 doi:10.1016/j.ijcard.2008.11.211</td>
+					</tr>
+					<tr>
+						<th>Niacin</th>
+						<td class="big">No studies</td>
+						<!--
+						<td class="big">No studies</td>
+						<td class="big">No studies</td>
+						-->
+						<td></td>
+					</tr>
+					<tr>
+						<th>Ezetimibe</th>
+						<td class="big">~0%</td>
+						<!--
+						<td class="big">~0%</td>
+						<td class="big">~0%</td>
+						-->
+						<td>NEJM 2008;358:1431-43</td>
+					</tr>
+					<tr>
+						<th>Sulfonylureas</th>
+						<td class="big">~0%</td>
+						<!--
+						<td class="big">~0%</td>
+						<td class="big">~0%</td>
+						-->
+						<td>Diabet Med 2013;30:1160–71</td>
+					</tr>
+					<tr>
+						<th>Insulin</th>
+						<td class="big">~0%</td>
+						<!--
+						<td class="big">~0%</td>
+						<td class="big">~0%</td>
+						-->
+						<td>N Engl J Med 2012; 367:319-328</td>
+					</tr>
+					<tr>
+						<th>Metformin</th>
+						<td class="big">~35%</td>
+						<!--
+						<td class="big">~35%</td>
+						<td class="big">~35%</td>
+						-->
+						<td>UKPDS 34</td>
+					</tr>
+					<tr>
+						<th>Glitazones</th>
+						<td class="big">~0%</td>
+						<!--
+						<td class="big">?</td>
+						<td class="big">?</td>
+						-->
+						<td>CD006063,CD006060</td>
+					</tr>
+					<tr>
+						<th>Dipeptidyl peptidase-4 inhibitors (DPP-4)</th>
+						<td class="big">~0%</td>
+						<!--
+						<td class="big">~0%</td>
+						<td class="big">~0%</td>
+						-->
+						<td>SAVOR-TIMI 53, EXAMINE</td>
+					</tr>
+					<tr>
+						<th>Glucagon-like peptide (GLP) agonists</th>
+						<td class="big">No studies</td>
+						<!--
+						<td class="big">No studies</td>
+						<td class="big">No studies</td>
+						-->
+						<td></td>
+					</tr>
+					<tr>				
+						<th>SGLT2</th>
+						<td class="big">No studies</td>
+						<!--
+						<td class="big">No studies</td>
+						<td class="big">No studies</td>
+						-->
+						<td></td>
+					</tr>	
+					<tr>
+						<th>ASA</th>
+						<td class="big">~15%M ~10%F</td>
+						<!--
+						<td class="big">~30%M ~0%F</td>
+						<td class="big">~0%M ~15%F</td>
+						-->
+						<td>Arch Intern Med 2012;172:209-16</td>
+					</tr>
+					<tr>
+						<th>Combinations of the above interventions</th>
+						<td >&nbsp;</td>
+						<td>Nobody really knows but hopefully there is some sort of additive benefit. If you have data on this or a way this can be shown or calculated please let me know.</td>
+					</tr>
+				</tbody>
+			</table>
+			<h2>Why aren't surrogate marker or treatment thresholds provided?</h2>
+			<p>You will notice there are no designated target or treatment thresholds from guidelines. These were purposely not added as they are arbitrary and one should use a reasonable estimate of risks and benefits to help facilitate shared-informed decision-making.</p>
+		
+			<h2>Diabetes and smoking aren't really yes or no risk factors, what gives?</h2>
+		
+			<h3 id="smoking">Smoking</h3>
+			<p>Smoking history is typically based on self-report. It is unclear exactly what should constitute a smoker. What seems reasonable is that if a person has been a smoker over the last 5 years they should be considered a smoker. If they stopped smoking 5-10 years ago they should likely be considered a non-smoker for the purposes of cardiovascular risk calculation. However, it is important to remember that smoking also increases the risks for cancers and lung disease and these risks may not be as reversible when a person becomes a non-smoker.
+			</p>
+		
+			<h3 id="diabetes">Diabetes</h3>
+			<p>Many cardiovascular risk calculators identify diabetes as a yes or no variable. Framingham defines diabetes as a fasting glucose of &gt; 7mmol/L (126 mg/dL) for the offspring cohort or 7.8 (140) for the original cohort. It is clear however that diabetes is not a yes or no risk factor. Based on the UKPDS risk engine for every 2% increase in A1c, over 6%CVD risk goes up 33%. Type-2 diabetes also increases the chance of microvascular disease. Compared to macrovascular risks the absolute risk of hard microvascular endpoints like renal failure or blindness are far less frequent. However incidence data is not as robust for these endpoints. In UKPDS 34 less than 1% of patients developed renal failure over 11 years and roughly 5% developed blindness in one eye. In STENO, in which patients also had microalbuminuria, 8% of patients in the standard treatment group went on dialysis and 9% became blind in at least 1 eye over 14 years. Vijan et al estimated a 60-year-old diabetic with an A1c of 9% has a lifetime chance of dialysis of around 1 in 100 and a similar lifetime chance of blindness.</p>
+		
+			<h2>Why aren't risk factors like family history and lifestyle included in the Framingham and ACC/AHA ASCVD calculators?</h2>
+			<p>These calculators use age, gender, SBP, total cholesterol, HDL cholesterol, smoking and diabetes to calculate cardiovascular risk. Calculator specific adjustments for family history, weight, BMI etc are not available for these calculators. However we have added some guidance as to the impact of family history and one can adjust the overall risk by adding a variable percentage. These modifications are not sanctioned by the original groups who developed these calculators.</p>
+		
+			<h2 id="framingham">What specific outcomes do the cardiovascular terms include and how are they defined?</h2>
+			<h3>1) Framingham</h3>		
+			<h3>Angina</h3>
+			<p>A brief recurrent chest discomfort of up to 15 minutes duration, precipitated by exertion or emotion and relieved by rest or by nitroglycerine AND coronary insufficiency = prolonged (&gt;15 minutes) chest pain but no indication of heart tissue damage.</p>
+		
+			<h3 id="chd">Coronary heart disease (CHD)</h3>
+			<p>CHD = fatal/non-fatal heart attacks + angina/coronary insufficiency.</p>
+		
+			<h3 id="cvd">Cardiovascular disease (CVD)</h3>
+			<p>CVD = coronary heart disease (CHD) + heart failure + strokes + intermittent claudication.</p>
+		
+			<h3 id="heart_attack">Heart attack</h3>
+			<p>Heart attacks = fatal or non-fatal myocardial infarctions.</p>
+			<p>Acute, recent, or old - an acute myocardial infarction is defined as the presence of at least two of three findings:</p>
+			<ul>
+				<li>symptoms indicative of ischemia;</li>
+				<li>changes in biomarkers of myocardial necrosis;</li>
+				<li>serial changes in the electrocardiograms indicating the evolution of an infarction, including the loss of initial QRS potentials (that is, development of "pathologic" Q-waves of 0.04 second duration or greater).</li>
+			</ul>
+		
+			<h3>Heart failure</h3>
+			<p>A minimum of two major or one major and two minor criteria to be present concurrently</p>
+			<p>Major Criteria:</p>
+			<ul>
+				<li>Paroxysmal nocturnal dyspnea or orthopnea;</li>
+				<li>Distended neck veins (in other than the supine position);</li>
+				<li>Rales;</li>
+				<li>Increasing heart size by x-ray;</li>
+				<li>Acute pulmonary edema on chest x-ray;</li>
+				<li>Ventricular S(3) gallop;</li>
+				<li>Increased venous pressure &gt; 16 cm H20;</li>
+				<li>Hepatojugular reflux;</li>
+				<li>Pulmonary edema, visceral congestion, cardiomegaly shown on autopsy;</li>
+				<li>Weight loss on CHF Rx: 10 lbs./5days.</li>
+			</ul>
+			<p>Minor criteria:</p>
+			<ul>
+				<li>Bilateral ankle edema;</li>
+				<li>Night cough;</li>
+				<li>Dyspnea on ordinary exertion;</li>
+				<li>Hepatomegaly;</li>
+				<li>Pleural effusion by x-ray;</li>
+				<li>Decrease in vital capacity by one-third from maximum record;</li>
+				<li>Tachycardia (120 beats per minute or more);</li>
+				<li>Pulmonary vascular engorgement on chest x-ray.</li>
+			</ul>
+		
+			<h3>Intermittent claudication</h3>
+			<p>A cramping discomfort in the calf clearly provoked by walking some distance with the pain appearing sooner when walking quickly or uphill and being relieved within a few minutes by rest.</p>
+		
+			<h3 id="stroke">Stroke</h3>
+			<p>A sudden or rapid onset of a focal neurologic deficit persisting for greater than 24 hours AND Transient ischemic event (TIA) = a focal neurologic deficit of sudden or rapid onset that fully resolves in less than 24 hours.
+			</p>
+			<h3>2) QRISK<sup>&reg;</sup>2-2014</h3>
+			<p>Heart attacks and strokes.</p>
+			<h3>3) ACC/AHA ASCVD</h3>
+			<p>Atherosclerotic cardiovascular disease = CHD death + nonfatal heart attacks + fatal/nonfatal strokes.</p>
+		
+			<h2>References for Risk Equations</h2>
+			<ul>
+				<li><strong>Framingham (2008):</strong> D'Agostino RB Sr, Vasan RS, Pencina MJ, et al. General cardiovascular risk profile for use in primary care: the Framingham Heart Study. <em>Circulation</em>. 2008 Feb 12;117(6):743-53. doi: 10.1161/CIRCULATIONAHA.107.699579. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18212285">PMID 18212285</a>.</li>
+				<li><strong>QRISK<sup>&reg;</sup>2-2014:</strong> Hippisley-Cox J, Coupland C, Vinogradova Y, et al. Predicting cardiovascular risk in England and Wales: prospective derivation and validation of QRISK2. <em>BMJ</em>. 2008 Jun 28;336(7659):1475-82. doi: 10.1136/bmj.39609.449676.25. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18573856">PMID 18573856</a>. <a href="http://qrisk.org">Official QRISK<sup>&reg;</sup>2 website</a>.</li>
+				<li><strong>ACC/AHA ASCVD:</strong> Goff DC Jr, Lloyd-Jones DM, Bennett G, et al. 2013 ACC/AHA guideline on the assessment of cardiovascular risk: a report of the American College of Cardiology/American Heart Association Task Force on Practice Guidelines. <em>Circulation</em>. 2014 Jun 24;129(25 Suppl 2):S49-73. doi: 10.1161/01.cir.0000437741.48606.98. <a href="http://www.ncbi.nlm.nih.gov/pubmed/24222018">PMID 24222018</a>.</li>
+			</ul>
+	
+			<h2><a name="QRISK"></a>Disclaimer Information Regarding QRISK<sup>&reg;</sup>2-2014</h2>
+			<p>The initial version of this file, to be found at <a href="http://svn.clinrisk.co.uk/opensource/qrisk2">http://svn.clinrisk.co.uk/opensource/qrisk2</a>, faithfully implements QRISK2-2014.  ClinRisk Ltd. have released this code under the GNU Lesser General Public License to enable others to implement the algorithm faithfully.  However, the nature of the GNU Lesser General Public License is such that we cannot prevent, for example, someone accidentally altering of the coefficients, getting the inputs wrong, or just poor programming. ClinRisk Ltd. stress, therefore, that it is the responsibility of the end user to check that the source that they receive produces the same results as the original code posted at <a href="http://svn.clinrisk.co.uk/opensource/qrisk2">http://svn.clinrisk.co.uk/opensource/qrisk2</a>. Inaccurate implementations of risk scores can lead to wrong patients being given the wrong treatment.</p>
+		
+			<p>This implementation of QRISK<sup>&reg;</sup>2-2014 does not implement the UK postcode parameter due to a variety of reasons (international audience and availability of postcode to townsend data).  QRISK<sup>&reg;</sup> is a registered trademark of the University of Nottingham and EMIS.  For more information, please visit <a href="http://qrisk.org">QRISK.org</a>.</p>
+		</div>
+		
+		<div class="localizeSubpage" data-lang="fr" style="display: none;">
+			<h1>Questions fréquemment posées</h1>
+			<h2>Qu'est-ce que cette calculatrice fait?</h2>
+			<p>Cette calculatrice de risque cardiovasculaire est un outil interactif qui estime la probabilité (%) qu'une personne ait un événement cardiovasculaire au cours d'une période de temps donnée et celle du bénéfice potentiel d'un traitement. Ces estimations sont valides uniquement pour les personnes qui n'ont jamais eu un événement cardiovasculaire.</p>
+			<p>Vous pouvez choisir entre 3 différentes bases de données en cliquant sur une calculatrice spécifique dans le menu en haut de votre écran.</p>
+			1) <b>Framingham</b> - celui-ci calcule le risque d'infarctus + angine / insuffisance coronarienne + insuffisance cardiaque + accident vasculaire cérébral + claudication intermittente</p>
+			2) <b>QRISK<sup>&reg;</sup>2-2014</b> - celui-ci calcule le risque d'infarctus + accident vasculaire cérébral</p>
+			3) <b>ACC/AHA ASCVD</b> - celui-ci calcule le risque de décès par maladie coronarienne+ infarctus non mortel + accident vasculaire cérébral mortel/non mortel
+			<p>Cette calculatrice a été conçue pour montrer de façon interactive comment des facteurs de risque spécifiques influent sur le risque d'événements cardiovasculaires. Les résultats sont présentés en utilisant 100 "visages heureux/malheureux" pour aider à illustrer le risque. Ce format semble être l'une des meilleures façons de représenter visuellement les risques. Ceux-ci sont également fournis sous forme de nombres absolus et arrondis à une décimale près, même si la précision de l'estimation des risques cardiovasculaires peut varier de ± 5-10%.</p>
+			<p>Deux modes d'affichage sont disponibles. Un affichage COMPLET offre l'ensemble des interventions, y compris les interventions non-médicamenteuses, les médicaments pour le cholestérol dont les statines, les médicaments pour l'hypertension artérielle et les médicaments pour le diabète. L'affichage DE BASE offre uniquement les interventions non-médicamenteuses, les statines et l'aspirine. Dans ce mode d'affichage, tous les paramètres du patient doivent être inscrits  avant que les estimés de risque cardiovasculaire apparaissent. De plus, il ne présente que trois "visages heureux" différents - celui sans événement, celui avec un événement et celui des bénéfices. Vous pouvez changer le mode d'affichage à votre guise.</p>
+
+			<h2>Comment puis-je utiliser la calculatrice?</h2>
+
+			<h3>1) Entrez les facteurs non modifiables</h3>
+			<p>Ce sont les facteurs qui ne peuvent pas être changés - l'âge, le sexe, l'origine ethnique / race.</p>
+
+			<h3>2) Entrez les facteurs modifiables</h3>
+			<p>Ce sont des facteurs qui peuvent la plupart du temps être modifiés avec des changements de style de vie ou des médicaments - le tabagisme, la pression artérielle, le cholestérol, le diabète.</p>
+
+			<h4>Framingham</h4>
+			<p>a) l'usage du tabac - oui ou non</p>
+			<p>b) le diabète - oui ou non</p>
+			<p>c) la pression artérielle systolique en mmHg - le calculateur utilise 120 mm / Hg pour calculer le risque de base</p>
+			<p>d) le cholestérol total en mmol / L - le calculateur utilise 3 mmol / L pour calculer le risque de base</p>
+			<p>e) le cholestérol HDL en mmol / L - le calculateur utilise 1,3 mmol / L pour calculer le risque de base</p>
+
+			<h4>QRISK<sup>&reg;</sup>2-2014</h4>
+			<p>a) l'usage du tabac - oui ou non</p>
+			<p>b) le diabète - oui ou non</p>
+			<p>c) la pression artérielle systolique en mmHg - le calculateur utilise 120 mm / Hg pour calculer le risque de base</p>
+			<p>d) traité pour la tension artérielle - la calculatrice applique uniquement cette option si la pression artérielle systolique est &gt; 120 mmHg</p>
+			<p>e) le cholestérol total en mmol/L - le calculateur utilise 3 mmol/L pour calculer le risque de base</p>
+			<p>f) le cholestérol HDL en mmol/L - le calculateur utilise 1,3 mmol/L pour calculer le risque de base</p>
+			<p>g) les antécédents familiaux de maladie cardiovasculaire, de maladie rénale chronique, de fibrillation auriculaire, d'arthrite rhumatoïde - oui ou non</p>
+			<p>h) taille / poids - l'IMC est calculé automatiquement. Si la taille et le poids ne sont pas entrés, la calculatrice entre une valeur de 25 kg / m2</p>
+
+			<h4>ACC/AHA ASCVD</h4>
+			<p>a) l'usage du tabac - oui ou non</p>
+			<p>b) le diabète - oui ou non</p>
+			<p>c) la pression artérielle systolique en mmHg - le calculateur utilise 120 mm / Hg pour calculer le risque de base</p>
+			<p>d) traité pour la tension artérielle - la calculatrice applique uniquement cette option si la pression artérielle systolique est &gt; 120 mmHg</p>
+			<p>e) le cholestérol total en mmol/L - le calculateur utilise 3 mmol/L pour calculer le risque de base</p>
+			<p>f) le cholestérol HDL en mmol/L - le calculateur utilise 1,3 mmol/L pour calculer le risque de base</p>
+
+			<h3>3) Voyez le bénéfice estimé</h3>
+			<p>En cliquant sur une intervention, la calculatrice en détermine le bénéfice relatif spécifique et l'applique pour calculer le % de personnes qui pourraient bénéficier de cette intervention. Les interventions disponibles sont: 1) Activité physique, 2) Alimentation méditerranéenne vs Faible teneur en gras, 3) Vitamines / suppléments d'oméga-3, 4) Médication anti-hypertensive (si la TA systolique est > ou = 140 mmHg), 5) Statines à intensité faible-modérée, Statines à haute intensité , Fibrates, Niacine, Ézétimibe (quel que soit le taux de cholestérol), 6) Metformine, Sulfonylurées, Insulines, Glitazones, GLP-1, DPP-4, Meglitinides et  SGLT2 (si diabétique) et 7) ASA. Le bénéfice en termes relatifs provient d'une synthèse des meilleures études disponibles - voir ci-dessous pour plus de détails.</p>
+
+			<h3 id="percentage">Illustration des  risques et des bénéfices calculés en NOMBRES ABSOLUS</h3>
+			<p>a)&nbsp;<strong>AUCUN CAS</strong> VISAGES HEUREUX BLEUS - % de personnes qui n'auraient pas un événement au cours de la période de temps donnée.</p>
+			<div>
+			<p>b)&nbsp;<strong>TOTAL AVEC UN EVENEMENT</strong> VISAGES MALHEUREUX ROUGES / ROSES -  % de personnes qui auraient un événement au cours de la période de temps donnée.</p>
+			<p>d)&nbsp;<strong>NOMBRES QUI PROFITENT&nbsp;</strong> VISAGES HEUREUX VERTS - % de personnes qui n'auraient pas un événement à cause de l'intervention. Cette estimation de la réduction absolue du risque est calculée à partir du bénéfice relatif du risque observé dans les études.</p>
+			<p>d)&nbsp;<strong>NNT&nbsp;</strong> est le nombre de personnes à traiter pour qu'on obtienne un bénéfice. Si aucune intervention avec un bénéfice potentiel n'est ajouté, le NNT affiche le symbole "infini".</p>
+			  <p>b) <strong>ÉVÉNEMENTS DE BASE</strong> VISAGES MALHEUREUX ROUGES - % de personnes qui auraient un événement fondé uniquement sur les facteurs de risque «de base» (non-fumeur, non-diabétique, TA = 120, cholestérol total = 3, HDL = 1,3)</p>
+			  <p>c) <strong>ÉVÉNEMENTS ADDITIONNELS</strong> VISAGES MALHEUREUX ROSES -  % de personnes qui auraient un événement AU-DELÀ du risque de base.  Ceci est le risque attribuable aux facteurs de risque spécifiques de la personne pour qui le calcul est fait.</p>
+
+			</div>
+
+
+			<h2 id="benefit">Sur quoi les estimations des bénéfices relatifs sont-elles fondées?</h2>
+			<p>Le tableau ci-dessous présente une estimation acceptable des bénéfices relatifs de certaines interventions préventives et provient d'une variété de méta-analyses et d'études. Les estimations varient d'une étude à l'autre et ont été arrondies. Le niveau de "preuves" sur lesquelles elles s'appuient est variable.  La sélection des estimations repose donc en partie sur le jugement des auteurs de cette calculatrice. On peut appliquer ces estimations du risque relatif pour calculer le risque absolu d'une personne en cliquant sur l'intervention spécifique. Le calcul de la réduction absolu de risque avec les médicaments contre le diabète se fait uniquement si le patient a été identifé comme diabétique. Pour la pression artérielle, bien que quelque peu arbitraire, le calcul de la réduction du risque ne se fait que si le patient a une pression artérielle de 140mmHg ou plus. Une récente revue Cochrane (CD006742) indique que les médicaments antihypertenseurs utilisés chez les adultes en prévention primaire de maladies cardiovasculaires et souffrant d'hypertension légère (TA systolique 140-159mmHg et / ou diastolique 90-99mmHg) ne réduisent pas la mortalité ou la morbidité. De plus, l'étude ACCORD (chez les diabétiques de type 2) n'a montré aucun avantage à baisser la pression artérielle systolique sous 140 mmHg. Cependant, une méta-analyse récente suggère qu'un bénéfice est réalisé indépendamment de la pression artérielle systolique initiale. BMJ 2009; 338: b1665doi: 10.1136 / bmj.b1665.</p>
+			<table style="border-collapse:collapse;">
+			  <thead>
+				<tr>
+				  <th>Intervention</th>
+				  <th>Bénéfices relatifs pour les maladies cardiovasculaires</th>
+				  <th>Données probantes</th>
+				</tr>
+				<tr>
+				  <th>&nbsp;</th>
+
+				  <th>&nbsp;</th>
+				  <!--<th>CHD/MI</th>
+				  <th>Strokes</th>-->
+				</tr>
+			  </thead>
+			  <tbody>
+				<tr>
+				  <th>Activité physique</th>
+				  <td class="big">~25%</td>
+				  <!--<td class="big">~25%</td>
+				  <td class="big">~25%</td>
+				  -->
+				  <td>Eur J Cardiovasc Prev Rehabil 2008;15:239-46, Int J Environ Res Public Health 2012;9:391-407</td>
+				</tr>
+				<tr>
+				  <th>Diète méditerranéenne vs Faible teneur en gras</th>
+				  <td class="big">~30%</td>
+				  <!--
+				  <td class="big">~20%</td>
+				  <td class="big">~40%</td>
+				  -->
+				  <td>N Engl J Med 2013 DOI:10.1056/NEJMoa1200303</td>
+				</tr>
+				<tr>
+				  <th>Vitamines / suppléments d'Omega 3</th>
+				  <td class="big">~0%</td>
+				  <!--
+				  <td class="big">~0%</td>
+				  <td class="big">~0%</td>
+				  -->
+				  <td>Lancet 1996;347:781-6, JAMA 2007;297:842-57, ACP Journal Club 2007;147(1):4 http://www.acfp.ca/Portals/0/docs/TFP/20120703_015221.pdf</td>
+				</tr>
+				<tr>
+				  <th>La pression artérielle (uniquement si TA systolique 140 ou plus)</th>
+				  <td class="big">~30% (~50% si diabétique)</td>
+				  <!--
+				  <td class="big">~20%</td>
+				  <td class="big">~40%</td>
+				  -->
+				  <td>J Htn 1993;11(suppl4):S61-73, Cochrane, Lancet 2004;364:1684–9, Ann Intern Med 2003;138:587-92, CD004349</td>
+				</tr>
+				<tr>
+				  <th>Statines d'intensité faible à modérée</th>
+				  <td class="big">~25%</td>
+				  <!--
+				  <td class="big">~30%</td>
+				  <td class="big">~20%</td>
+				  -->
+				  <td>Lancet 2008;371:117-25; Women-J Am Coll Cardiol 2012;59:572–82; Over age 65-J Am Coll Cardiol 2013 Aug 14 pii:S0735-1097(13)03880-1</td>
+				</tr>
+				<tr>
+				  <th>Statine à haute intensité</th>
+				  <td class="big">~35%</td>
+				  <!--
+				  <td class="big">###</td>
+				  <td class="big">###</td>
+				  -->
+				  <td>&nbsp;</td>
+				</tr>
+				<tr>
+				  <th>Fibrates</th>
+				  <td class="big">~0%</td>
+				  <!--
+				  <td class="big">~20% only&nbsp;non-fatal&nbsp;MIs</td>
+				  <td class="big">~0%</td>
+				  -->
+				  <td>NEJM 2010;362:1563-74, Amer J Med 2009;122:962.e1-962.e8, Int J Cardiol 2009 doi:10.1016/j.ijcard.2008.11.211</td>
+				</tr>
+				<tr>
+				  <th>Niacine</th>
+				  <td class="big">Pas d'étude</td>
+				  <!--
+				  <td class="big">No studies</td>
+				  <td class="big">No studies</td>
+				  -->
+				  <td></td>
+				</tr>
+				<tr>
+				  <th>Ézétimibe</th>
+				  <td class="big">~0%</td>
+				  <!--
+				  <td class="big">~0%</td>
+				  <td class="big">~0%</td>
+				  -->
+				  <td>NEJM 2008;358:1431-43</td>
+				</tr>
+				<tr>
+				  <th>Sulfonylurées</th>
+				  <td class="big">~0%</td>
+				  <!--
+				  <td class="big">~0%</td>
+				  <td class="big">~0%</td>
+				  -->
+				  <td>Diabet Med 2013;30:1160–71</td>
+				</tr>
+				<tr>
+				  <th>Insuline</th>
+				  <td class="big">~0%</td>
+				  <!--
+				  <td class="big">~0%</td>
+				  <td class="big">~0%</td>
+				  -->
+				  <td>N Engl J Med 2012; 367:319-328</td>
+				</tr>
+				<tr>
+				  <th>Metformine</th>
+				  <td class="big">~35%</td>
+				  <!--
+				  <td class="big">~35%</td>
+				  <td class="big">~35%</td>
+				  -->
+				  <td>UKPDS 34</td>
+				</tr>
+				<tr>
+				  <th>Glitazones</th>
+				  <td class="big">~0%</td>
+				  <!--
+				  <td class="big">?</td>
+				  <td class="big">?</td>
+				  -->
+				  <td>CD006063,CD006060</td>
+				</tr>
+				<tr>
+				  <th>Inhibiteurs de la dipeptidyl peptidase-4 (DPP-4)</th>
+				  <td class="big">~0%</td>
+				  <!--
+				  <td class="big">~0%</td>
+				  <td class="big">~0%</td>
+				  -->
+				  <td>SAVOR-TIMI 53, EXAMINE</td>
+				</tr>
+				<tr>
+				  <th>GLP-1</th>
+				  <td class="big">No studies</td>
+				  <!--
+				  <td class="big">No studies</td>
+				  <td class="big">No studies</td>
+				  -->
+				  <td></td>
+				</tr>
+				<tr>
+				  <th>SGLT2</th>
+				  <td class="big">~15%</td>
+				  <!--
+				  <td class="big">No studies</td>
+				  <td class="big">No studies</td>
+				  -->
+				  <td>EMPA-REG OUTCOME (juste empagliflozine pour l'instant)</td>
+				</tr>
+				<tr>
+				  <th>ASA</th>
+				  <td class="big">~15%M ~10%F</td>
+				  <!--
+				  <td class="big">~30%M ~0%F</td>
+				  <td class="big">~0%M ~15%F</td>
+				  -->
+				  <td>Arch Intern Med 2012;172:209-16</td>
+				</tr>
+				<tr>
+				  <th>Combinaisons des interventions ci-dessus</th>
+				  <td >&nbsp;</td>
+				  <td>Personne ne le sait vraiment, mais nous espérons qu'il puisse y avoir un bénéfice accru en combinant plusieurs interventions. Si vous avez des données à ce sujet ou une manière pour montrer ou calculer ce bénéfice, s'il vous plaît contactez moi.</td>
+				</tr>
+			  </tbody>
+			</table>
+			<h2>Pourquoi n'avons-nous pas donné de cibles de traitement à atteindre, particulièrement pour les paramètres de substitution (cholestérol, TA, glycémie)?</h2>
+			<p>Vous remarquerez qu'il n'y a pas de cibles de traitement contrairement à ce que l'on retrouve dans de nombreux guides de pratiques cliniques. Ceci a été fait à dessein, car ces seuils ont été fixés de façon arbitraire, sans ou avec peu de bases scientifiques. La prise de décision partagée/informée pour initier ou poursuivre une intervention devrait se fonder sur une estimation raisonnable des risques et des bénéfices de cette intervention et non sur l'atteinte de valeurs cibles de paramètres de substitution.</p>
+
+			<h2>Pourquoi la catégorisation présent ou absent (oui ou non) ne s'applique pas intégralement au tabagisme et au diabète?</h2>
+
+			<h3 id="smoking">Tabagisme</h3>
+			<p>Les antécédents de tabagisme sont généralement basés sur ce que le patient rapporte. On ne sait pas exactement qui devrait être considéré comme "fumeur". Une personne qui a fumé au cours des 5 dernières années devrait raisonnablement être considérée comme fumeur. Si elle a cessé de fumer il y a 5-10 ans, elle devrait probablement être considérée comme non-fumeur pour les fins du calcul du risque cardiovasculaire. Cependant, il est important de se rappeler que le tabagisme également les risques de cancers et de maladies pulmonaires. Cette augmentation du risque de ces maladies ne disparait pas nécessairement quand une personne cesse de fumer.
+			</p>
+
+			<h3 id="diabetes">Diabète</h3>
+			<p>De nombreux calculateurs de risque cardiovasculaire identifient le diabète comme une variable "présent ou absent" (oui ou non). Dans l'étude de Framingham, les personnes de la cohorte initiale ont été considérées comme diabétique si leur glycémie à jeun était de > 7,8 mmol/L (140 mg/dL) alors que leur progéniture l'était avec une glycémie à jeun de > 7mmol / L (126 mg / dL). Il est cependant clair que le diabète n'est pas un facteur de risque "présent ou absent" . Si on se base sur l'étude UKPDS, pour chaque augmentation de 2% de l'Hb1ac au dessus d'une valeur de 6% d'Hb1ac, le risque de maladies cardiovasculaires augmente de 33%. Le diabète de type-2 augmente également le risque de maladies microvasculaires. Comparativement au risque de complications macrovasculaires, celui de complications microvasculaires comme l'insuffisance rénale ou la cécité est beaucoup moins grand et les données d'incidence ne sont pas aussi robustes pour ces paramètres. Dans l'étude UKPDS, moins de 1% des patients ont développé une insuffisance rénale en 11 ans et environ 5% ont développé la cécité d'un œil. Dans l'étude STENO, dans laquelle les participants diabétiques avaient également une microalbuminurie, 8% des patients du groupe d'étude avec traitement usuel ont eu recours à une dialyse et 9% sont devenus aveugles d'au moins 1 oeil au cours de 14 ans de suivi. Vijan et al. ont estimé qu'un diabétique de 60 ans avec une l'Hb1ac de 9% a un risque d'environ 1% au cours de sa vie de nécessiter une dialyse ou de souffrir de cécité.</p>
+
+			<h2>Pourquoi les facteurs de risque comme les antécédents familiaux et le mode de vie ne sont-ils pas inclus dans les calculatrices ASCVD, Framingham et ACC / AHA?</h2>
+			<p>Ces calculatrices utilisent l'âge, le sexe, la TA systolique, le cholestérol total, le cholestérol HDL, le tabagisme et le diabète pour calculer le risque cardiovasculaire. Des ajustements spécifiques  pour des facteurs comme les antécédents familiaux, le poids, et l'IMC ne sont pas disponibles pour toutes ces calculatrices. Nous avons toutefois permis d'estimer l'impact de l'histoire familiale en ajoutant un % de risque supplémentaire associé à ce facteur.  Soulignons que cette modification n'est pas sanctionnée par les groupes qui ont développé ces calculatrices.</p>
+
+			<h2 id="framingham">Quelles sont les mesures de résultats spécifiques incluses dans le terme "cardiovasculaire" et comment sont-elles définies?</h2>
+			<h3>1) Framingham</h3>
+			<h3>Angine</h3>
+			<p>Une brève gêne thoracique récurrente qui dure jusqu'à 15 minutes, précipitée par l'effort ou l'émotion et soulagée par le repos ou la nitroglycérine AINSI QU’une insuffisance coronarienne, soit une douleur à la poitrine prolongée (&gt; 15 minutes), mais sans indication de dommages du tissu cardiaque.</p>
+
+			<h3 id="chd">Maladie coronarienne (MCAS)</h3>
+			<p>MCAS = infarctus mortel/non mortel + angine/insuffisance coronarienne.</p>
+
+			<h3 id="cvd">Maladie cardiovasculaire (MCV)</h3>
+			<p>MCV = maladie coronarienne (MCAS) + insuffisance cardiaque + accident vasculaire cérébral + claudication intermittente.</p>
+
+			<h3 id="heart_attack">Infarctus</h3>
+			<p>Infarctus = infarctus du myocarde mortel ou non mortel.</p>
+			<p>Aigu, récent ou ancien - un infarctus aigu du myocarde est défini comme la présence d'au moins deux des trois symptomes:</p>
+			<ul>
+			  <li>symptômes indicatifs d'ischémie;</li>
+			  <li>modifications des marqueurs de nécrose myocardique;</li>
+			  <li>modifications des électrocardiogrammes qui indiquent l'évolution d'un infarctus, y compris la perte de potentiel QRS initial (à savoir, le développement d'ondes Q "pathologiques" de durée de 0,04 secondes ou plus).</li>
+			</ul>
+
+			<h3>Arrêt cardiaque</h3>
+			<p>Un minimum de deux critères majeurs ou un majeur et deux mineurs présents en même temps</p>
+			<p>Les critères majeurs:</p>
+			<ul>
+			  <li>Dyspnée paroxystique nocturne ou orthopnée;</li>
+			  <li>Veines du cou distendues (autre que dans la position couchée);</li>
+			  <li>Râles;</li>
+			  <li>Augmentation de la taille du cœur sur la radiographie pulmonaire;</li>
+			  <li>Oedème pulmonaire aigu sur la radiographie pulmonaire;</li>
+			  <li>Bruit cardiaque S3 (galop);</li>
+			  <li>Augmentation de la pression veineuse > 16 cm H20;</li>
+			  <li>Reflux hépatojugulaire;</li>
+			  <li>Oedème pulmonaire, congestion viscérale, cardiomégalie à l'autopsie;</li>
+			  <li>Perte de poids secondaire à la médication pour insuffisance cardiaque: 10 livres/5 jours.</li>
+			</ul>
+			<p>Les critères mineurs:</p>
+			<ul>
+			  <li>Oedème bilatéral des chevilles;</li>
+			  <li>Toux nocturne;</li>
+			  <li>Dyspnée lors d'un effort ordinaire;</li>
+			  <li>Hépatomégalie;</li>
+			  <li>Épanchement pleural à la radiographie pulmonaire;</li>
+			  <li>Diminution de la capacité vitale d'un tiers comparativement à la valeur maximale;</li>
+			  <li>Tachycardie (120 battements par minute ou plus);</li>
+			  <li>Engorgement vasculaire pulmonaire sur une radiographie pulmonaire.</li>
+			</ul>
+
+			<h3>Claudication intermittente</h3>
+			<p>Une crampe incomfortable dans le mollet clairement provoquée par une marche d'une certaine distance, la douleur apparaissant plus tôt lors d'une marche rapide ou en montant. Cette douleur est soulagée en quelques minutes de repos.</p>
+
+			<h3 id="stroke">Accident vasculaire cérébral (AVC)</h3>
+			<p>Une apparition soudaine ou rapide d'un déficit neurologique focal persistant pendant plus de 24 heures AINSI QU’un accident ischémique transitoire (AIT), soit un déficit neurologique focal d'apparition soudaine ou rapide qui se résout totalement en moins de 24 heures.</p>
+			<h3>2) QRISK<sup>&reg;</sup>2-2014</h3>
+			<p>Les infarctus et accidents vasculaires cérébraux.</p>
+			<h3>3) ACC/AHA ASCVD</h3>
+			<p>Maladie coronarienne atheroscléreuse = mort par MCAS + infarctus non mortels + AVC mortel / non mortel.</p>
+
+			<h2>Références pour les équations de risque</h2>
+			<ul>
+				<li><strong>Framingham (2008):</strong> D'Agostino RB Sr, Vasan RS, Pencina MJ, et al. General cardiovascular risk profile for use in primary care: the Framingham Heart Study. <em>Circulation</em>. 2008 Feb 12;117(6):743-53. doi: 10.1161/CIRCULATIONAHA.107.699579. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18212285">PMID 18212285</a>.</li>
+				<li><strong>QRISK<sup>&reg;</sup>2-2014:</strong> Hippisley-Cox J, Coupland C, Vinogradova Y, et al. Predicting cardiovascular risk in England and Wales: prospective derivation and validation of QRISK2. <em>BMJ</em>. 2008 Jun 28;336(7659):1475-82. doi: 10.1136/bmj.39609.449676.25. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18573856">PMID 18573856</a>. <a href="http://qrisk.org">Official QRISK<sup>&reg;</sup>2 website</a>.</li>
+				<li><strong>ACC/AHA ASCVD:</strong> Goff DC Jr, Lloyd-Jones DM, Bennett G, et al. 2013 ACC/AHA guideline on the assessment of cardiovascular risk: a report of the American College of Cardiology/American Heart Association Task Force on Practice Guidelines. <em>Circulation</em>. 2014 Jun 24;129(25 Suppl 2):S49-73. doi: 10.1161/01.cir.0000437741.48606.98. <a href="http://www.ncbi.nlm.nih.gov/pubmed/24222018">PMID 24222018</a>.</li>
+			</ul>
+
+			<h2><a name="QRISK"></a>Avertissement en ce qui concerne QRISK<sup>&reg;</sup>2-2014</h2>
+			<p>La version initiale de ce fichier qui peut être trouvée à <a href="http://svn.clinrisk.co.uk/opensource/qrisk2">http://svn.clinrisk.co.uk/opensource/qrisk2</a>, reproduit fidèlement le  QRISK2-2014. ClinRisk Ltd a publié ce code sous la licence GNU Lesser General Public License pour permettre la mise en œuvre du QRISK2-2014 fidèlement à l'algorithme original. Cependant, la nature de la GNU Lesser General Public License est telle que nous ne pouvons pas empêcher, par exemple, la modification accidentelle des coefficients, de faire des entrées erronnées, ou de faire une mauvaise programmation. ClinRisk Ltd. souligne, par conséquent, qu'il est de la responsabilité de l'utilisateur de vérifier que les résultats produits sont les mêmes que ceux produits avec le code original affiché à <a href="http://svn.clinrisk.co.uk/opensource/qrisk2">http://svn.clinrisk.co.uk/opensource/qrisk2</a>. L'utilisation de scores de risque inexacts peut conduire à de mauvais traitements administrés à de mauvais patients.</p>
+
+			<p>La mise en oeuvre de QRISK®2-2014 n'utilise pas le paramètre de code postal du Royaume-Uni en raison d'une variété de raisons (public international et la disponibilité du code postal pour les données townsend). QRISK® est une marque déposée de l'Université de Nottingham et EMIS. Pour plus d'informations, s'il vous plaît visitez <a href="http://qrisk.org">QRISK.org</a>.</p>
+		</div>
 		
 	</div>
 	
 	<div id="footer">
 		James McCormack/Pascal Pfiffner, 2015
 	</div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="static/URI.min.js"></script>
+	<script src="static/localization.subpages.min.js"></script>
 </body>
 </html>

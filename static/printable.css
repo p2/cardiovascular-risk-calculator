@@ -1,0 +1,48 @@
+/* Elements that will never be shown in the printable view ... */
+#localization, #footer, #input, #input-2, #formula_selector, #printView, #qrisk_disclaimer, p[data-lang-id=PlusMinus5] {
+	display: none;
+}
+
+/* New elements that will be visible in printable view ... */
+#print_DataPoints {
+	display: block !important;
+	float: left;
+	width: 50%;
+	font-size: 1.2em;
+}
+#print_DataPoints hr {
+	margin: 0.5em 0;
+}
+#print_DataPoints ul li {
+	padding-bottom: 0.25em;
+}
+
+/* Change layout of default styling ... */
+#header {
+	margin: auto;
+	max-width: none;	
+}
+h1 {
+	text-align: left;
+}
+#outcome {
+	margin-left: 0;
+	float: left;
+	width: 50%;
+}
+#print_DataPoints strong { 
+	font-weight: bold; 
+	font-size: 1em;
+}
+sup, sub {
+  vertical-align: baseline;
+  position: relative;
+  top: -0.4em;
+}
+sub { 
+  top: 0.4em; 
+}
+
+@media print {
+	#removePrintView { display: none; }
+}
