@@ -549,7 +549,7 @@ var localizations = {
 			{'id': 'and', 'value': 'et'},
 			{'id': 'HarmOfIntervention', 'value': 'Effets délétères des interventions'},
 			{'id': 'NotDefined', 'value': 'non défini'},
-			{'id': 'Framingham2008AgeWarning', 'value': 'L\'âge doit être compris entre 25 et 84 ans pour la calculatrice Framingham'},
+			{'id': 'Framingham2008AgeWarning', 'value': 'L\'âge doit être compris entre 30 et 74 ans pour la calculatrice Framingham'},
 			{'id': 'Framingham2008BpWarning', 'value': 'La TA systolique doit être comprise entre 90 et 200 mmHg pour la calculatrice Framingham'},
 			{'id': 'Framingham2008HdlWarning', 'value': 'Le cholestérol HDL doit être compris entre 10 et 100 mg/dL pour la calculatrice Framingham'},
 			{'id': 'Framingham2008TCWarning', 'value': 'Le cholestérol total doit être compris entre 100 et 405 mg/dL pour la calculatrice Framingham'},			

@@ -30,6 +30,15 @@ $(document).ready(function() {
 		convertSliders();
 	}
 	
+	// Legacy support of #basic tags
+	if (location.href.toLowerCase().indexOf("#basic") >= 0) {
+		var basicUri = new URI(window.location.href.split("#")[0]);
+		if (!basicUri.hasQuery('basic')) {
+			basicUri.addQuery('basic','true');
+		}
+		window.location.href = basicUri.toString();
+	}
+	
 	// Localization support
 	// First, check the URL (if param 'lang' is set)
 	var uri = new URI(window.location);
@@ -66,7 +75,8 @@ $(document).ready(function() {
 		$('#toggleBasicView').text(LocalizeText('SwitchEnhanced',language));
 		$('#toggleBasicView').click(function() {
 		
-			var basicUri = new URI(window.location.href.split("#")[0]);
+			var basicUri = new URI(window.location.href);
+			basicUri.removeQuery('basic');
 			if (language != 'en') {
 				basicUri.addQuery('lang',language);
 			}
@@ -142,7 +152,8 @@ function RemovePrintView() {
 }
 
 function SwitchToBasicView() {
-	var uri = new URI(window.location.pathname + "#basic");
+	var uri = new URI(window.location.href);
+	uri.addQuery('basic','true');
 	
 	if (language == 'en') {
 		if (uri.hasQuery('lang')) {
@@ -152,11 +163,17 @@ function SwitchToBasicView() {
 		uri.addQuery('lang',language);
 	}
 
-	window.location = uri.toString();
+	window.location.href = uri.toString();
 }
 
 function BasicView() {
-	return (location.href.toLowerCase().indexOf("#basic") >= 0)
+	
+	var uri = new URI(window.location.href);
+	if (uri.hasQuery('basic')) {
+		return (uri.search(true)['basic'] == 'true');
+	} else {
+		return false;
+	}
 }
  
 function gender(item) {
