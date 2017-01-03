@@ -611,11 +611,13 @@ function setFormulaById(formula_id) {
 	}
 	
 	// Hide/show for Framingham
+	/*
 	if (('framingham2008' == formula_id) || ('cvd' == formula_id) || ('chd' == formula_id) || ('mi' == formula_id) || ('stroke' == formula_id)) {
 		$('#BpPriorToDrugs').show();
 	} else {
 		$('#BpPriorToDrugs').hide();
 	}
+	*/
 	 
 	// Should the "Risk Time Period" option be enabled?
 	if (('framingham2008' == formula_id) || ('qrisk' == formula_id) || ('ascvd' == formula_id)) {
@@ -889,6 +891,9 @@ function calculate(formula_id) {
 			badFormulaBaseline = OVERESTIMATE*QRISK_Female(age, b_AF, b_ra,b_renal,0,0,0,25.0,ethrisk,fh_cvd,(TCHOL_A/HDLCHOL_A),BLOODP_A,0,surv,town)/100;
 		}
 	}
+	
+	// Don't let optimal risk exceed patient's risk
+	if (badFormula < badFormulaBaseline) { badFormulaBaseline = badFormula; }
 	
 	// round off nearest 10th to prevent very large NNTs
 	badFormula = Math.round(badFormula*10)/10;

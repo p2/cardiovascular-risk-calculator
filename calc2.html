@@ -178,7 +178,7 @@
 					<input id="slider_sbp" class="slider_40" type="range" min="110" max="190" value="120" step="1" oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />
 					<input id="sbp" type="number" class="three" min="110" max="190" maxlength="3" step="1" value="120" oninput="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" onchange="adjustSlider('sbp','slider_sbp', _alerts['sbp'], this)" />&nbsp;mmHg
 				</div>
-				<p id="BpPriorToDrugs" class="item_info" data-lang-id="BpPriorToDrugs">Blood pressure should be prior to drug treatment</p>
+				<p class="item_info" data-lang-id="BpTreatmentDisclaimer">Enter present blood pressure regardless of treatment</p>
 				<p class="item_info" data-lang-id="BpBaselineRisk">120 mmHg is used for baseline risk</p>
 				
 			</div>
@@ -190,6 +190,7 @@
 					<span id="bptreatment_yes" onclick="bptreatment(this), CALC()" data-lang-id="Yes">Yes</span><!--
 					--><span id="bptreatment_no" onclick="bptreatment(this), CALC()" class="active" data-lang-id="No">No</span>
 				</span>
+				<p class="item_info" data-lang-id="BpTreatmentClickYes">Click YES if taking blood pressure medication</p>	
 				<p id="bptreatment_hint" class="item_info" data-lang-id="BpAppliesGreater120">Only applies if SBP is greater than 120 mmHg</p>
 			</div>
 			
@@ -342,7 +343,7 @@
 						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
 						'insulins': { 'default': 0, 'diabetes': 0 },
 						'glitazones': { 'default': 0, 'diabetes': 0 },
-						'glp': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 15 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
 						'sglt': { 'default': 0, 'diabetes': 15 },						
@@ -363,7 +364,7 @@
 						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
 						'insulins': { 'default': 0, 'diabetes': 0 },
 						'glitazones': { 'default': 0, 'diabetes': 0 },
-						'glp': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 15 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
 						'sglt': { 'default': 0, 'diabetes': 15 },						
@@ -384,7 +385,7 @@
 						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
 						'insulins': { 'default': 0, 'diabetes': 0 },
 						'glitazones': { 'default': 0, 'diabetes': 0 },
-						'glp': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 15 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
 						'sglt': { 'default': 0, 'diabetes': 15 },
@@ -405,7 +406,7 @@
 						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
 						'insulins': { 'default': 0, 'diabetes': 0 },
 						'glitazones': { 'default': 0, 'diabetes': 0 },
-						'glp': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 15 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
 						'sglt': { 'default': 0, 'diabetes': 15 },						
@@ -426,7 +427,7 @@
 						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
 						'insulins': { 'default': 0, 'diabetes': 0 },
 						'glitazones': { 'default': 0, 'diabetes': 0 },
-						'glp': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 15 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
 						'sglt': { 'default': 0, 'diabetes': 15 },						
@@ -447,7 +448,7 @@
 						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
 						'insulins': { 'default': 0, 'diabetes': 0 },
 						'glitazones': { 'default': 0, 'diabetes': 0 },
-						'glp': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 15 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
 						'sglt': { 'default': 0, 'diabetes': 15 },						
@@ -468,7 +469,7 @@
 						'sulfonylureas': { 'default': 0, 'diabetes': 0 },
 						'insulins': { 'default': 0, 'diabetes': 0 },
 						'glitazones': { 'default': 0, 'diabetes': 0 },
-						'glp': { 'default': 0, 'diabetes': 0 },
+						'glp': { 'default': 0, 'diabetes': 15 },
 						'dpp-4': { 'default': 0, 'diabetes': 0 },
 						'meglit': { 'default': 0, 'diabetes': 0 },
 						'sglt': { 'default': 0, 'diabetes': 15 },
@@ -620,7 +621,7 @@
 				<br /><span data-lang-id="Caveats">For important calculator caveats click <a href="Caveats.html#calculator" target="_blank" class="localize">here</a></span>.
 			</p>
 
-			James McCormack/Pascal Pfiffner, 2015
+			James McCormack/Pascal Pfiffner, 2017
 			<span class="separator">★</span>
 			<a id="cache_status" href="javascript:void(0);" onclick="offlineHint()" data-lang-id="OfflineHint">Available offline</a>
 			
@@ -635,7 +636,7 @@
 	<script src="static/html5slider.min.js"></script>
 	<script src="static/URI.min.js"></script>
 	<script src="static/calculator.min.js"></script>
-	<script src="static/localization.min.js"></script>
+	<script src="static/localization.js"></script>
 
 	<script>
 		var CONVERT_SLIDERS = false;
