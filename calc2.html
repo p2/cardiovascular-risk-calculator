@@ -45,6 +45,7 @@
 			<select id="selectLocalization" onChange="language = $(this).val(); LoadLocalizationData($(this).val()); CALC();">
 				<option value="en" selected="selected" >English (EN)</option>
 				<option value="fr">Français (FR)</option>
+				<option value="ru">Pусский (RU)</option>
 			</select>
 		</div>
 	
@@ -236,12 +237,13 @@
 				<p class="item_info" data-lang-id="FamilyHistoryDefinition">Angina or heart attack in a 1<sup>st</sup> degree relative &lt; 60 yrs</p>
 			</div>
 			
-			<div class="qrisk_questions">
+			<div>
 				<strong data-lang-id="CKD">Chronic Kidney Disease</strong>
 				<span class="toggle">
 					<span id="ckd_yes" onclick="ckd(this), CALC()" data-lang-id="Yes">Yes</span><!--
 					--><span id="ckd_no" onclick="ckd(this), CALC()" class="active" data-lang-id="No">No</span>
 				</span>
+				<p class="item_info" id="CkdExplanation" data-lang-id="CkdExplanation">CKD status is not part of the risk algorithm but is used for calculating the benefit of certain therapies</p>
 			</div>
 			
 			<div class="qrisk_questions">
@@ -326,8 +328,6 @@
 				<script>
 
 				// Note: _alerts and _benefit_risks have been moved to localization.js
-				
-				var _bp_threshold = 140;			// BP meds benefits are NOT being applied if BP is LOWER THAN this number
 				var _benefit = {
 					'cvd': {
 						'activity': 25,
@@ -590,7 +590,7 @@
 				<li><strong><span data-lang-id="TotalCholesterol">Total Cholesterol</span>:</strong> <span id="print_TotalCholesterol"></span></li>
 				<li><strong><span data-lang-id="HdlCholesterol">HDL Cholesterol</span>:</strong> <span id="print_HdlCholesterol"></span></li>
 				<li><strong><span data-lang-id="FamilyHistoryEarlyCHD">Family History of Early CHD</span>:</strong> <span id="print_EarlyFH"></span></li>
-				<li class="restricted qrisk"><strong><span data-lang-id="CKD">Chronic Kidney Disease</span>:</strong> <span id="print_CKD"></span></li>
+				<li><strong><span data-lang-id="CKD">Chronic Kidney Disease</span>:</strong> <span id="print_CKD"></span></li>
 				<li class="restricted qrisk"><strong><span data-lang-id="AFib">Atrial Fibrillation</span>:</strong> <span id="print_AFib"></span></li>
 				<li class="restricted qrisk"><strong><span data-lang-id="RA">Rheumatoid Arthritis</span>:</strong> <span id="print_RA"></span></li>
 				<li class="restricted qrisk"><strong><span data-lang-id="BMI">BMI</span>:</strong> <span id="print_BMI"></span></li>
@@ -635,6 +635,7 @@
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script src="static/html5slider.min.js"></script>
 	<script src="static/URI.min.js"></script>
+	
 	<script src="static/calculator.min.js"></script>
 	<script src="static/localization.js"></script>
 

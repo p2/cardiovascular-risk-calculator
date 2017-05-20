@@ -13,6 +13,7 @@
 			<select id="selectLocalization" onChange="language = $(this).val(); LoadLocalizationSubpage($(this).val())">
 				<option value="en" data-page-title="Risk Calculator – Important Caveats to Consider" selected="selected" >English (EN)</option>
 				<option value="fr"  data-page-title="Risk Calculator – Mise en garde importante à considérer">Français (FR)</option>
+				<option value="ru" data-page-title="Risk Calculator – Важные моменты, на которые нужно обратить внимание">Pусский (RU)</option>
 			</select>
 		</div>
 	
@@ -28,16 +29,20 @@
 			<p>The Framingham database is not designed to calculate risk if patients are already being treated with a drug that lowers blood pressure or some other surrogate marker. Previous untreated numbers should be used. For the ASCVD calculations one can add in if the person is on treatment for blood pressure.</p>
 		</div>
 		
+		<div class="localizeSubpage" data-lang="ru" style="display: none;">
+			<h1>Важные моменты, на которые нужно обратить внимание</h1>
+			<h2>НЕ ИСПОЛЬЗУЙТЕ КАЛЬУЛЯТОР, КАК ИНСТРУМЕНТ ДЛЯ ОПРЕДЕЛЕНИЯ ПОРОГОВЫХ ВЕЛИЧИН И ЦЕЛЕВЫХ ЗНАЧЕНИЙ ОТДЕЛЬНЫХ ФАКТОРОВ РИСКА</h2>
+			<p>Раздел FAQ указывает на то, что, калькулятор не предназначен ни для определения пациента в одну из групп риска ни для того, чтобы установить отдельные целевые значения, поскольку они выбраны произвольно, без учёта доказательных данных РКИ, оценок и предпочтений пациентов.</p>
+			<h2>Не используйте динамические шкалы калькулятора для оценки пользы от лечения</h2>
+			<p>Теоретически, вы можете переместить указатель динамической шкалы и нажать кнопки, чтобы показать возможную пользу, когда указатель движется в сторону групп или категорий пациентов с меньшим риском. К сожалению, инструмент не достаточно точен для количественной оценки пользы вмешательств. Исключением может быть курение. Поскольку РКИ прекращения курения не проводилось, вероятно, лучший способ показать пользу отказа от курения - выбрать в выпадающем списке "Не курит", и продемострировать уменьшение сердечно-сосудистого риска. В большинстве исследований показано, что повышение сердечно-сосудистого риска, связанное с куреннием, прекращается через 5-10 лет после того, как пациент бросил курить. Для оценки возможного положительного влияния других вмешательств, укажите отдельные из них (артериальное давление, физическая активность, приём статинов и т.д.) ниже динамических шкал риска.</p>
+			<h2>Не используйте калькулятор для оценок пациентов в возрасте старше 80 лет, поскольку, связь между увеличением факторов риска, которое использована в большинстве калькуляторов и повышением риска ССЗ не сохраняется.</h2>
+			<p>В отношении молодых более молодых людей были получены доказательства связи изменения факторов риска и вероятности сердечно-сосудистых осложнений, что позволяет использовать калькуляторы риска. Однако, такие данные о пациентах в возрасте старше 80 лет отсутствуют, поэтому, недопустимо использовать калькулятор для оценки риска в этой группе пациентов. BMJ 2009;338:a3083 doi:10.1136/bmj.a3083</p>
+			<h2>Не используйте калькуляторы, за исключением ASCVD, для оценки пациентов, которые уже получают лечение.</h2>
+			<p>База данных Фрамингемского исследования не преднозначена для оценки риска у пациентов, которые уже получают лечение препаратами, снижающими артериальное давление или величину какого-либо другого сурогатного маркера. Необходимо использовать показатели, которые были получены до начала лечения. Расчёты с использованием калькулятора ASCVD возможны и в отношении лиц, получающих антигипертензивную терапию.</p>
+		</div>
+		
 		<div class="localizeSubpage" data-lang="fr" style="display: none;">
-		    <h1>Mise en garde</h1>
-			<h2>NE PAS UTILISER LA CALCULATRICE COMME OUTIL POUR RECOMMANDER DES SEUILS OU DES CIBLES À ATTEINDRE POUR UN FACTEUR DE RISQUE SPÉCIFIQUE</h2>
-			<p>Tel que mentionné à la page des questions fréquemment posées (FAQ), cette calculatrice ne doit pas être utilisée pour classer les patients dans des catégories de risque spécifiques, ni pour identifier des facteurs de risque spécifiques parce que ceux-ci sont arbitraires, n'utilisent pas des données issues d'ECR, et n'intégrent pas les valeurs ou les préférences des patients.</p>
-			<h2>Ne pas ajuster le facteur de risque pour faire une estimation du bénéfice du traitement </h2>
-			<p>En théorie, on pourrait montrer le bénéfice associé à la modification d'un facteur de risque en changeant (typiquement en diminuant) la valeur associée à ce facteur. Malheureusement, cela ne semble pas être un moyen précis pour estimer le bénéfice lié à ce changement. Une exception possible est le statut tabagique, où probablement la meilleure façon (car il n'y a pas d'ECR sur l'arrêt tabagique) pour démontrer les bénéfices de l'arrêt tabagique est de décocher le tabagisme pour montrer les bénéfices potentiels sur les maladies cardiovasculaires. La plupart des études suggèrent que les risques cardiovasculaires associés au tabagisme reviennent au risque de base 5-10 ans après l'arrêt. Pour obtenir une estimation du bénéfice cardiovasculaire potentiel d'autres interventions, cliquez sur l'intervention spécifique (BP, l'activité, les statines, etc.).</p>
-			<h2>Ne pas utiliser la calculatrice pour faire des estimations chez les personnes de plus de 80 ans puisque l'association entre les facteurs de risque utilisés dans la plupart des calculatrices et le risque  de maladie cardiovasculaire ne semble pas être fiable chez les personnes de cet âge.</h2>
-			<p>Les données des études suggèrent que pour les jeunes, il existe une association entre les changements dans les facteurs de risque et le risque d'événements cardiovasculaires. Ceci est la raison appuyant le bien-fondé de l'utilisation de calculatrices de risque. Toutefois, cela ne semble pas être le cas chez les patients âgés de plus de 80 ans. Donc, ne pas utiliser cette calculatrice pour estimer le risque dans cette population. BMJ 2009; 338: a3083 doi: 10.1136 / bmj.a3083</p>
-			<h2>Ne pas utiliser la calculatrice pour estimer le risque cardiovasculaire chez des personnes recevant déjà un traitement, sauf lors de l'utilisation de l'ASCVD ou du QRISK2</h2>
-			<p>La base de données de Framingham n'a pas été conçue pour calculer le risque cardiovasculaire si des personnes sont déjà traitées avec un médicament qui abaisse la tension artérielle ou modifie un autre paramètre de substitution. Les chiffres avant traitement devraient être utilisés. Pour les calculs avec l'ASCVD et le QRISK2, on peut ajouter si la personne prend un traitement pour l'hypertention artérielle.</p>
+		
 		</div>
 	</div>
 	

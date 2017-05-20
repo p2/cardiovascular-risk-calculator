@@ -510,7 +510,7 @@ function benefit(formula_id) {
 		}
 		
 		// for the BP meds ("bp"), it ONLY applies if BP is "_bp_threshold" and higher
-		if ('bp' == bf && systole() < _bp_threshold) {
+		if ('bp' == bf && !AboveThresholdForBpMeds()) {
 			continue;
 		}
 		
@@ -595,6 +595,7 @@ function setFormulaById(formula_id) {
 		$('#dm_detailed').show();
 		$('.qrisk_questions').show();
 		$('#AmountOfRisk').hide();
+		$('#CkdExplanation').hide();
 		
 		$('#qrisk_disclaimer').show();	
 		$('#divFamilyHistoryOfEarlyCHD').hide();	//CHD family history is defined and part of the algorithm for QRISK
@@ -608,6 +609,7 @@ function setFormulaById(formula_id) {
 		$('#qrisk_disclaimer').hide();
 		$('#divFamilyHistoryOfEarlyCHD').show();
 		$('#AmountOfRisk').show();
+		$('#CkdExplanation').show();
 	}
 	
 	// Hide/show for Framingham
@@ -894,6 +896,11 @@ function calculate(formula_id) {
 	
 	// Don't let optimal risk exceed patient's risk
 	if (badFormula < badFormulaBaseline) { badFormulaBaseline = badFormula; }
+	
+	// Don't let the risk exceed 100% (only possible if family history [OVERESTIMATE] is implemented with a very high CVD risk)
+	if (badFormula > 100) { badFormula = 100; }
+	if (badFormula_NonSmoker > 100) {badFormula_NonSmoker = 100; }
+	if (badFormulaBaseline>100) {badFormulaBaseline = 100; }
 	
 	// round off nearest 10th to prevent very large NNTs
 	badFormula = Math.round(badFormula*10)/10;
@@ -1510,6 +1517,15 @@ function QRISK_Female(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,eth
 	return score;
 }
 
+// BP meds benefits are NOT being applied if BP is LOWER THAN this number
+function AboveThresholdForBpMeds() {
+	
+	if (diabetes() || ckd()) {
+		return (systole() >= 130);
+	} else {
+		return (systole() >= 140);
+	}
+}
 
 /**
  *  Returns a smilie face image.
