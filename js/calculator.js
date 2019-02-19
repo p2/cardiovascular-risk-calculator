@@ -213,6 +213,8 @@ function nonblack() {
 function smoker(item) {
 	if ('qrisk' == _formula_id) {
 		return (parseInt($('#smoke_cat').val()) > 1);
+	} else if ('predict' == _formula_id) {
+		return (parseInt($('#smoke_cat_trichotomous').val()) > 1);
 	} else {
 		if (item) {
 			$(item).addClass('active').siblings().removeClass('active');
@@ -311,6 +313,22 @@ function bptreatment(item) {
 	}
 	
 	return $('#bptreatment_yes').hasClass('active') ? 1 : 0;
+}
+
+function lipidtreatment(item) {
+	if (item && !$(item).parent().hasClass('disabled')) {
+		$(item).addClass('active').siblings().removeClass('active');
+	}
+	
+	return $('#lipidtreatment_yes').hasClass('active') ? 1 : 0;	
+}
+
+function apactreatment(item) {
+	if (item && !$(item).parent().hasClass('disabled')) {
+		$(item).addClass('active').siblings().removeClass('active');
+	}
+	
+	return $('#apactreatment_yes').hasClass('active') ? 1 : 0;	
 }
 
 function isNumeric(n) {
@@ -579,39 +597,49 @@ function setFormulaById(formula_id) {
 	}).addClass('active');
 	// showImages(formula_id);
 	
-	// Do some special hide/show magic for the ASCVD calculator ...
-	if ('ascvd' == formula_id) {
-		$('#divRace').show();
-	} else {
-		$('#divRace').hide();
-	}
+	// Hide all fields that are not universally used by all calculators
+	$('.CalcSpecificField').hide();
+	$('#qrisk_disclaimer').hide();
 	
-	// Do some special hide/show magic for QRISK calculator ...
-	if ('qrisk' == formula_id) {
-		$('#divEthnicity').show();
-		$('#smoker_dicotomous').hide();
-		$('#smoker_detailed').show();
-		$('#dm_dichotomous').hide();
-		$('#dm_detailed').show();
-		$('.qrisk_questions').show();
-		$('#AmountOfRisk').hide();
-		$('#CkdExplanation').hide();
-		
-		$('#qrisk_disclaimer').show();	
-		$('#divFamilyHistoryOfEarlyCHD').hide();	//CHD family history is defined and part of the algorithm for QRISK
-	} else {
-		$('#divEthnicity').hide();
+	// Specific fields for Framingham
+	if ('framingham2008' == formula_id) {
 		$('#smoker_dicotomous').show();
-		$('#smoker_detailed').hide();
 		$('#dm_dichotomous').show();
-		$('#dm_detailed').hide();
-		$('.qrisk_questions').hide();
-		$('#qrisk_disclaimer').hide();
 		$('#divFamilyHistoryOfEarlyCHD').show();
-		$('#AmountOfRisk').show();
 		$('#CkdExplanation').show();
 	}
 	
+	// Specific fields for ASCVD
+	if ('ascvd' == formula_id) {
+		$('#divRace').show();
+		$('#smoker_dicotomous').show();
+		$('#dm_dichotomous').show();
+		$('#divFamilyHistoryOfEarlyCHD').show();
+		$('#CkdExplanation').show();
+	}
+	
+	// Specific fields for QRISK
+	if ('qrisk' == formula_id) {
+		$('#divEthnicity').show();
+		$('#smoker_detailed').show();
+		$('#dm_detailed').show();
+		$('.qrisk_questions').show();
+		$('#qrisk_disclaimer').show();
+	}
+	
+	// Specific fields for PREDICT
+	if ('predict' == formula_id) {
+		$('#divLipidTreatment').show();
+		$('#divApacTreatment').show();
+		$('#dm_dichotomous').show();
+		$('#smoker_tricotomous').show();
+		$('#divAfib').show();
+		$('#divDeprivationIndex').show();
+		$('#CkdExplanation').show();
+		$('#divEthnicity_PREDICT').show();
+		$('#divFamilyHistoryYesNo').show();
+	}
+
 	// Hide/show for Framingham
 	/*
 	if (('framingham2008' == formula_id) || ('cvd' == formula_id) || ('chd' == formula_id) || ('mi' == formula_id) || ('stroke' == formula_id)) {
@@ -630,6 +658,19 @@ function setFormulaById(formula_id) {
 	    $('#divTime').hide();
 		$('#time_fixed').show();
 		adjust('time', $('#rangeTime'), true);
+		$('#time_fixed').text(LocalizeText("10years",language));
+		
+	} else if ('predict' == formula_id) {
+		
+	    $('#rangeTime').prop('disabled', true);
+	    $('#time').prop('disabled', true);
+	    $('#rangeTime').val(5);
+	    $('#time').val(5);
+	    $('#divTime').hide();
+		$('#time_fixed').show();
+		adjust('time', $('#rangeTime'), true);
+		$('#time_fixed').text(LocalizeText("5years",language));
+		
 	} else {
 	    $('#divTime').show();
 	    $('#time').prop('disabled', false);
@@ -894,6 +935,33 @@ function calculate(formula_id) {
 		}
 	}
 	
+	// PREDICT
+	else if ('predict' == formula_id) {
+		//IS_MALE
+		var age = AGE;
+		var fh_cvd = famhistory();
+		var b_treatedhyp = bptreatment();
+		var b_treatedlipid = lipidtreatment();
+		var b_treatedapac = apactreatment();
+		var sbp = systole();
+		//DIABETES
+		var smoke_cat = $('#smoke_cat_trichotomous').val();
+		var rati = totalchol() / hdlchol();
+		var b_AF = afib();
+		var deprivation = $('#deprivation_quintile').val();
+		var ethrisk = $('#ethnicity_PREDICT').val();
+		
+		if (ckd()) {
+			$('#alert_ckd').show();
+		}
+		
+		//Function args: (sex,age,FH,tx_htn,tx_lipids,tx_apac,sbp,dm,smoker,tchdl_ratio,afib,deprivation,ethnicity)
+		var risk = PREDICT(IS_MALE,age,fh_cvd,b_treatedhyp,b_treatedlipid,b_treatedapac,sbp,DIABETES,smoke_cat,rati,b_AF,deprivation,ethrisk);
+		badFormula = OVERESTIMATE*risk/100;
+		badFormula_NonSmoker = OVERESTIMATE*PREDICT(IS_MALE,age,fh_cvd,b_treatedhyp,b_treatedlipid,b_treatedapac,sbp,DIABETES,0,rati,b_AF,deprivation,ethrisk)/100;
+		badFormulaBaseline = OVERESTIMATE*PREDICT(IS_MALE,age,fh_cvd,b_treatedhyp,b_treatedlipid,b_treatedapac,BLOODP_A,0,0,rati,b_AF,1,ethrisk)/100;	// BLOODP_A=120, Diabetes=0, Smoker=0,Deprivation=1
+	}
+	
 	// Don't let optimal risk exceed patient's risk
 	if (badFormula < badFormulaBaseline) { badFormulaBaseline = badFormula; }
 	
@@ -925,8 +993,6 @@ function calculate(formula_id) {
 	}
 	
 	var additional = Math.max(0, (badFormula - badFormulaBaseline));	// pink faces
-	
-	// TODO: the rounding here is wrong, it needs to be combined and then a dominant face gets to use up the space
 	var numSadFaces = Math.round(badFormulaBaseline); // red faces
 	var numAddFaces = Math.round(additional); // pink faces
 	
@@ -989,9 +1055,11 @@ function calculate(formula_id) {
 	if (formula_id == 'framingham2008') { $('#print_CalcMethod').html('Framingham'); }
 	if (formula_id == 'qrisk') { $('#print_CalcMethod').html('QRISK<sup>&reg;</sup>2-2014'); }
 	if (formula_id == 'ascvd') { $('#print_CalcMethod').html('ACC/AHA ASCVD'); }
+	if (formula_id == 'predict') { $('#print_CalcMethod').html('PREDICT'); }
 	
 	$('#print_Age').html(AGE + ' ' + LocalizeText('years',language));
 	$('#print_Gender').html(IS_MALE ? LocalizeText('Male',language) : LocalizeText('Female',language));
+	$('#print_CKD').html(ckd() ? LocalizeText('Yes',language) : LocalizeText('No',language));
 	
 	if (formula_id == 'qrisk') {
 		//find(':selected').text() values are already localized
@@ -1014,35 +1082,37 @@ function calculate(formula_id) {
 	
 	}
 	
-	if ((formula_id == 'qrisk') || (formula_id == 'ascvd')) {
-		$('.restricted.qrisk, .restricted.ascvd').show();
-		if (formula_id == 'qrisk') {
-			$('#print_Ethnicity').html($('#ethnicity').find(':selected').text());	// Already localized
-		} else {
-			// ASCVD
-			$('#print_Ethnicity').html(IS_BLACK ? LocalizeText('Black',language) : LocalizeText('Non-Black',language));
-		}
-	} else {
-		$('.restricted.qrisk, .restricted.ascvd').show();
-		// Just in case...
-		$('#print_Ethnicity').html(LocalizeText('NA',language));
-	}
+	// Set some defaults just in case...
+	// Just in case ...
+	$('#print_AFib').html(LocalizeText('NA',language));
+	$('#print_RA').html(LocalizeText('NA',language));
+	$('#print_BMI').html(LocalizeText('NA',language));
+	$('#print_EarlyFH').html($('#overestimate').val() + '% ' + LocalizeText('AdditionalRisk',language));
+	$('#print_Ethnicity').html(LocalizeText('NA',language));
 	
+	// By default, hide all 'restricted' class, then selectively show if necessary
+	$('#print_DataPoints .restricted').hide();
 	if (formula_id == 'qrisk') {
-		$('#print_DataPoints .restricted.qrisk').show();
-		$('#print_CKD').html(ckd() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('.restricted.qrisk').show();
+		$('#print_Ethnicity').html($('#ethnicity').find(':selected').text());	// Already localized
 		$('#print_AFib').html(afib() ? LocalizeText('Yes',language) : LocalizeText('No',language));
 		$('#print_RA').html(ra() ? LocalizeText('Yes',language) : LocalizeText('No',language));
 		$('#print_BMI').html($('#bmi').html());
 		$('#print_EarlyFH').html(famhistory() ? LocalizeText('Yes',language) : LocalizeText('No',language));
-	} else {
-		$('#print_DataPoints .restricted.qrisk').hide();		
-		// Just in case ...
-		$('#print_CKD').html(LocalizeText('NA',language));
-		$('#print_AFib').html(LocalizeText('NA',language));
-		$('#print_RA').html(LocalizeText('NA',language));
-		$('#print_BMI').html(LocalizeText('NA',language));
-		$('#print_EarlyFH').html($('#overestimate').val() + '% ' + LocalizeText('AdditionalRisk',language));
+		
+	} else if (formula_id == 'ascvd') {
+		$('.restricted.ascvd').show();
+		$('#print_Ethnicity').html(IS_BLACK ? LocalizeText('Black',language) : LocalizeText('Non-Black',language));
+		
+	} else if (formula_id == 'predict') {
+		$('.restricted.predict').show();
+		$('#print_Smoker').html($('#smoke_cat_trichotomous').find(':selected').text());	// Already localized
+		$('#print_Ethnicity').html($('#ethnicity_PREDICT').find(':selected').text());	// Already localized
+		$('#print_OnLipidTreatment').html(lipidtreatment() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('#print_OnAntithromboticTreatment').html(apactreatment() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('#print_EarlyFH').html(famhistory() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('#print_AFib').html(afib() ? LocalizeText('Yes',language) : LocalizeText('No',language));
+		$('#print_DeprivationQuintile').html($('#deprivation_quintile').find(':selected').text());
 	}
 	
 	if ($('#benefit_estimates .active').length > 0) {
@@ -1174,8 +1244,62 @@ function ASCVD10YrRisk(coeff, age, TC, HDL, SBP, BPTreatment, DM, Smoker) {
 	return 1 - Math.pow(coeff.BaselineSurvival, Math.pow(Math.E, sum - coeff.OverallMean));
 }
 
+function PREDICT(sex,age,FH,tx_htn,tx_lipids,tx_apac,sbp,dm,smoker,tchdl_ratio,afib,deprivation,ethnicity) {
 
+	var sum = 0;
+	
+	if (sex == 1) {	//MALE
+		// Coefficients
+		sum += 0.0675532 *(age-51.79953);
+		sum += 0.2899054*(ethnicity==2); //maori
+		sum += 0.1774195*(ethnicity==3); //pacific
+		sum += 0.2902049*(ethnicity==1); //indian
+		sum += -0.3975687*(ethnicity==4); //chinese-other
+		sum += 0.0794903*(deprivation-2.972793);
+		sum += 0.0753246 *(smoker==1);
+		sum += 0.5058041 *(smoker==2);
+		sum += 0.1326587*(FH);
+		sum += 0.5880131*(afib);
+		sum += 0.5597023*(dm);
+		sum += 0.0163778*(sbp-129.1095);
+		sum += 0.1283758*(tchdl_ratio-4.38906);
+		sum += 0.2947634*(tx_htn);
+		sum += -0.0537314*(tx_lipids);
+		sum += 0.0934141*(tx_apac);
+		// Interactions
+		sum += (age-52)*dm*-0.020235;
+		sum += (sbp-129)*(age-52)*-0.0004184;
+		sum += (sbp-129)*tx_htn*-0.0053077;
 
+		return (1 - Math.pow(0.974755526232, Math.pow(Math.E, sum)))*100;
+		
+		
+	} else {	// Female
+		// Coefficients
+		sum += 0.0756412 *(age-56.13665);
+		sum += 0.3910183*(ethnicity==2); //maori
+		sum += 0.2010224*(ethnicity==3); //pacific
+		sum += 0.1183427*(ethnicity==1); //indian
+		sum += -0.28551*(ethnicity==4); //chinese-other
+		sum += 0.1080795*(deprivation-2.990826);
+		sum += 0.087476 *(smoker==1);
+		sum += 0.6226384 *(smoker==2);
+		sum += 0.0445534*(FH);
+		sum += 0.8927126*(afib);
+		sum += 0.5447632*(dm);
+		sum += 0.0136606*(sbp-129.0173);
+		sum += 0.1226753*(tchdl_ratio-3.726268);
+		sum += 0.339925*(tx_htn);
+		sum += -0.0593798*(tx_lipids);
+		sum += 0.1172496*(tx_apac);
+		// Interactions
+		sum += (age-56)*dm*-0.0222549;
+		sum += (sbp-129)*(age-56)*-0.0004425;
+		sum += (sbp-129)*tx_htn*-0.004313;
+
+		return (1 - Math.pow(0.983169213058, Math.pow(Math.E, sum)))*100;
+	}	
+}
 
 /* 
  * Copyright 2013 ClinRisk Ltd.
@@ -1521,9 +1645,9 @@ function QRISK_Female(age,b_AF,b_ra,b_renal,b_treatedhyp,b_type1,b_type2,bmi,eth
 function AboveThresholdForBpMeds() {
 	
 	if (diabetes() || ckd()) {
-		return (systole() >= 130);
-	} else {
 		return (systole() >= 140);
+	} else {
+		return (systole() >= 130);
 	}
 }
 

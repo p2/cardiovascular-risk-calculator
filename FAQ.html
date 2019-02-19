@@ -13,7 +13,7 @@
 			<select id="selectLocalization" onChange="language = $(this).val(); LoadLocalizationSubpage($(this).val())">
 				<option value="en" data-page-title="Risk Calculator – FAQ" selected="selected">English (EN)</option>
 				<option value="fr" data-page-title="Risk Calculator – Questions fréquemment posées">Français (FR)</option>
-				<option value="ru" data-page-title="Risk Calculator – Часто задаваемые вопросы">Pусский (RU)</option>
+				<!--<option value="ru" data-page-title="Risk Calculator – Часто задаваемые вопросы">Pусский (RU)</option>-->
 			</select>
 		</div>
 	
@@ -21,10 +21,15 @@
 			<h1>Frequently Asked Questions</h1>
 			<h2>What does this calculator do?</h2>
 			<p>This cardiovascular risk calculator provides you with an interactive and individualized tool which provides an absolute estimate (%) of a person's chance of having a cardiovascular event over a specific period of time and an idea of the potential benefit of treatment. It is only valid for people who have never had a cardiovascular event.</p>
-			You can choose between 3 different databases by clicking on a specific calculator at the top.</p>
-			1) <b>Framingham</b> - this calculates the risk of heart attacks + angina/coronary insufficiency + heart failure + strokes + intermittent claudication</p>
-			2) <b>QRISK<sup>&reg;</sup>2-2014</b> - this calculates the risk of heart attacks + strokes</p>
-			3) <b>ACC/AHA ASCVD</b> - this calculates the risk of CHD death + nonfatal heart attacks + fatal/nonfatal strokes
+			<p>You can choose between 4 different databases by clicking on a specific calculator at the top.</p>
+			
+			<ol>
+				<li><b>Framingham</b> - this calculates the risk of heart attacks + angina/coronary insufficiency + heart failure + strokes + intermittent claudication</li>
+				<li><b>QRISK<sup>&reg;</sup>2-2014</b> - this calculates the risk of heart attacks + strokes</li>
+				<li><b>ACC/AHA ASCVD</b> - this calculates the risk of CHD death + nonfatal heart attacks + fatal/nonfatal strokes</li>
+				<li><b>PREDICT</b> - Heart attacks + angina + heart failure + strokes/TIAs + peripheral vascular disease</li>
+			</ol>
+
 			<p>This calculator was designed to dynamically show how the value of specific risk factors impact cardiovascular risk. Results are shown using a representation of 100 "happy faces" to help illustrate risk. This format seems to be one of the better ways to present risks visually. Risks are also provided as absolute numbers and rounded off to one decimal point even though <b>any cardiovascular estimates likely are +/- 5-10% at best.</b></p>
 			<p>There are TWO different views for this calculator. An ENHANCED VIEW which displays all the different types of interventions including non-drug, drugs for cholesterol, drugs for statins, drugs for blood pressure, drugs for glucose. The BASIC VIEW displays only non-drug, statins and ASA as interventions and all patient variables need to be inserted before any numbers are presented. In addition, it only displays three different faces - those with no event, those with an event, and those for benefit. You can toggle back and forth between the two different views.</p>
 		
@@ -331,6 +336,7 @@
 				<li><strong>Framingham (2008):</strong> D'Agostino RB Sr, Vasan RS, Pencina MJ, et al. General cardiovascular risk profile for use in primary care: the Framingham Heart Study. <em>Circulation</em>. 2008 Feb 12;117(6):743-53. doi: 10.1161/CIRCULATIONAHA.107.699579. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18212285">PMID 18212285</a>.</li>
 				<li><strong>QRISK<sup>&reg;</sup>2-2014:</strong> Hippisley-Cox J, Coupland C, Vinogradova Y, et al. Predicting cardiovascular risk in England and Wales: prospective derivation and validation of QRISK2. <em>BMJ</em>. 2008 Jun 28;336(7659):1475-82. doi: 10.1136/bmj.39609.449676.25. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18573856">PMID 18573856</a>. <a href="http://qrisk.org">Official QRISK<sup>&reg;</sup>2 website</a>.</li>
 				<li><strong>ACC/AHA ASCVD:</strong> Goff DC Jr, Lloyd-Jones DM, Bennett G, et al. 2013 ACC/AHA guideline on the assessment of cardiovascular risk: a report of the American College of Cardiology/American Heart Association Task Force on Practice Guidelines. <em>Circulation</em>. 2014 Jun 24;129(25 Suppl 2):S49-73. doi: 10.1161/01.cir.0000437741.48606.98. <a href="http://www.ncbi.nlm.nih.gov/pubmed/24222018">PMID 24222018</a>.</li>
+				<li><strong>PREDICT:</strong> Pylypchuk R, Wells S, Kerr A, et al. Cardiovascular disease risk prediction equations in 400 000 primary care patients in New Zealand: a derivation and validation study. <em>Lancet</em>. 2018 May 12;391(10133):1897-1907. doi: 10.1016/S0140-6736(18)30664-0. <a href="http://www.ncbi.nlm.nih.gov/pubmed/29735391">PMID 29735391</a>
 			</ul>
 	
 			<h2><a name="QRISK"></a>Disclaimer Information Regarding QRISK<sup>&reg;</sup>2-2014</h2>
@@ -343,10 +349,15 @@
 			<h1>Questions fréquemment posées</h1>
 			<h2>Qu'est-ce que cette calculatrice fait?</h2>
 			<p>Cette calculatrice de risque cardiovasculaire est un outil interactif qui estime la probabilité (%) qu'une personne ait un événement cardiovasculaire au cours d'une période de temps donnée et celle du bénéfice potentiel d'un traitement. Ces estimations sont valides uniquement pour les personnes qui n'ont jamais eu un événement cardiovasculaire.</p>
-			<p>Vous pouvez choisir entre 3 différentes bases de données en cliquant sur une calculatrice spécifique dans le menu en haut de votre écran.</p>
-			1) <b>Framingham</b> - celui-ci calcule le risque d'infarctus + angine / insuffisance coronarienne + insuffisance cardiaque + accident vasculaire cérébral + claudication intermittente</p>
-			2) <b>QRISK<sup>&reg;</sup>2-2014</b> - celui-ci calcule le risque d'infarctus + accident vasculaire cérébral</p>
-			3) <b>ACC/AHA ASCVD</b> - celui-ci calcule le risque de décès par maladie coronarienne+ infarctus non mortel + accident vasculaire cérébral mortel/non mortel
+			<p>Vous pouvez choisir entre 4 différentes bases de données en cliquant sur une calculatrice spécifique dans le menu en haut de votre écran.</p>
+			
+			<ol>
+				<li><b>Framingham</b> - celui-ci calcule le risque d'infarctus + angine / insuffisance coronarienne + insuffisance cardiaque + accident vasculaire cérébral + claudication intermittente</li>
+				<li><b>QRISK<sup>&reg;</sup>2-2014</b> - celui-ci calcule le risque d'infarctus + accident vasculaire cérébral</li>
+				<li><b>ACC/AHA ASCVD</b> - celui-ci calcule le risque de décès par maladie coronarienne+ infarctus non mortel + accident vasculaire cérébral mortel/non mortel</li>
+				<li><b>PREDICT</b> - crises cardiaques + angine de poitrine + insuffisance cardiaque + AVC / AIT + maladie vasculaire périphérique</li>
+			</ol>
+			
 			<p>Cette calculatrice a été conçue pour montrer de façon interactive comment des facteurs de risque spécifiques influent sur le risque d'événements cardiovasculaires. Les résultats sont présentés en utilisant 100 "visages heureux/malheureux" pour aider à illustrer le risque. Ce format semble être l'une des meilleures façons de représenter visuellement les risques. Ceux-ci sont également fournis sous forme de nombres absolus et arrondis à une décimale près, même si la précision de l'estimation des risques cardiovasculaires peut varier de ± 5-10%.</p>
 			<p>Deux modes d'affichage sont disponibles. Un affichage COMPLET offre l'ensemble des interventions, y compris les interventions non-médicamenteuses, les médicaments pour le cholestérol dont les statines, les médicaments pour l'hypertension artérielle et les médicaments pour le diabète. L'affichage DE BASE offre uniquement les interventions non-médicamenteuses, les statines et l'aspirine. Dans ce mode d'affichage, tous les paramètres du patient doivent être inscrits  avant que les estimés de risque cardiovasculaire apparaissent. De plus, il ne présente que trois "visages heureux" différents - celui sans événement, celui avec un événement et celui des bénéfices. Vous pouvez changer le mode d'affichage à votre guise.</p>
 
@@ -652,6 +663,7 @@
 				<li><strong>Framingham (2008):</strong> D'Agostino RB Sr, Vasan RS, Pencina MJ, et al. General cardiovascular risk profile for use in primary care: the Framingham Heart Study. <em>Circulation</em>. 2008 Feb 12;117(6):743-53. doi: 10.1161/CIRCULATIONAHA.107.699579. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18212285">PMID 18212285</a>.</li>
 				<li><strong>QRISK<sup>&reg;</sup>2-2014:</strong> Hippisley-Cox J, Coupland C, Vinogradova Y, et al. Predicting cardiovascular risk in England and Wales: prospective derivation and validation of QRISK2. <em>BMJ</em>. 2008 Jun 28;336(7659):1475-82. doi: 10.1136/bmj.39609.449676.25. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18573856">PMID 18573856</a>. <a href="http://qrisk.org">Official QRISK<sup>&reg;</sup>2 website</a>.</li>
 				<li><strong>ACC/AHA ASCVD:</strong> Goff DC Jr, Lloyd-Jones DM, Bennett G, et al. 2013 ACC/AHA guideline on the assessment of cardiovascular risk: a report of the American College of Cardiology/American Heart Association Task Force on Practice Guidelines. <em>Circulation</em>. 2014 Jun 24;129(25 Suppl 2):S49-73. doi: 10.1161/01.cir.0000437741.48606.98. <a href="http://www.ncbi.nlm.nih.gov/pubmed/24222018">PMID 24222018</a>.</li>
+				<li><strong>PREDICT:</strong> Pylypchuk R, Wells S, Kerr A, et al. Cardiovascular disease risk prediction equations in 400 000 primary care patients in New Zealand: a derivation and validation study. <em>Lancet</em>. 2018 May 12;391(10133):1897-1907. doi: 10.1016/S0140-6736(18)30664-0. <a href="http://www.ncbi.nlm.nih.gov/pubmed/29735391">PMID 29735391</a>
 			</ul>
 
 			<h2><a name="QRISK"></a>Avertissement en ce qui concerne QRISK<sup>&reg;</sup>2-2014</h2>
@@ -664,13 +676,15 @@
 			<h1>Часто задаваемые вопросы</h1>
 			<h2>Какие возможности даёт калькулятор?</h2>
 			<p>Калькулятор сердечно-сосудистого риска предоставляет собой интерактивный и индивидуализированный инструмент, дающий возможность получить оценку вероятности (%) развития сердечно-сосудистого осложнения за определённый период времени и убедить пациента в потенциальной пользе лечения. Он предназначен для оценки людей, у которых ранее не было сердечно-сосудистых осложнений.</p>
-			Нажав кнопку отдельного калькулятора в верхней части страницы, вы можете сделать выбор между тремя различными базами данных
-			<p></p>
-			1) <b>Фрамингемская шкала</b> - оценивает риск сердечных приступов + стенокардии/коронарной недостаточности + сердечной недостаточности + инсультов + перемежающейся хромоты
-			<p></p>
-			2)<b> QRISK</b><sup><b>®</b></sup><b>2-2014</b> - оценивает риск сердечных приступов и инсультов
-			<p></p>
-			3) <b>ACC/AHA ASCVD</b> - оценивает риск смерти от ИБС + нефатальных сердечных приступов + фатальных/нефатальных инсультов.
+			<p>Нажав кнопку отдельного калькулятора в верхней части страницы, вы можете сделать выбор между четыре различными базами данных</p>
+			
+			<ol>
+				<li><b>Фрамингемская шкала</b> - оценивает риск сердечных приступов + стенокардии/коронарной недостаточности + сердечной недостаточности + инсультов + перемежающейся хромоты</li>
+				<li><b>QRISK</b><sup><b>®</b></sup><b>2-2014</b> - оценивает риск сердечных приступов и инсультов</li>
+				<li><b>ACC/AHA ASCVD</b> - оценивает риск смерти от ИБС + нефатальных сердечных приступов + фатальных/нефатальных инсультов.</li>
+				<!--todo: PREDICT translation -->
+			</ol>
+
 			<p>Калькулятор был разработан для того, чтобы в динамике показать, как отдельные факторы риска влияют на общий сердечно-сосудистый риск. Результаты показаны в виде 100 "счастливых лиц". Такой формат представляется одним из лучших способов сделать информацию о риске наглядной. Также приводится абсолютное значение риска с точностью до десятых, окрулённое в меньшую сторону, несмотря на то, что <b>точность оценки сердечно-сосудистого риска в лучшем случае +/- 5-10%.</b></p>
 			<p>Есть ДВЕ версии этого калькулятора. В РАСШИРЕННОЙ ВЕРСИИ отражены различные типы вмешательств, включая, немедикаментозные меры, приём препаратов, снижающих уровень холестерина, в том числе статинов, антигипертензивных и сахароснижающих препаратов. В БАЗОВОЙ ВЕРСИИ отражены только немедикаментозные меры, назначение статинов и аспирина и всех показателей пациентов, и все параметры пациентов, которые необходимо ввести перед тем, как появятся оценки. Кроме того, в ней, при помощи различных типов лиц, показана доля пациентов без осложнений, с осложнениями и у которых отмечается улучшение. Вы можете переключать вид калькулятор, меняя версию и возвращаясь обратно.</p>
 			<h2>Как использовать калькулятор абсолютного риска ССЗ/пользы вмешательств?</h2>
@@ -900,6 +914,7 @@
 			<li><strong>Framingham (2008):</strong> D'Agostino RB Sr, Vasan RS, Pencina MJ, et al. General cardiovascular risk profile for use in primary care: the Framingham Heart Study. <em>Circulation</em>. 2008 Feb 12;117(6):743-53. doi: 10.1161/CIRCULATIONAHA.107.699579. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18212285">PMID 18212285</a>.</li>
 			<li><strong>QRISK<sup>®</sup>2-2014:</strong> Hippisley-Cox J, Coupland C, Vinogradova Y, et al. Predicting cardiovascular risk in England and Wales: prospective derivation and validation of QRISK2. <em>BMJ</em>. 2008 Jun 28;336(7659):1475-82. doi: 10.1136/bmj.39609.449676.25. <a href="http://www.ncbi.nlm.nih.gov/pubmed/18573856">PMID 18573856</a>. <a href="http://qrisk.org/">Официальный сайт QRISK<sup>®</sup>2</a>.</li>
 			<li><strong>ACC/AHA ASCVD:</strong> Goff DC Jr, Lloyd-Jones DM, Bennett G, et al. 2013 ACC/AHA guideline on the assessment of cardiovascular risk: a report of the American College of Cardiology/American Heart Association Task Force on Practice Guidelines. <em>Circulation</em>. 2014 Jun 24;129(25 Suppl 2):S49-73. doi: 10.1161/01.cir.0000437741.48606.98. <a href="http://www.ncbi.nlm.nih.gov/pubmed/24222018">PMID 24222018</a>.</li>
+			<li><strong>PREDICT:</strong> Pylypchuk R, Wells S, Kerr A, et al. Cardiovascular disease risk prediction equations in 400 000 primary care patients in New Zealand: a derivation and validation study. <em>Lancet</em>. 2018 May 12;391(10133):1897-1907. doi: 10.1016/S0140-6736(18)30664-0. <a href="http://www.ncbi.nlm.nih.gov/pubmed/29735391">PMID 29735391</a>
 			</ul>
 			<h2><a name="QRISK"></a>Предупреждающая информация о QRISK<sup>®</sup>2-2014</h2>
 			<p>Оригинальная версия этого файла опубликована по адресу <a href="http://svn.clinrisk.co.uk/opensource/qrisk2">http://svn.clinrisk.co.uk/opensource/qrisk2</a>, проверенная версия версия QRISK2-2014. ClinRisk Ltd. распространила этот код под стандартной общественной лицензией ограниченного применения GNU, чтобы позволить другим беспрепятственно использовать его. Однако, особенности стандартной общественной лицензии ограниченного применения GNU, состоят в том, что мы, например, не можем гарантировать, что не будут изменены отдельные коэффициенты, делающие ввод информации неверным, а также, ошибки кода. ClinRisk Ltd. поэтому указывает на ответственность конечного пользователя за проверку инструмента на соответствие результатов оценки оригинальному инструменту, размещённому по адресу <a href="http://svn.clinrisk.co.uk/opensource/qrisk2">http://svn.clinrisk.co.uk/opensource/qrisk2</a>. Неверное использование шкал оценки риска может привести к неверному отбору пациентов и назначению неверного лечения.</p>
